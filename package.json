@@ -1,0 +1,28 @@
+{
+  "name": "web-project",
+  "version": "1.0.0",
+  "description": "A semiprofessional developer team and their project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dinhquanpham/Web-Project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dinhquanpham/Web-Project/issues"
+  },
+  "homepage": "https://github.com/dinhquanpham/Web-Project#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.3.3",
+    "nedb": "^1.8.0",
+    "sequelize": "^6.25.3"
+  }
+}
