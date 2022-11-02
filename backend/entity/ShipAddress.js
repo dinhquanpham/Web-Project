@@ -24,7 +24,6 @@ const ShipAddress = sequelize.define("ship_address", {
         allowNull: false,
     },
 
-
 })
 
 module.exports = ShipAddress;
