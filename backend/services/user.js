@@ -38,6 +38,20 @@ let addUser = async () => {
     });
 }
 
+let updateUser = async () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let result = await sequelize.query(
+                'UPDATE users SET password = "pass" WHERE id = 18'
+            );
+            resolve(result);
+        }
+        catch (e) {
+            reject(e);
+        }
+    });
+}
+
 let deleteUser = async () => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -55,5 +69,6 @@ let deleteUser = async () => {
 module.exports = {
     getAllUser: getAllUser,
     addUser: addUser,
+    updateUser: updateUser,
     deleteUser : deleteUser,
 }

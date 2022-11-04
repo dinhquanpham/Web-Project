@@ -10,6 +10,11 @@ const addUser = async (req, res) => {
     console.log(result);
 }
 
+const updateUser = async (req, res) => {
+    const result = await userService.updateUser();
+    console.log(result);
+}
+
 const deleteUser = async (req, res) => {
     const result = await userService.deleteUser();
     console.log(result);
@@ -18,5 +23,6 @@ const deleteUser = async (req, res) => {
 module.exports = {
     getAllUser: getAllUser,
     addUser: addUser,
+    updateUser: updateUser,
     deleteUser: deleteUser,
 }
