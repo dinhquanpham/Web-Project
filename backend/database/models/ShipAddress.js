@@ -1,11 +1,12 @@
 const Sequelize = require("sequelize");
-const sequelize = require('../database/connect');
+const sequelize = require('../../database/connect');
 
-const ShipAddress = sequelize.define("ship_address", {
+const ShipAddress = sequelize.define("shipaddress", {
 
     id:{
         type: Sequelize.INTEGER,
         allowNull: false,   
+        autoIncrement: true,
         primaryKey: true,
     },
 
@@ -14,17 +15,22 @@ const ShipAddress = sequelize.define("ship_address", {
         allowNull: false,
     },
 
-    streetddress:{
+    district: {
         type: Sequelize.STRING,
         allowNull: false,
     },
 
-    houseAddress:{
+    street:{
         type: Sequelize.STRING,
         allowNull: false,
     },
 
-})
+    homeAddress:{
+        type: Sequelize.STRING,
+        allowNull: false,
+    },
+
+});
 
 module.exports = ShipAddress;
 

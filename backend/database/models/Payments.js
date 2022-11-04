@@ -1,11 +1,12 @@
 const Sequelize = require("sequelize");
-const sequelize = require('../database/connect');
+const sequelize = require('../../database/connect');
 
-const Payment = sequelize.define("payment", {
+const Payments = sequelize.define("payments", {
 
     id:{
         type: Sequelize.INTEGER,
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
     },
 
@@ -18,6 +19,6 @@ const Payment = sequelize.define("payment", {
         type: Sequelize.STRING,
         allowNull: true,
     }
-})
+});
 
-module.exports = Payment;
+module.exports = Payments;

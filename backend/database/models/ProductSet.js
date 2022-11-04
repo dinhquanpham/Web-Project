@@ -1,25 +1,25 @@
 const Sequelize = require("sequelize");
-const sequelize = require('../database/connect');
+const sequelize = require('../../database/connect');
 
-const Role = sequelize.define("role", {
+const ProductSet = sequelize.define("productset", {
 
     id:{
         type: Sequelize.INTEGER,
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
     },
 
     name:{
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
     },
 
     description:{
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true
     }
+    
+});
 
-})
-
-
-module.exports = Role;
+module.exports = ProductSet;

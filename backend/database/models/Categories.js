@@ -1,11 +1,12 @@
 const Sequelize = require("sequelize");
-const sequelize = require('../database/connect');
+const sequelize = require('../../database/connect');
 
-const Category = sequelize.define("category", {
+const Categories = sequelize.define("categories", {
 
     id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
     },
 
@@ -18,6 +19,6 @@ const Category = sequelize.define("category", {
         type: Sequelize.STRING,
         allowNull: false,
     }
-})
+});
 
-module.exports = Category;
+module.exports = Categories;

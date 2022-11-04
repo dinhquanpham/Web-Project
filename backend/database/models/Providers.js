@@ -1,11 +1,12 @@
 const Sequelize = require("sequelize");
-const sequelize = require('../database/connect');
+const sequelize = require('../../database/connect');
 
-const Provider = sequelize.define("provider", {
+const Providers = sequelize.define("providers", {
 
     id:{
         type: Sequelize.INTEGER,
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
     },
 
@@ -13,6 +14,6 @@ const Provider = sequelize.define("provider", {
         type: Sequelize.STRING,
         allowNull: false,
     }
-})
+});
 
-module.exports = Provider;
+module.exports = Providers;

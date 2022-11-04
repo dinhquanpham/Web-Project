@@ -1,7 +1,6 @@
-const e = require('express');
 const { QueryTypes, Model } = require('sequelize');
 const sequelize = require('../database/connect');
-const userDatabase = require('../entity/User');
+const userDatabase = require('../database/models/Users');
 
 let getAllUser = async () => {
     return new Promise (async (resolve, reject) => {
@@ -20,7 +19,7 @@ let addUser = async () => {
     return new Promise(async (resolve, reject) => {
         try {
             let result = await sequelize.query(
-                'insert into users(id, username, password) value (10, "lmaokai", "abcc")'
+                'insert into users(id, username, password, createdAt, updatedAt) value (28, "sangvm", "abcxyz", "2019-12-01T03:55:41.000", "2019-12-01T03:55:41.000")'
             );
             resolve(result);
         }

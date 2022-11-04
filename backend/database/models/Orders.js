@@ -1,16 +1,14 @@
 const Sequelize = require("sequelize");
-const sequelize = require('../database/connect');
+const sequelize = require('../../database/connect');
+const Users = require('./Users');
 
-const Order = sequelize.define("order", {
+const Orders = sequelize.define("orders", {
 
-    orderId: {
+    id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-    },
-
-    userId: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
+        autoIncrement: true,
+        primaryKey: true,
     },
 
     orderDate: {
@@ -38,6 +36,9 @@ const Order = sequelize.define("order", {
         allowNull: true,
     },
 
-})
+});
 
-module.exports = Order;
+Users.hasMany(Orders);
+Orders.belongsTo(Users);
+
+module.exports = Orders;

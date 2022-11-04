@@ -1,31 +1,20 @@
 const Sequelize = require("sequelize");
-const sequelize = require('../database/connect');
+const sequelize = require('../../database/connect');
+const Authors = require('./Authors');
+const ProductSet = require('./ProductSet');
+const Providers = require('./Providers');
 
-const Product = sequelize.define("product", {
+const Products = sequelize.define("products", {
 
     id:{
         type: Sequelize.INTEGER,
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
     },
 
     productName:{
         type: Sequelize.STRING,
-        allowNull: false,
-    },
-
-    authorId:{
-        type: Sequelize.INTEGER,
-        allowNull: false,
-    },
-
-    authorId:{
-        type: Sequelize.INTEGER,
-        allowNull: false,
-    },
-
-    setId:{
-        type: Sequelize.INTEGER,
         allowNull: false,
     },
 
@@ -44,12 +33,6 @@ const Product = sequelize.define("product", {
         allowNull: false,
     },
 
-    providerId:{
-        type: Sequelize.INTEGER,
-        allowNull: false,
-    },
-
-    
     publishedYear:{
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -60,6 +43,15 @@ const Product = sequelize.define("product", {
         allowNull: false,
     },
 
-})
+});
 
-module.exports = Product;
+Authors.hasMany(Products);
+Products.belongsTo(Authors);
+
+ProductSet.hasOne(Products);
+Products.belongsTo(ProductSet);
+
+Providers.hasOne(Products);
+Products.belongsTo(Providers);
+
+module.exports = Products;

@@ -1,13 +1,15 @@
 const Sequelize = require("sequelize");
-const sequelize = require('../database/connect');
+const sequelize = require('../../database/connect');
+const ShipAddress = require('./ShipAddress');
+const Roles = require('./Roles');
 
-const User = sequelize.define("user", {
+const Users = sequelize.define("users", {
 
     id:{
         type: Sequelize.INTEGER,
         allowNull: false,
-        primaryKey: true,
         autoIncrement: true,
+        primaryKey: true,
     },
 
     username:{
@@ -45,6 +47,12 @@ const User = sequelize.define("user", {
         allowNull: true,
     }
 
-})
+});
 
-module.exports = User;
+Roles.hasOne(Users);
+Users.belongsTo(Roles);
+
+ShipAddress.hasOne(Users);
+Users.belongsTo(ShipAddress);
+
+module.exports = Users;

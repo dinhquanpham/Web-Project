@@ -1,11 +1,12 @@
 const Sequelize = require("sequelize");
-const sequelize = require('../database/connect');
+const sequelize = require('../../database/connect');
 
-const Author = sequelize.define("author", {
+const Authors = sequelize.define("authors", {
 
     id:{
         type: Sequelize.INTEGER,
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
     },
 
@@ -13,6 +14,6 @@ const Author = sequelize.define("author", {
         type: Sequelize.STRING,
         allowNull: false,
     }
-})
+});
 
-module.exports = Author;
+module.exports = Authors;
