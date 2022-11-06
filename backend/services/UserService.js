@@ -32,7 +32,7 @@ let getAllUser = async () => {
 let addUser = async (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            await User.create({
+            let user = await User.create({
                 id: data.id,
                 username: data.username,
                 password: data.password,
@@ -42,7 +42,7 @@ let addUser = async (data) => {
                 address: data.address,
                 phone: data.phone,
             })
-            resolve(User);
+            resolve(user);
         }
         catch (e){ 
             reject (e);

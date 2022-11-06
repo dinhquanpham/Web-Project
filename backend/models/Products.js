@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const sequelize = require('../database/connect');
 const Authors = require('./Authors');
-const ProductSet = require('./ProductSet');
+const ProductSet = require('./ProductSets');
 const Providers = require('./Providers');
 
 const Products = sequelize.define("products", {

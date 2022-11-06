@@ -14,12 +14,12 @@ const Roles = sequelize.define("roles", {
 
     name:{
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
     },
 
     description:{
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
     }
 
 });

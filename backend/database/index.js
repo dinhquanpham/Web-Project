@@ -7,7 +7,7 @@ const OrderDetails = require('../models/OderDetails');
 const Payments = require('../models/Payments');
 const Providers = require('../models/Providers');
 const Categories = require('../models/Categories');
-const ProductSet = require('../models/ProductSet');
+const ProductSet = require('../models/ProductSets');
 const Authors = require('../models/Authors');
 
 const loadModels = () => {
