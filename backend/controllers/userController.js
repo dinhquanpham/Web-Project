@@ -1,27 +1,37 @@
-const userService = require('../services/user');
+const userService = require('../services/UserService');
 
 const getAllUser = async (req, res) => {
     const result = await userService.getAllUser();
-    console.log(result);
+    res.send(result);
+}
+
+const getUserById = async (req, res) => {
+    let userId = req.params.userId;
+    const result = await userService.getUserById(userId);
+    res.send(result);
 }
 
 const addUser = async (req, res) => {
-    const result = await userService.addUser();
-    console.log(result);
+    let data = req.body;
+    const result = await userService.addUser(data);
+    res.send(result);
 }
 
 const updateUser = async (req, res) => {
-    const result = await userService.updateUser();
-    console.log(result);
+    let data = req.body;
+    const result = await userService.updateUser(data);
+    res.send(result);
 }
 
 const deleteUser = async (req, res) => {
-    const result = await userService.deleteUser();
-    console.log(result);
+    let userId = req.params.userId;
+    const result = await userService.deleteUser(userId);
+    res.send("Deleted!");
 }
 
 module.exports = {
     getAllUser: getAllUser,
+    getUserById: getUserById,
     addUser: addUser,
     updateUser: updateUser,
     deleteUser: deleteUser,

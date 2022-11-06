@@ -1,7 +1,7 @@
 const express = require('express');
 const sequelize = require('./database/connect');
 const model = require('./database/index');
-const router = require('./routers/index');
+const router = require('./routers/MainRouters');
 const app = express();
 const port = 3030;
 
