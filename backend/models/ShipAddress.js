@@ -1,5 +1,6 @@
 const Sequelize = require("sequelize");
 const sequelize = require('../database/connect');
+const Users = require('./Users');
 
 const ShipAddress = sequelize.define("shipaddress", {
 
@@ -30,10 +31,10 @@ const ShipAddress = sequelize.define("shipaddress", {
         allowNull: false,
     },
 
-},
-{
-    tableName: "ship_address"
 });
+
+Users.hasMany(ShipAddress);
+ShipAddress.belongsTo(Users)
 
 module.exports = ShipAddress;
 

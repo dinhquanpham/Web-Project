@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const sequelize = require('../database/connect');
 
-const ProductSet = sequelize.define("productset", {
+const ProductSet = sequelize.define("productsets", {
 
     id:{
         type: Sequelize.INTEGER,
@@ -20,9 +20,6 @@ const ProductSet = sequelize.define("productset", {
         allowNull: true
     }
     
-},
-{
-    tableName : "product_set"
 });
 
 module.exports = ProductSet;
