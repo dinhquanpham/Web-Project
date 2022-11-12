@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 const sequelize = require('../database/connect');
-const ShipAddress = require('./ShipAddress');
+
 const Roles = require('./Roles');
 
 const Users = sequelize.define("users", {
@@ -15,6 +15,7 @@ const Users = sequelize.define("users", {
     username:{
         type: Sequelize.STRING,
         allowNull: true,
+        unique: true,
     },
 
     password:{
@@ -51,8 +52,5 @@ const Users = sequelize.define("users", {
 
 Roles.hasOne(Users);
 Users.belongsTo(Roles);
-
-ShipAddress.hasOne(Users);
-Users.belongsTo(ShipAddress);
 
 module.exports = Users;
