@@ -18,6 +18,24 @@ let getUserById = async (userId) => {
     });
 }
 
+let getUserByUsername = async() => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let result = await sequelize.query(
+                "select * from users where id = 1"
+            );
+            resolve(result);
+        }
+        catch (e) {
+            reject(e);
+        }
+    });
+}
+
+let getUserByRole = function(roleId) {
+    return null;
+}
+
 let getAllUser = async () => {
     return new Promise (async (resolve, reject) => {
         try {
@@ -104,4 +122,5 @@ module.exports = {
     addUser: addUser,
     updateUser: updateUser,
     deleteUser : deleteUser,
+    getUserByUsername: getUserByUsername,
 }

@@ -18,6 +18,18 @@ let getProductById = async (productId) => {
     });
 }
 
+let getProductByAuthor = function(authorId) {
+    return null;
+}
+
+let getProductByProvider = function(providerId) {
+    return null;
+}
+
+let getProductByProductSet = function(productSetId) {
+    return null;
+}
+
 let getAllProduct = async () => {
     return new Promise (async (resolve, reject) => {
         try {
@@ -34,7 +46,7 @@ let addProduct = async (data) => {
         try {
             let product = await Product.create({
                 id: data.id,
-                productname: data.productname,
+                productName: data.productName,
                 price: data.price,
                 quantityInStock: data.quantityInStock,
                 description: data.description,

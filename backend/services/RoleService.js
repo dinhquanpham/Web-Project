@@ -53,12 +53,12 @@ let updateRole = async (data) => {
                     { id: data.id }
             });
 
-            user.set({
+            role.set({
                 id: data.id,
                 name: data.name,
                 description: data.description,
             })
-            await Role.save();
+            await role.save();
             resolve(role);
         }
         catch (e) {
