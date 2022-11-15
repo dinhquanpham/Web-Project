@@ -1,10 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `db` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `db`;
--- MySQL dump 10.13  Distrib 8.0.29, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.31, for Win64 (x86_64)
 --
 -- Host: localhost    Database: db
 -- ------------------------------------------------------
--- Server version	8.0.29
+-- Server version	8.0.31
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -30,7 +28,7 @@ CREATE TABLE `authors` (
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,6 +37,7 @@ CREATE TABLE `authors` (
 
 LOCK TABLES `authors` WRITE;
 /*!40000 ALTER TABLE `authors` DISABLE KEYS */;
+INSERT INTO `authors` VALUES (1,'Eiichiro Oda','2022-11-15 15:37:00','2022-11-15 15:37:00'),(2,'Masashi Kishimoto','2022-11-15 15:37:43','2022-11-15 15:37:43'),(3,'Tite Kubo','2022-11-15 15:38:10','2022-11-15 15:38:10'),(4,'Akira Toriyama','2022-11-15 15:38:29','2022-11-15 15:38:29');
 /*!40000 ALTER TABLE `authors` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -52,11 +51,11 @@ DROP TABLE IF EXISTS `categories`;
 CREATE TABLE `categories` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
-  `description` varchar(255) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -65,7 +64,6 @@ CREATE TABLE `categories` (
 
 LOCK TABLES `categories` WRITE;
 /*!40000 ALTER TABLE `categories` DISABLE KEYS */;
-INSERT INTO `categories` VALUES (1,'Văn học','Văn học','2022-11-10 16:39:34','2022-11-10 16:39:34'),(2,'Kinh tế','Kinh tế','2022-11-10 16:40:12','2022-11-10 16:40:12'),(3,'Tâm Lý - Kỹ Năng Sống','Tâm Lý - Kỹ Năng Sống','2022-11-10 16:40:33','2022-11-10 16:40:33'),(4,'Sách Học Ngoại Ngữ','Sách Học Ngoại Ngữ','2022-11-10 16:40:46','2022-11-10 16:40:46');
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -171,10 +169,11 @@ CREATE TABLE `product_set` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
+  `newestChap` int DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -183,7 +182,7 @@ CREATE TABLE `product_set` (
 
 LOCK TABLES `product_set` WRITE;
 /*!40000 ALTER TABLE `product_set` DISABLE KEYS */;
-INSERT INTO `product_set` VALUES (1,'Combo Sách Bí Mật Của Naoko + Sự Cứu Rỗi Của Thánh Nữ + Điều Kỳ Diệu Của Tiệm Tạp Hóa (Bộ 3 Cuốn)',NULL,'2022-11-10 16:26:11','2022-11-10 16:26:11'),(2,'Combo Sách Bước Chậm Lại Giữa Thế Gian Vội Vã + Lòng Tốt Của Bạn Cần Thêm Đôi Phần Sắc Sảo (Bộ 2 Cuốn)',NULL,'2022-11-10 16:26:28','2022-11-10 16:26:28'),(3,'Combo 100 Từ Anh - Việt Đầu Tiên + 100 Từ Nhật - Việt Đầu Tiên + 100 Từ Pháp - Việt Đầu Tiên + 100 Từ Trung - Việt Đầu Tiên (Bộ 4 Cuốn)',NULL,'2022-11-10 16:26:51','2022-11-10 16:26:51'),(4,'Combo Sách Hannibal Và Sự Im Lặng Của Bầy Cừu (Bộ 2 Cuốn)',NULL,'2022-11-10 16:27:01','2022-11-10 16:27:01');
+INSERT INTO `product_set` VALUES (5,'Naruto',NULL,20,'2022-11-15 15:07:10','2022-11-15 15:32:45'),(6,'Dragon Ball',NULL,4,'2022-11-15 15:07:20','2022-11-15 15:32:37'),(7,'One Piece',NULL,5,'2022-11-15 15:07:27','2022-11-15 15:30:52'),(8,'Bleach',NULL,4,'2022-11-15 15:07:33','2022-11-15 15:13:50');
 /*!40000 ALTER TABLE `product_set` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -199,9 +198,11 @@ CREATE TABLE `products` (
   `productName` varchar(255) NOT NULL,
   `price` int NOT NULL,
   `quantityInStock` int NOT NULL,
-  `description` varchar(255) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
   `publishedYear` int NOT NULL,
   `productSize` varchar(255) NOT NULL,
+  `pageNumber` int NOT NULL,
+  `soldStatus` tinyint NOT NULL DEFAULT '1',
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   `authorId` int DEFAULT NULL,
@@ -214,7 +215,7 @@ CREATE TABLE `products` (
   CONSTRAINT `products_ibfk_1` FOREIGN KEY (`authorId`) REFERENCES `authors` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `products_ibfk_2` FOREIGN KEY (`productsetId`) REFERENCES `product_set` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `products_ibfk_3` FOREIGN KEY (`providerId`) REFERENCES `providers` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -223,6 +224,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
+INSERT INTO `products` VALUES (1,'Naruto Tập 1',25000,1,NULL,2018,'17.6 x 11.3 cm',202,1,'2022-11-15 14:55:49','2022-11-15 14:55:49',2,5,NULL),(2,'Naruto Tập 2',25000,10,NULL,2019,'17.6 x 11.3 cm',201,1,'2022-11-15 14:56:17','2022-11-15 14:56:17',2,5,NULL),(3,'Naruto Tập 3',25000,7,NULL,2019,'17.6 x 11.3 cm',333,1,'2022-11-15 14:56:41','2022-11-15 14:56:41',2,5,NULL),(4,'Naruto Tập 4',25000,0,NULL,2019,'17.6 x 11.3 cm',123,1,'2022-11-15 14:56:58','2022-11-15 14:56:58',2,5,NULL),(5,'Naruto Tập 5',25000,0,NULL,2019,'17.6 x 11.3 cm',213,1,'2022-11-15 14:59:40','2022-11-15 14:59:40',2,5,NULL),(6,'Naruto Tập 6',25000,2,NULL,2019,'17.6 x 11.3 cm',200,1,'2022-11-15 15:00:24','2022-11-15 15:00:24',2,5,NULL),(7,'Naruto Tập 7',25000,2,NULL,2019,'17.6 x 11.3 cm',200,1,'2022-11-15 15:00:27','2022-11-15 15:00:27',2,5,NULL),(8,'Naruto Tập 8',25000,2,NULL,2019,'17.6 x 11.3 cm',200,1,'2022-11-15 15:00:30','2022-11-15 15:00:30',2,5,NULL),(9,'Naruto Tập 9',25000,2,NULL,2019,'17.6 x 11.3 cm',200,1,'2022-11-15 15:00:33','2022-11-15 15:00:33',2,5,NULL),(10,'Naruto Tập 10',25000,2,NULL,2019,'17.6 x 11.3 cm',200,1,'2022-11-15 15:00:36','2022-11-15 15:00:36',2,5,NULL),(11,'Naruto Tập 11',25000,2,NULL,2019,'17.6 x 11.3 cm',200,1,'2022-11-15 15:00:40','2022-11-15 15:00:40',2,5,NULL),(12,'Naruto Tập 12',25000,2,NULL,2019,'17.6 x 11.3 cm',200,1,'2022-11-15 15:00:42','2022-11-15 15:00:42',2,5,NULL),(13,'Naruto Tập 13',25000,2,NULL,2019,'17.6 x 11.3 cm',200,1,'2022-11-15 15:00:45','2022-11-15 15:00:45',2,5,NULL),(14,'Naruto Tập 14',25000,2,NULL,2019,'17.6 x 11.3 cm',200,1,'2022-11-15 15:00:52','2022-11-15 15:00:52',2,5,NULL),(15,'Naruto Tập 15',25000,2,NULL,2019,'17.6 x 11.3 cm',200,1,'2022-11-15 15:00:54','2022-11-15 15:00:54',2,5,NULL),(16,'Naruto Tập 16',25000,2,NULL,2019,'17.6 x 11.3 cm',200,1,'2022-11-15 15:00:58','2022-11-15 15:00:58',2,5,NULL),(17,'Naruto Tập 17',25000,2,NULL,2020,'17.6 x 11.3 cm',200,1,'2022-11-15 15:01:13','2022-11-15 15:01:13',2,5,NULL),(18,'Naruto Tập 18',25000,2,NULL,2020,'17.6 x 11.3 cm',200,1,'2022-11-15 15:01:15','2022-11-15 15:01:15',2,5,NULL),(19,'Naruto Tập 19',25000,2,NULL,2020,'17.6 x 11.3 cm',200,1,'2022-11-15 15:01:19','2022-11-15 15:01:19',2,5,NULL),(20,'Naruto Tập 20',25000,2,NULL,2020,'17.6 x 11.3 cm',200,1,'2022-11-15 15:01:23','2022-11-15 15:01:23',2,5,NULL),(21,'One Piece Tập 1',20000,2,NULL,2020,'17.6 x 11.3 cm',200,1,'2022-11-15 15:02:14','2022-11-15 15:02:14',1,7,NULL),(22,'One Piece Tập 2',20000,2,NULL,2020,'17.6 x 11.3 cm',200,1,'2022-11-15 15:02:17','2022-11-15 15:02:17',1,7,NULL),(23,'One Piece Tập 3',20000,2,NULL,2020,'17.6 x 11.3 cm',200,1,'2022-11-15 15:02:19','2022-11-15 15:02:19',1,7,NULL),(24,'One Piece Tập 4',20000,2,NULL,2020,'17.6 x 11.3 cm',200,1,'2022-11-15 15:02:23','2022-11-15 15:02:23',1,7,NULL),(25,'One Piece Tập 5',20000,2,NULL,2020,'17.6 x 11.3 cm',200,1,'2022-11-15 15:02:25','2022-11-15 15:02:25',1,7,NULL),(26,'Bleach Tập 1',22000,2,NULL,2021,'17.6 x 11.3 cm',200,1,'2022-11-15 15:02:42','2022-11-15 15:02:42',3,8,NULL),(27,'Bleach Tập 2',22000,2,NULL,2021,'17.6 x 11.3 cm',200,1,'2022-11-15 15:02:46','2022-11-15 15:02:46',3,8,NULL),(28,'Bleach Tập 3',22000,2,NULL,2021,'17.6 x 11.3 cm',200,1,'2022-11-15 15:02:48','2022-11-15 15:02:48',3,8,NULL),(29,'Bleach Tập 4',22000,2,NULL,2021,'17.6 x 11.3 cm',200,1,'2022-11-15 15:02:51','2022-11-15 15:02:51',3,8,NULL),(30,'Dragon Ball Tập 1',19000,7,NULL,2022,'17.6 x 11.3 cm',200,1,'2022-11-15 15:03:28','2022-11-15 15:03:28',4,6,NULL),(31,'Dragon Ball Tập 2',19000,7,NULL,2022,'17.6 x 11.3 cm',200,1,'2022-11-15 15:03:30','2022-11-15 15:03:30',4,6,NULL),(32,'Dragon Ball Tập 3',19000,7,NULL,2022,'17.6 x 11.3 cm',200,1,'2022-11-15 15:03:33','2022-11-15 15:03:33',4,6,NULL),(33,'Dragon Ball Tập 4',19000,7,NULL,2022,'17.6 x 11.3 cm',200,1,'2022-11-15 15:03:35','2022-11-15 15:03:35',4,6,NULL);
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -239,7 +241,7 @@ CREATE TABLE `providers` (
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -248,7 +250,7 @@ CREATE TABLE `providers` (
 
 LOCK TABLES `providers` WRITE;
 /*!40000 ALTER TABLE `providers` DISABLE KEYS */;
-INSERT INTO `providers` VALUES (1,'Kim Dong','2022-11-10 16:16:02','2022-11-10 16:16:02'),(2,'IPM','2022-11-10 16:18:23','2022-11-10 16:18:23'),(4,'Nha xuat ban Tre','2022-11-10 16:19:17','2022-11-10 16:19:17'),(5,'Az Viet Nam','2022-11-10 16:19:27','2022-11-10 16:19:27');
+INSERT INTO `providers` VALUES (1,'NXB Kim Đồng','2022-11-15 14:38:26','2022-11-15 14:38:26'),(2,'NXB Trẻ','2022-11-15 14:39:10','2022-11-15 14:39:10'),(3,'IPM Book','2022-11-15 14:39:43','2022-11-15 14:39:43');
 /*!40000 ALTER TABLE `providers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -266,7 +268,7 @@ CREATE TABLE `roles` (
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -275,7 +277,7 @@ CREATE TABLE `roles` (
 
 LOCK TABLES `roles` WRITE;
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
-INSERT INTO `roles` VALUES (1,'admin',NULL,'2022-11-10 16:14:26','2022-11-10 16:14:26');
+INSERT INTO `roles` VALUES (1,'admin','admin of the system','2022-11-10 16:14:26','2022-11-15 14:23:50'),(2,'user','user of the system','2022-11-15 14:23:21','2022-11-15 14:23:21');
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -294,7 +296,10 @@ CREATE TABLE `ship_address` (
   `homeAddress` varchar(255) NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
-  PRIMARY KEY (`id`)
+  `userId` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `userId` (`userId`),
+  CONSTRAINT `ship_address_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -326,13 +331,11 @@ CREATE TABLE `users` (
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   `roleId` int DEFAULT NULL,
-  `shipaddressId` int DEFAULT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`),
   KEY `roleId` (`roleId`),
-  KEY `shipaddressId` (`shipaddressId`),
-  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`roleId`) REFERENCES `roles` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  CONSTRAINT `users_ibfk_2` FOREIGN KEY (`shipaddressId`) REFERENCES `ship_address` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`roleId`) REFERENCES `roles` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -341,7 +344,6 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'admin','admin','Quan','Dink','Farm','Cau Giay','0123456789','2022-11-10 14:24:17','2022-11-10 14:24:17',NULL,NULL),(2,'admin1','admin1','Quan1','Dink1','Farm1','Cau Giay','0123456788','2022-11-10 14:29:04','2022-11-10 14:29:04',NULL,NULL),(3,'admin2','admin1','Quan1','Dink1','Farm1','Cau Giay','0123456788','2022-11-10 14:30:49','2022-11-10 14:30:49',NULL,NULL),(4,'admin3','admin1','Quan1','Dink1','Farm1','Cau Giay','0123456788','2022-11-10 14:30:53','2022-11-10 14:30:53',NULL,NULL),(5,'admin4','admin1','Quan1','Dink1','Farm1','Cau Giay','0123456788','2022-11-10 14:30:56','2022-11-10 14:30:56',NULL,NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -354,4 +356,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-11-10 23:42:36
+-- Dump completed on 2022-11-15 23:09:06
