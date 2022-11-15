@@ -18,8 +18,16 @@ const ProductSet = sequelize.define("productsets", {
     description:{
         type: Sequelize.STRING,
         allowNull: true
+    },
+
+    newestChap: {
+        type: Sequelize.INTEGER,
+        allowNull: true
     }
     
+},
+{
+    tableName: "product_set"
 });
 
 module.exports = ProductSet;

@@ -44,6 +44,9 @@ let getAllProduct = async () => {
 let addProduct = async (data) => {
     return new Promise(async (resolve, reject) => {
         try {
+            if (data.quantityInStock == 0) {
+                soldStatus: 0;
+            }
             let product = await Product.create({
                 id: data.id,
                 productName: data.productName,
@@ -52,6 +55,7 @@ let addProduct = async (data) => {
                 description: data.description,
                 publishedYear: data.publishedYear,
                 productSize: data.productSize,
+                pageNumber: data.pageNumber,
                 authorId : data.authorId,
                 productSetId: data.productSetId,
                 providerId: data.providerId
@@ -80,6 +84,8 @@ let updateProduct = async (data) => {
                 description: data.description,
                 publishedYear: data.publishedYear,
                 productSize: data.productSize,
+                soldStatus: data.soldStatus,
+                pageNumber: data.pageNumber,
                 authorId : data.authorId,
                 productSetId: data.productSetId,
                 providerId: data.providerId

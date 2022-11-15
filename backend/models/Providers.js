@@ -13,7 +13,8 @@ const Providers = sequelize.define("providers", {
     name:{
         type: Sequelize.STRING,
         allowNull: false,
-    }
+    },
+
 });
 
 module.exports = Providers;

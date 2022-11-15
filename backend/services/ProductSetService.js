@@ -36,6 +36,7 @@ let addProductSet = async (data) => {
                 id: data.id,
                 name: data.name,
                 description: data.description,
+                newestChap: data.newestChap
             })
             resolve(result);
         }
@@ -53,12 +54,13 @@ let updateProductSet = async (data) => {
                     { id: data.id }
             });
 
-            user.set({
+            productSet.set({
                 id: data.id,
                 name: data.name,
                 description: data.description,
+                newestChap: data.newestChap
             })
-            await ProductSet.save();
+            await productSet.save();
             resolve(productSet);
         }
         catch (e) {

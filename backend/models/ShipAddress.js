@@ -31,6 +31,9 @@ const ShipAddress = sequelize.define("shipaddress", {
         allowNull: false,
     },
 
+},
+{
+    tableName: "ship_address"
 });
 
 Users.hasMany(ShipAddress);

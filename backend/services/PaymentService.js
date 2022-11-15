@@ -53,12 +53,12 @@ let updatePayment = async (data) => {
                     { id: data.id }
             });
 
-            user.set({
+            payment.set({
                 id: data.id,
                 name: data.name,
                 description: data.description,
             })
-            await Payment.save();
+            await payment.save();
             resolve(payment);
         }
         catch (e) {

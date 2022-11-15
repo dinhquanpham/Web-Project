@@ -32,7 +32,7 @@ let getAllOrder = async () => {
 let addOrder = async (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let product = await Order.create({
+            let order = await Order.create({
                 id: data.id,
                 productname: data.productname,
                 price: data.price,
@@ -44,7 +44,7 @@ let addOrder = async (data) => {
                 productSetId: data.productSetId,
                 providerId: data.providerId
             })
-            resolve(product);
+            resolve(order);
         }
         catch (e){ 
             reject (e);
@@ -55,12 +55,12 @@ let addOrder = async (data) => {
 let updateOrder = async (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let product = await Order.findOne({
+            let order = await Order.findOne({
                 where: 
                 {id : data.id}
             });
             
-            product.set({
+            order.set({
                 id: data.id,
                 productname: data.productname,
                 price: data.price,
@@ -72,7 +72,7 @@ let updateOrder = async (data) => {
                 productSetId: data.productSetId,
                 providerId: data.providerId
             })
-            await product.save();
+            await order.save();
             resolve(product);
         }
         catch (e) {
@@ -84,12 +84,12 @@ let updateOrder = async (data) => {
 let deleteOrder = async (productId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let product = await Order.findOne({
+            let order = await Order.findOne({
                 where: {
                     id: productId,
                 }
             });
-            await product.destroy();
+            await order.destroy();
             let message = "Deleted";
             resolve(message);
         }

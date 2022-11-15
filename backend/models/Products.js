@@ -30,7 +30,7 @@ const Products = sequelize.define("products", {
 
     description:{
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
     },
 
     publishedYear:{
@@ -41,6 +41,17 @@ const Products = sequelize.define("products", {
     productSize:{
         type: Sequelize.STRING,
         allowNull: false,
+    },
+
+    pageNumber: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+    },
+
+    soldStatus: {
+        type: Sequelize.TINYINT,
+        allowNull: false,
+        defaultValue: true
     },
 
 });

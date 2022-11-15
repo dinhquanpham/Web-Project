@@ -62,7 +62,7 @@ let updateAddress = async (data) => {
                 street: data.street,
                 homeAddress: data.homeAddress
             })
-            await Address.save();
+            await address.save();
             resolve(address);
         }
         catch (e) {

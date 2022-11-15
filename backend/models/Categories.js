@@ -17,7 +17,7 @@ const Categories = sequelize.define("categories", {
 
     description: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
     }
 });
 

@@ -56,7 +56,7 @@ let updateAuthor = async (data) => {
                 id: data.id,
                 name: data.name,
             })
-            await Author.save();
+            await author.save();
             resolve(author);
         }
         catch (e) {
