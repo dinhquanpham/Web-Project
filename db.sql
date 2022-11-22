@@ -172,6 +172,7 @@ CREATE TABLE `product_set` (
   `newestChap` int DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
+  `providerId` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -182,7 +183,7 @@ CREATE TABLE `product_set` (
 
 LOCK TABLES `product_set` WRITE;
 /*!40000 ALTER TABLE `product_set` DISABLE KEYS */;
-INSERT INTO `product_set` VALUES (5,'Naruto',NULL,20,'2022-11-15 15:07:10','2022-11-15 15:32:45'),(6,'Dragon Ball',NULL,4,'2022-11-15 15:07:20','2022-11-15 15:32:37'),(7,'One Piece',NULL,5,'2022-11-15 15:07:27','2022-11-15 15:30:52'),(8,'Bleach',NULL,4,'2022-11-15 15:07:33','2022-11-15 15:13:50');
+INSERT INTO `product_set` VALUES (5,'Naruto',NULL,20,'2022-11-15 15:07:10','2022-11-15 15:32:45','1'),(6,'Dragon Ball',NULL,4,'2022-11-15 15:07:20','2022-11-15 15:32:37','1'),(7,'One Piece',NULL,5,'2022-11-15 15:07:27','2022-11-15 15:30:52','1'),(8,'Bleach',NULL,4,'2022-11-15 15:07:33','2022-11-15 15:13:50','1');
 /*!40000 ALTER TABLE `product_set` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -300,7 +301,7 @@ CREATE TABLE `ship_address` (
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`),
   CONSTRAINT `ship_address_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -309,6 +310,7 @@ CREATE TABLE `ship_address` (
 
 LOCK TABLES `ship_address` WRITE;
 /*!40000 ALTER TABLE `ship_address` DISABLE KEYS */;
+INSERT INTO `ship_address` VALUES (1,'Hung Yen','Tien Lu','Dong Quang','12a','2022-11-22 02:10:03','2022-11-22 02:10:03',NULL);
 /*!40000 ALTER TABLE `ship_address` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -335,7 +337,7 @@ CREATE TABLE `users` (
   UNIQUE KEY `username` (`username`),
   KEY `roleId` (`roleId`),
   CONSTRAINT `users_ibfk_1` FOREIGN KEY (`roleId`) REFERENCES `roles` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -344,6 +346,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'quan','dinhquan','Quan','Dinh','Pham','Hung Yen','0832705889','2022-11-22 02:06:53','2022-11-22 02:06:53',NULL),(2,'sang','123456','Sang','Minh','Vu','Quang Ninh','123','2022-11-22 02:07:15','2022-11-22 02:07:15',NULL),(3,'nghia','123456','Nghia','Trong','Hoang','Nam Dinh','123','2022-11-22 02:07:37','2022-11-22 02:07:37',NULL),(4,'bang','123456','Bang','Vang','Nguyen','Ha Noi','123','2022-11-22 02:07:56','2022-11-22 02:07:56',NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -356,4 +359,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-11-15 23:09:06
+-- Dump completed on 2022-11-22 10:11:00

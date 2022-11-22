@@ -29,6 +29,23 @@ let getAllProductSet = async () => {
     });
 }
 
+let getProductSetByProvider = async (providerId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let id = providerId;
+            let searchResult = await sequelize.query(
+                'SELECT * FROM product_set p WHERE p.providerId LIKE ?', {
+                    raw: true,
+                    replacements: [id],
+                    type: QueryTypes.SELECT
+                });
+            resolve(searchResult);
+        } catch (e) {
+            reject(e);
+        }
+    });
+}
+
 let addProductSet = async (data) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -90,6 +107,7 @@ let deleteProductSet = async (productSetId) => {
 module.exports = {
     getProductSetById: getProductSetById,
     getAllProductSet: getAllProductSet,
+    getProductSetByProvider: getProductSetByProvider,
     addProductSet: addProductSet,
     updateProductSet: updateProductSet,
     deleteProductSet: deleteProductSet,
