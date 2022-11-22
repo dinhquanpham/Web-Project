@@ -48,6 +48,11 @@ const Products = sequelize.define("products", {
         allowNull: false
     },
 
+    image: {
+        type: Sequelize.STRING,
+        allowNull: true
+    },
+
     soldStatus: {
         type: Sequelize.TINYINT,
         allowNull: false,

@@ -6,9 +6,12 @@ let getSearchResult = async(data) => {
         try {
             let searchData = "%" + data + "%";
             let searchResult = await sequelize.query(
-                'SELECT * FROM products p WHERE p.productName LIKE ?', {
+                "select p.productName, p.price, a.name" 
+                + " from products p join authors a on p.authorId = a.id"
+                + " where p.productName like :searchData" 
+                + " or a.name like :searchData;", {
                     raw: true,
-                    replacements: [searchData],
+                    replacements: {searchData},
                     type: QueryTypes.SELECT
                 });
             resolve(searchResult);

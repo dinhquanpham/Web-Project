@@ -78,6 +78,7 @@ let addProduct = async (data) => {
                 publishedYear: data.publishedYear,
                 productSize: data.productSize,
                 pageNumber: data.pageNumber,
+                image: data.image,
                 authorId : data.authorId,
                 productSetId: data.productSetId,
                 providerId: data.providerId
@@ -106,6 +107,7 @@ let updateProduct = async (data) => {
                 description: data.description,
                 publishedYear: data.publishedYear,
                 productSize: data.productSize,
+                image: data.image,
                 soldStatus: data.soldStatus,
                 pageNumber: data.pageNumber,
                 authorId : data.authorId,
