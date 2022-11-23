@@ -23,6 +23,11 @@ const getProductByAuthor = async(req, res) => {
     res.send(result);
 }
 
+const getProductBySoldNumber = async(req, res) => {
+    const result = await productService.getProductBySoldNumber();
+    res.send(result);
+}
+
 const addProduct = async (req, res) => {
     let data = req.body;
     const result = await productService.addProduct(data);
@@ -45,6 +50,7 @@ module.exports = {
     getAllProduct: getAllProduct,
     getProductById: getProductById,
     getProductByProductSet: getProductByProductSet,
+    getProductBySoldNumber: getProductBySoldNumber,
     getProductByAuthor: getProductByAuthor,
     addProduct: addProduct,
     updateProduct: updateProduct,

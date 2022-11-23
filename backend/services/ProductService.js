@@ -52,6 +52,22 @@ let getProductByProductSet = function(productSetId) {
     });
 }
 
+let getProductBySoldNumber = function() {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let searchResult = await sequelize.query(
+                'SELECT * FROM products p ORDER BY soldNumber DESC', {
+                    raw: true,
+                    type: QueryTypes.SELECT
+                });
+                
+            resolve(searchResult);
+        } catch (e) {
+            reject(e);
+        }
+    });
+}
+
 let getAllProduct = async () => {
     return new Promise (async (resolve, reject) => {
         try {
@@ -78,6 +94,7 @@ let addProduct = async (data) => {
                 publishedYear: data.publishedYear,
                 productSize: data.productSize,
                 pageNumber: data.pageNumber,
+                soldNumber: data.soldNumber,
                 image: data.image,
                 authorId : data.authorId,
                 productSetId: data.productSetId,
@@ -110,6 +127,7 @@ let updateProduct = async (data) => {
                 image: data.image,
                 soldStatus: data.soldStatus,
                 pageNumber: data.pageNumber,
+                soldNumber: data.soldNumber,
                 authorId : data.authorId,
                 productSetId: data.productSetId,
                 providerId: data.providerId
@@ -145,6 +163,7 @@ module.exports = {
     getProductById: getProductById,
     getProductByProductSet: getProductByProductSet,
     getProductByAuthor: getProductByAuthor,
+    getProductBySoldNumber: getProductBySoldNumber,
     getAllProduct: getAllProduct,
     addProduct: addProduct,
     updateProduct: updateProduct,
