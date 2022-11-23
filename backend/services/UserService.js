@@ -13,7 +13,23 @@ let getUserById = async (userId) => {
             resolve(result);
         } catch (e) {
             console.log("Can't find user");
-            reject(e);
+            res.sendStatus(500);
+        }
+    });
+}
+
+let getUserByUsernameAndPassword = async (data) => {
+    return new Promise (async (resolve, reject) => {
+        try {
+            let result = await User.findOne({
+                where: {
+                    username: data.username,
+                    password: data.password
+                }
+            });
+            resolve(result);
+        } catch (e) {
+            res.sendStatus(401);
         }
     });
 }
@@ -118,6 +134,7 @@ let deleteUser = async (userId) => {
 
 module.exports = {
     getUserById: getUserById,
+    getUserByUsernameAndPassword : getUserByUsernameAndPassword,
     getAllUser: getAllUser,
     addUser: addUser,
     updateUser: updateUser,
