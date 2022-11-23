@@ -11,6 +11,12 @@ const getProductSetById = async (req, res) => {
     res.send(result);
 }
 
+const getProductSetByProvider = async(req, res) => {
+    let providerId = req.params.providerId;
+    const result = await productSetService.getProductSetByProvider(providerId);
+    res.send(result);
+}
+
 const addProductSet = async (req, res) => {
     let data = req.body;
     const result = await productSetService.addProductSet(data);
@@ -32,6 +38,7 @@ const deleteProductSet = async (req, res) => {
 module.exports = {
     getAllProductSet: getAllProductSet,
     getProductSetById: getProductSetById,
+    getProductSetByProvider: getProductSetByProvider,
     addProductSet: addProductSet,
     updateProductSet: updateProductSet,
     deleteProductSet: deleteProductSet,

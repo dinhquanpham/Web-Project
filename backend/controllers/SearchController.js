@@ -1,8 +1,8 @@
 const searchService = require('../services/SearchService');
 
 const getResult = async (req, res) => {
-    let data = req.query.name;
-    let result = await searchService.getSearchResult(data);
+    let name = req.query.name;
+    let result = await searchService.getSearchResult(name);
     res.send(result);
 }
 

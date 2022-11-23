@@ -1,6 +1,8 @@
 const Sequelize = require("sequelize");
 const sequelize = require('../database/connect');
 
+const Provider = require('./Providers');
+
 const ProductSet = sequelize.define("productsets", {
 
     id:{
@@ -23,11 +25,14 @@ const ProductSet = sequelize.define("productsets", {
     newestChap: {
         type: Sequelize.INTEGER,
         allowNull: true
-    }
-    
+    },
+
 },
 {
     tableName: "product_set"
 });
+
+Provider.hasMany(ProductSet);
+ProductSet.belongsTo(Provider);
 
 module.exports = ProductSet;

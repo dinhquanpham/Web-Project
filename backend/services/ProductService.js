@@ -19,15 +19,37 @@ let getProductById = async (productId) => {
 }
 
 let getProductByAuthor = function(authorId) {
-    return null;
-}
-
-let getProductByProvider = function(providerId) {
-    return null;
+    return new Promise(async (resolve, reject) => {
+        try {
+            let id = authorId;
+            let searchResult = await sequelize.query(
+                'SELECT * FROM products p WHERE p.authorId LIKE ? ORDER BY createdAt DESC', {
+                    raw: true,
+                    replacements: [id],
+                    type: QueryTypes.SELECT
+                });
+            resolve(searchResult);
+        } catch (e) {
+            reject(e);
+        }
+    });
 }
 
 let getProductByProductSet = function(productSetId) {
-    return null;
+    return new Promise(async (resolve, reject) => {
+        try {
+            let id = productSetId;
+            let searchResult = await sequelize.query(
+                'SELECT * FROM products p WHERE p.productsetId LIKE ? ORDER BY createdAt DESC', {
+                    raw: true,
+                    replacements: [id],
+                    type: QueryTypes.SELECT
+                });
+            resolve(searchResult);
+        } catch (e) {
+            reject(e);
+        }
+    });
 }
 
 let getAllProduct = async () => {
@@ -56,6 +78,7 @@ let addProduct = async (data) => {
                 publishedYear: data.publishedYear,
                 productSize: data.productSize,
                 pageNumber: data.pageNumber,
+                image: data.image,
                 authorId : data.authorId,
                 productSetId: data.productSetId,
                 providerId: data.providerId
@@ -84,6 +107,7 @@ let updateProduct = async (data) => {
                 description: data.description,
                 publishedYear: data.publishedYear,
                 productSize: data.productSize,
+                image: data.image,
                 soldStatus: data.soldStatus,
                 pageNumber: data.pageNumber,
                 authorId : data.authorId,
@@ -119,6 +143,8 @@ let deleteProduct = async (productId) => {
 
 module.exports = {
     getProductById: getProductById,
+    getProductByProductSet: getProductByProductSet,
+    getProductByAuthor: getProductByAuthor,
     getAllProduct: getAllProduct,
     addProduct: addProduct,
     updateProduct: updateProduct,
