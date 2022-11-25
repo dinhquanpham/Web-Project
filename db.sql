@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: db
 -- ------------------------------------------------------
--- Server version	8.0.30
+-- Server version	8.0.31
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -159,6 +159,35 @@ LOCK TABLES `payments` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `product_category`
+--
+
+DROP TABLE IF EXISTS `product_category`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `product_category` (
+  `productId` int NOT NULL,
+  `categoryId` int NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
+  PRIMARY KEY (`productId`,`categoryId`),
+  UNIQUE KEY `product_category_productId_categoryId_unique` (`productId`,`categoryId`),
+  KEY `categoryId` (`categoryId`),
+  CONSTRAINT `product_category_ibfk_1` FOREIGN KEY (`productId`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `product_category_ibfk_2` FOREIGN KEY (`categoryId`) REFERENCES `categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `product_category`
+--
+
+LOCK TABLES `product_category` WRITE;
+/*!40000 ALTER TABLE `product_category` DISABLE KEYS */;
+/*!40000 ALTER TABLE `product_category` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `product_set`
 --
 
@@ -170,9 +199,11 @@ CREATE TABLE `product_set` (
   `name` varchar(255) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   `newestChap` int DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
-  `providerId` varchar(45) DEFAULT NULL,
+  `providerId` int DEFAULT NULL,
+  `authorId` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -183,7 +214,7 @@ CREATE TABLE `product_set` (
 
 LOCK TABLES `product_set` WRITE;
 /*!40000 ALTER TABLE `product_set` DISABLE KEYS */;
-INSERT INTO `product_set` VALUES (5,'Naruto',NULL,20,'2022-11-15 15:07:10','2022-11-15 15:32:45','1'),(6,'Dragon Ball',NULL,4,'2022-11-15 15:07:20','2022-11-15 15:32:37','1'),(7,'One Piece',NULL,5,'2022-11-15 15:07:27','2022-11-15 15:30:52','1'),(8,'Bleach',NULL,4,'2022-11-15 15:07:33','2022-11-15 15:13:50','1');
+INSERT INTO `product_set` VALUES (5,'Naruto',NULL,20,NULL,'2022-11-15 15:07:10','2022-11-15 15:32:45',1,NULL),(6,'Dragon Ball',NULL,4,NULL,'2022-11-15 15:07:20','2022-11-15 15:32:37',1,NULL),(7,'One Piece',NULL,5,NULL,'2022-11-15 15:07:27','2022-11-15 15:30:52',1,NULL),(8,'Bleach',NULL,4,NULL,'2022-11-15 15:07:33','2022-11-15 15:13:50',1,NULL);
 /*!40000 ALTER TABLE `product_set` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -361,4 +392,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-11-23 17:33:31
+-- Dump completed on 2022-11-25 21:50:58
