@@ -12,7 +12,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Container } from "@mui/system";
 
 const Search = styled("div")(({ theme }) => ({
@@ -66,10 +66,11 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
 }));
 
-function GetAllProduct() {
+function GetProductById() {
+    let { productId } = useParams();
     const [data, setData] = useState([]);
     useEffect(() => {
-        fetch("http://localhost:3030/models/product")
+        fetch(`http://localhost:3030/models/product/${productId}`)
             .then((res) => res.json())
             .then((data) => setData(data));
     }, []);
@@ -77,9 +78,9 @@ function GetAllProduct() {
     return data;
 }
 
-export default function Home() {
-    const productInfo = GetAllProduct();
-    const productShow = GetAllProduct().map((data) => (
+export default function Product() {
+    const productInfo = GetProductById();
+    const productShow = ((data = GetProductById()) => (
         <div>
             <div>
                 <img
@@ -98,7 +99,7 @@ export default function Home() {
                 <div>Giá: {data.price}</div>
             </div>
         </div>
-    ));
+    ))();
 
     const navigate = useNavigate();
     return (
@@ -141,27 +142,7 @@ export default function Home() {
                 </Toolbar>
             </AppBar>
             <Container maxWidth="100%">
-                <Container maxWidth="100%" margin="auto" padding="auto">
-                    <Typography style={{ float: "left" }}>
-                        TRUYỆN HOT
-                    </Typography>
-                </Container>
-                <Grid container rowSpacing={1} columnSpacing={2} columns={10}>
-                    {Array.from(Array(5)).map((_, index) => (
-                        <Grid item xs={2} key={index}>
-                            <Item
-                                style={{ cursor: "pointer" }}
-                                onClick={() =>
-                                    navigate(
-                                        `/product/${productInfo[index].id}`
-                                    )
-                                }
-                            >
-                                {productShow[index]}
-                            </Item>
-                        </Grid>
-                    ))}
-                </Grid>
+                <Item style={{ cursor: "pointer" }}>{productShow}</Item>
             </Container>
         </Box>
     );
