@@ -1,5 +1,6 @@
 const Sequelize = require("sequelize");
 const sequelize = require('../database/connect');
+const Authors = require("./Authors");
 
 const Provider = require('./Providers');
 
@@ -27,6 +28,11 @@ const ProductSet = sequelize.define("productsets", {
         allowNull: true
     },
 
+    image: {
+        type: Sequelize.STRING,
+        allowNull: true
+    },
+
 },
 {
     tableName: "product_set"
@@ -34,5 +40,8 @@ const ProductSet = sequelize.define("productsets", {
 
 Provider.hasMany(ProductSet);
 ProductSet.belongsTo(Provider);
+
+Authors.hasMany(ProductSet);
+ProductSet.belongsTo(Authors);
 
 module.exports = ProductSet;

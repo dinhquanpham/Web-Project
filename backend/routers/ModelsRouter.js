@@ -9,6 +9,7 @@ const orderDetailRouter = require('./OrderDetailRouter');
 const categoryRouter = require('./CategoryRouter');
 const authorRouter = require('./AuthorRouter');
 const addressRouter = require('./AddressRouters');
+const productCategoryRouter = require('./ProductCategoryRouters');
 const express = require('express');
 let router = express.Router();
 
@@ -22,6 +23,7 @@ router.use('/order', orderRouter),
 router.use('/order-detail', orderDetailRouter),
 router.use('/category', categoryRouter),
 router.use('/author', authorRouter),
-router.use('/address', addressRouter);
+router.use('/address', addressRouter),
+router.use('/product-category', productCategoryRouter);
 
 module.exports = router;

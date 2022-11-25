@@ -4,7 +4,7 @@ const productController = require("../controllers/ProductController");
 let router = express.Router();
 
 router.get("/", productController.getAllProduct);
-router.get("/:productId", productController.getProductById);
+router.get("/by-id/:productId", productController.getProductById);
 router.get("/by-set/:productSetId", productController.getProductByProductSet);
 router.get("/by-provider/:providerId", productController.getProductByAuthor);
 router.get("/get-by-sold/sort", productController.getProductBySoldNumber);

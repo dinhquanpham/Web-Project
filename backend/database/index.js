@@ -9,6 +9,7 @@ const Providers = require('../models/Providers');
 const Categories = require('../models/Categories');
 const ProductSet = require('../models/ProductSets');
 const Authors = require('../models/Authors');
+const ProductCategories = require('../models/ProductCategories');
 
 const loadModels = () => {
     console.log("Loading models");

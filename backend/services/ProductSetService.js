@@ -53,7 +53,10 @@ let addProductSet = async (data) => {
                 id: data.id,
                 name: data.name,
                 description: data.description,
-                newestChap: data.newestChap
+                newestChap: data.newestChap,
+                image: data.image,
+                providerId: data.providerId,
+                authorId: data.authorId
             })
             resolve(result);
         }
@@ -75,7 +78,10 @@ let updateProductSet = async (data) => {
                 id: data.id,
                 name: data.name,
                 description: data.description,
-                newestChap: data.newestChap
+                newestChap: data.newestChap,
+                image: data.image,
+                providerId: data.providerId,
+                authorId: data.authorId
             })
             await productSet.save();
             resolve(productSet);
