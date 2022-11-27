@@ -3,7 +3,7 @@ import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Header from "../components/Header";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -22,13 +22,12 @@ function GetProductById() {
             .then((res) => res.json())
             .then((data) => setData(data));
     }, []);
-    //return data.map((data) => <div>{data.username}</div>);
     return data;
 }
 
 export default function Product() {
     const productInfo = GetProductById();
-    const productShow = ((data = GetProductById()) => (
+    const productShow = ((data = productInfo) => (
         <Box width="100%" display="flex">
             <Box
                 width="30%"
@@ -54,7 +53,6 @@ export default function Product() {
         </Box>
     ))();
 
-    const navigate = useNavigate();
     return (
         <Box sx={{ flexGrow: 1 }}>
             <Box width="100%">{Header()}</Box>

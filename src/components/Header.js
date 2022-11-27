@@ -54,16 +54,17 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function Header() {
     const navigate = useNavigate();
-    const [anchorElMenu, setAnchorElMenu] = React.useState(null);
+    const [anchorEl, setAnchorEl] = React.useState(null);
     const handleMouseOverMenu = (event) => {
-        setAnchorElMenu(event.currentTarget);
+        if (anchorEl !== event.currentTarget) {
+            setAnchorEl(event.currentTarget);
+        }
     };
 
     const handleMouseOutMenu = () => {
-        setAnchorElMenu(null);
+        setAnchorEl(null);
     };
-    const open = Boolean(anchorElMenu);
-    const id = open ? "menu" : undefined;
+    const open = Boolean(anchorEl);
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
@@ -83,23 +84,30 @@ export default function Header() {
                         color="inherit"
                         aria-label="menu"
                         sx={{ mr: 2 }}
-                        aria-describedby={id}
+                        aria-owns={open ? "menu" : undefined}
+                        aria-haspopup="true"
                         onMouseOver={handleMouseOverMenu}
+                        onMouseOut={handleMouseOutMenu}
                     >
                         <MenuIcon />
+                        <Popover
+                            id="menu"
+                            open={open}
+                            anchorEl={anchorEl}
+                            anchorOrigin={{
+                                vertical: "bottom",
+                                horizontal: "left",
+                            }}
+                            transformOrigin={{
+                                vertical: "top",
+                                horizontal: "left",
+                            }}
+                            onClose={handleMouseOutMenu}
+                            disableRestoreFocus
+                        >
+                            <Menu onMouseOut={handleMouseOutMenu}></Menu>
+                        </Popover>
                     </IconButton>
-                    <Popover
-                        id={id}
-                        open={open}
-                        anchorEl={anchorElMenu}
-                        anchorOrigin={{
-                            vertical: "bottom",
-                            horizontal: "left",
-                        }}
-                        //onMouseOver={handleMouseOverMenu}
-                    >
-                        <Menu onMouseLeave={handleMouseOutMenu}></Menu>
-                    </Popover>
                     <Search>
                         <SearchIconWrapper>
                             <SearchIcon />
