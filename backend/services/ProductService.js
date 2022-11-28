@@ -3,11 +3,11 @@ const sequelize = require('../database/connect');
 const Product = require('../models/Products');
 
 let getProductById = async (productId) => {
-    return new Promise (async (resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             let result = await Product.findOne({
                 where: {
-                    id : productId,
+                    id: productId,
                 }
             });
             resolve(result);
@@ -18,16 +18,31 @@ let getProductById = async (productId) => {
     });
 }
 
-let getProductByAuthor = function(authorId) {
+let getAllProductByCreatedTime = function () {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let searchResult = await sequelize.query(
+                'SELECT * FROM products p ORDER BY createdAt DESC', {
+                raw: true,
+                type: QueryTypes.SELECT
+            });
+            resolve(searchResult);
+        } catch (e) {
+            reject(e);
+        }
+    });
+}
+
+let getProductByAuthor = function (authorId) {
     return new Promise(async (resolve, reject) => {
         try {
             let id = authorId;
             let searchResult = await sequelize.query(
                 'SELECT * FROM products p WHERE p.authorId LIKE ? ORDER BY createdAt DESC', {
-                    raw: true,
-                    replacements: [id],
-                    type: QueryTypes.SELECT
-                });
+                raw: true,
+                replacements: [id],
+                type: QueryTypes.SELECT
+            });
             resolve(searchResult);
         } catch (e) {
             reject(e);
@@ -35,16 +50,16 @@ let getProductByAuthor = function(authorId) {
     });
 }
 
-let getProductByProductSet = function(productSetId) {
+let getProductByProductSet = function (productSetId) {
     return new Promise(async (resolve, reject) => {
         try {
             let id = productSetId;
             let searchResult = await sequelize.query(
                 'SELECT * FROM products p WHERE p.productsetId LIKE ? ORDER BY createdAt DESC', {
-                    raw: true,
-                    replacements: [id],
-                    type: QueryTypes.SELECT
-                });
+                raw: true,
+                replacements: [id],
+                type: QueryTypes.SELECT
+            });
             resolve(searchResult);
         } catch (e) {
             reject(e);
@@ -52,15 +67,15 @@ let getProductByProductSet = function(productSetId) {
     });
 }
 
-let getProductBySoldNumber = function() {
+let getProductBySoldNumber = function () {
     return new Promise(async (resolve, reject) => {
         try {
             let searchResult = await sequelize.query(
                 'SELECT * FROM products p ORDER BY soldNumber DESC', {
-                    raw: true,
-                    type: QueryTypes.SELECT
-                });
-                
+                raw: true,
+                type: QueryTypes.SELECT
+            });
+
             resolve(searchResult);
         } catch (e) {
             reject(e);
@@ -69,7 +84,7 @@ let getProductBySoldNumber = function() {
 }
 
 let getAllProduct = async () => {
-    return new Promise (async (resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             let result = await Product.findAll();
             resolve(result);
@@ -96,14 +111,14 @@ let addProduct = async (data) => {
                 pageNumber: data.pageNumber,
                 soldNumber: data.soldNumber,
                 image: data.image,
-                authorId : data.authorId,
+                authorId: data.authorId,
                 productSetId: data.productSetId,
                 providerId: data.providerId
             })
             resolve(product);
         }
-        catch (e){ 
-            reject (e);
+        catch (e) {
+            reject(e);
         }
     });
 }
@@ -112,10 +127,10 @@ let updateProduct = async (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             let product = await Product.findOne({
-                where: 
-                {id : data.id}
+                where:
+                    { id: data.id }
             });
-            
+
             product.set({
                 id: data.id,
                 productname: data.productname,
@@ -128,7 +143,7 @@ let updateProduct = async (data) => {
                 soldStatus: data.soldStatus,
                 pageNumber: data.pageNumber,
                 soldNumber: data.soldNumber,
-                authorId : data.authorId,
+                authorId: data.authorId,
                 productSetId: data.productSetId,
                 providerId: data.providerId
             })
@@ -162,10 +177,11 @@ let deleteProduct = async (productId) => {
 module.exports = {
     getProductById: getProductById,
     getProductByProductSet: getProductByProductSet,
+    getAllProductByCreatedTime: getAllProductByCreatedTime,
     getProductByAuthor: getProductByAuthor,
     getProductBySoldNumber: getProductBySoldNumber,
     getAllProduct: getAllProduct,
     addProduct: addProduct,
     updateProduct: updateProduct,
-    deleteProduct : deleteProduct,
+    deleteProduct: deleteProduct,
 }

@@ -4,6 +4,7 @@ const productController = require("../controllers/ProductController");
 let router = express.Router();
 
 router.get("/", productController.getAllProduct);
+router.get("/by-time", productController.getAllProductByCreatedTime);
 router.get("/by-id/:productId", productController.getProductById);
 router.get("/by-set/:productSetId", productController.getProductByProductSet);
 router.get("/by-provider/:providerId", productController.getProductByAuthor);

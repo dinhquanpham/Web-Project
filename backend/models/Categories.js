@@ -1,5 +1,6 @@
 const Sequelize = require("sequelize");
 const sequelize = require('../database/connect');
+const ProductSets = require("./ProductSets");
 
 const Categories = sequelize.define("categories", {
 

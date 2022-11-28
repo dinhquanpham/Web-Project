@@ -11,6 +11,11 @@ const getProductById = async (req, res) => {
     res.send(result);
 }
 
+const getAllProductByCreatedTime = async(req, res) => {
+    const result = await productService.getAllProductByCreatedTime();
+    res.send(result)
+}
+
 const getProductByProductSet = async(req, res) => {
     let productSetId = req.params.productSetId;
     const result = await productService.getProductByProductSet(productSetId);
@@ -49,6 +54,7 @@ const deleteProduct = async (req, res) => {
 module.exports = {
     getAllProduct: getAllProduct,
     getProductById: getProductById,
+    getAllProductByCreatedTime: getAllProductByCreatedTime,
     getProductByProductSet: getProductByProductSet,
     getProductBySoldNumber: getProductBySoldNumber,
     getProductByAuthor: getProductByAuthor,
