@@ -3,84 +3,74 @@ const sequelize = require('../database/connect');
 const Provider = require('../models/Providers');
 
 let getProviderById = async (providerId) => {
-    return new Promise (async (resolve, reject) => {
-        try {
-            let result = await Provider.findOne({
-                where: {
-                    id : providerId,
-                }
-            });
-            resolve(result);
-        } catch (e) {
-            console.log("Can't find provider");
-            reject(e);
-        }
-    });
+    try {
+        let result = await Provider.findOne({
+            where: {
+                id : providerId,
+            }
+        });
+        return result;
+    } catch (e) {
+        console.log("Can't find provider");
+        return "Error";
+    }
 }
 
 let getAllProvider = async () => {
-    return new Promise (async (resolve, reject) => {
-        try {
-            let result = await Provider.findAll();
-            resolve(result);
-        } catch (e) {
-            reject(e);
-        }
-    });
+    try {
+        let result = await Provider.findAll();
+        return result;
+    } catch (e) {
+        return "Error";
+    }
 }
 
 let addProvider = async (data) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            let provider = await Provider.create({
-                id: data.id,
-                name: data.name
-            })
-            resolve(provider);
-        }
-        catch (e){ 
-            reject (e);
-        }
-    });
+    try {
+        let provider = await Provider.create({
+            id: data.id,
+            name: data.name
+        })
+        return provider;
+    }
+    catch (e){ 
+        return "Error";
+    }
 }
 
 let updateProvider = async (data) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            let provider = await Provider.findOne({
-                where: 
-                {id : data.id}
-            });
-            
-            provider.set({
-                id: data.id,
-                name: data.name
-            })
-            await provider.save();
-            resolve(provider);
-        }
-        catch (e) {
-            reject(e);
-        }
-    });
+    try {
+        let provider = await Provider.findOne({
+            where: 
+            {id : data.id}
+        });
+        
+        provider.set({
+            id: data.id,
+            name: data.name
+        })
+        await provider.save();
+        return provider;
+    }
+    catch (e) {
+        return "Error";
+    }
 }
 
 let deleteProvider = async (providerId) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            let provider = await Provider.findOne({
-                where: {
-                    id: providerId,
-                }
-            });
-            await provider.destroy();
-            let message = "Deleted";
-            resolve(message);
-        }
-        catch (e) {
-            reject(e);
-        }
-    });
+    try {
+        let provider = await Provider.findOne({
+            where: {
+                id: providerId,
+            }
+        });
+        await provider.destroy();
+        let message = "Deleted";
+        return message;
+    }
+    catch (e) {
+        return "Error";
+    }
 }
 
 module.exports = {

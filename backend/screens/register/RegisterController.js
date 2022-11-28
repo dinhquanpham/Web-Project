@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const checkRegister = async (req, res, next) => {
     let data = req.body;
     let result = await userService.addUser(data);
-    if (result !== "Error") {
+    if (result !== "Error" && result != null) {
         let token = jwt.sign({
             data: result,
         }, "user");

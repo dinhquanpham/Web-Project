@@ -5,15 +5,15 @@ const jwt = require('jsonwebtoken');
 const checkUserLogin = async (req, res, next) => {
     let user = req.body;
     let result = await userService.getUserByUsernameAndPassword(user);
-    if (result !== "Error") {
-        let token = jwt.sign({
-            data: result,
-        }, "user");
-        req.checkUserLogin = {
-            token: token,
-            roleId: result.roleId
-        };
-        next();
+    if (result !== "Error" && result != null) {
+            let token = jwt.sign({
+                data: result,
+            }, "user");
+            req.checkUserLogin = {
+                token: token,
+                roleId: result.roleId
+            };
+            next();
     }
     else {
         res.status(401).send(data = {

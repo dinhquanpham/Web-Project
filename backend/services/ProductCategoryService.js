@@ -3,53 +3,47 @@ const sequelize = require('../database/connect');
 const ProductCategory = require('../models/ProductCategories');
 
 let getAllProductCategory = async () => {
-    return new Promise (async (resolve, reject) => {
-        try {
-            let result = await ProductCategory.findAll();
-            resolve(result);
-        } catch (e) {
-            reject(e);
-        }
-    });
+    try {
+        let result = await ProductCategory.findAll();
+        return result;
+    } catch (e) {
+        return "Error";
+    }
 }
 
 let addProductCategory = async (data) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            let user = await ProductCategory.create({
-                productId: data.productId,
-                categoryId: data.categoryId
-            })
-            resolve(user);
-        }
-        catch (e){ 
-            reject (e);
-        }
-    });
+    try {
+        let user = await ProductCategory.create({
+            productId: data.productId,
+            categoryId: data.categoryId
+        })
+        return user;
+    }
+    catch (e) { 
+        return "Error";
+    }
 }
 
 let updateProductCategory = async (data) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            let productCategory = await ProductCategory.findOne({
-                where: 
-                {
-                    productId : data.productId,
-                    categoryId: data.categoryId
-                }
-            });
-            
-            productCategory.set({
-                productId: data.productId,
+    try {
+        let productCategory = await ProductCategory.findOne({
+            where: 
+            {
+                productId : data.productId,
                 categoryId: data.categoryId
-            })
-            await productCategory.save();
-            resolve(productCategory);
-        }
-        catch (e) {
-            reject(e);
-        }
-    });
+            }
+        });
+        
+        productCategory.set({
+            productId: data.productId,
+            categoryId: data.categoryId
+        })
+        await productCategory.save();
+        return productCategory;
+    }
+    catch (e) {
+        return "Error";
+    }
 }
 
 module.exports = {

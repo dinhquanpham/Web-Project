@@ -3,49 +3,43 @@ const sequelize = require('../database/connect');
 const User = require('../models/Users');
 
 let getUserById = async (userId) => {
-    return new Promise (async (resolve, reject) => {
-        try {
-            let result = await User.findOne({
-                where: {
-                    id : userId,
-                }
-            });
-            resolve(result);
-        } catch (e) {
-            console.log("Can't find user");
-            res.sendStatus(500);
-        }
-    });
+    try {
+        let result = await User.findOne({
+            where: {
+                id : userId,
+            }
+        });
+        return result;
+    } catch (e) {
+        console.log("Can't find user");
+        return "Error";
+    }
 }
 
 let getUserByUsernameAndPassword = async (data) => {
-    return new Promise (async (resolve, reject) => {
-        try {
-            let result = await User.findOne({
-                where: {
-                    username: data.username,
-                    password: data.password
-                }
-            });
-            resolve(result);
-        } catch (e) {
-            res.sendStatus(401);
-        }
-    });
+    try {
+        let result = await User.findOne({
+            where: {
+                username: data.username,
+                password: data.password
+            }
+        });
+        return result;
+    } catch (e) {
+        return "Error";
+    }
 }
 
 let getUserByUsername = async() => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            let result = await sequelize.query(
-                "select * from users where id = 1"
-            );
-            resolve(result);
-        }
-        catch (e) {
-            reject(e);
-        }
-    });
+    try {
+        let result = await sequelize.query(
+            "select * from users where id = 1"
+        );
+        return result;
+    }
+    catch (e) {
+        return "Error";
+    }
 }
 
 let getUserByRole = function(roleId) {
@@ -53,83 +47,72 @@ let getUserByRole = function(roleId) {
 }
 
 let getAllUser = async () => {
-    return new Promise (async (resolve, reject) => {
-        try {
-            let result = await User.findAll();
-            resolve(result);
-        } catch (e) {
-            reject(e);
-        }
-    });
+    try {
+        let result = await User.findAll();
+        return result;
+    } catch (e) {
+        return "Error";
+    }
 }
 
 let addUser = async (data) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            let user = await User.create({
-                id: data.id,
-                username: data.username,
-                password: data.password,
-                firstname: data.firstname,
-                middlename: data.middlename,
-                lastname: data.lastname,
-                address: data.address,
-                phone: data.phone,
-            })
-            resolve(user);
-        }
-        catch (e){ 
-            reject (e);
-        }
-    });
+    try {
+        let user = await User.create({
+            id: data.id,
+            username: data.username,
+            password: data.password,
+            firstname: data.firstname,
+            middlename: data.middlename,
+            lastname: data.lastname,
+            address: data.address,
+            phone: data.phone,
+        })
+        return user;
+    }
+    catch (e){ 
+        return "Error";
+    }
 }
 
 let updateUser = async (data) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            let user = await User.findOne({
-                where: 
-                {id : data.id}
-            });
-            
-            user.set({
-                id: data.id,
-                username: data.username,
-                password: data.password,
-                firstname: data.firstname,
-                middlename: data.middlename,
-                lastname: data.lastname,
-                address: data.address,
-                phone: data.phone,
-            })
-            await user.save();
-            resolve(user);
-        }
-        catch (e) {
-            reject(e);
-        }
-    });
+    try {
+        let user = await User.findOne({
+            where: 
+            {id : data.id}
+        });
+        
+        user.set({
+            id: data.id,
+            username: data.username,
+            password: data.password,
+            firstname: data.firstname,
+            middlename: data.middlename,
+            lastname: data.lastname,
+            address: data.address,
+            phone: data.phone,
+        })
+        await user.save();
+        return user;
+    }
+    catch (e) {
+        return "Error";
+    }
 }
 
 let deleteUser = async (userId) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            let user = await User.findOne({
-                where: {
-                    id: userId,
-                }
-            });
-            await user.destroy();
-            // let result = await sequelize.query(
-            //     'DELETE FROM users WHERE id = 1'
-            // );
-            let message = "Deleted";
-            resolve(message);
-        }
-        catch (e) {
-            reject(e);
-        }
-    });
+    try {
+        let user = await User.findOne({
+            where: {
+                id: userId,
+            }
+        });
+        await user.destroy();
+        let message = "Deleted";
+        return message;
+    }
+    catch (e) {
+        return "Error";
+    }
 }
 
 module.exports = {

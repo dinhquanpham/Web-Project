@@ -3,111 +3,99 @@ const sequelize = require('../database/connect');
 const ProductSet = require('../models/ProductSets');
 
 let getProductSetById = async (productSetId) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            let result = await ProductSet.findOne({
-                where: {
-                    id: productSetId,
-                }
-            });
-            resolve(result);
-        } catch (e) {
-            console.log("Can't find productSet");
-            reject(e);
-        }
-    });
+    try {
+        let result = await ProductSet.findOne({
+            where: {
+                id: productSetId,
+            }
+        });
+        return result;
+    } catch (e) {
+        console.log("Can't find productSet");
+        return "Error";
+    }
 }
 
 let getAllProductSet = async () => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            let result = await ProductSet.findAll();
-            resolve(result);
-        } catch (e) {
-            reject(e);
-        }
-    });
+    try {
+        let result = await ProductSet.findAll();
+        return result;
+    } catch (e) {
+        return "Error";
+    }
 }
 
 let getProductSetByProvider = async (providerId) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            let id = providerId;
-            let searchResult = await sequelize.query(
-                'SELECT * FROM product_set p WHERE p.providerId LIKE ?', {
-                    raw: true,
-                    replacements: [id],
-                    type: QueryTypes.SELECT
-                });
-            resolve(searchResult);
-        } catch (e) {
-            reject(e);
-        }
-    });
+    try {
+        let id = providerId;
+        let searchResult = await sequelize.query(
+            'SELECT * FROM product_set p WHERE p.providerId LIKE ?', {
+                raw: true,
+                replacements: [id],
+                type: QueryTypes.SELECT
+            });
+        return searchResult;
+    } catch (e) {
+        return "Error";
+    }
 }
 
 let addProductSet = async (data) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            let result = await ProductSet.create({
-                id: data.id,
-                name: data.name,
-                description: data.description,
-                newestChap: data.newestChap,
-                image: data.image,
-                providerId: data.providerId,
-                authorId: data.authorId
-            })
-            resolve(result);
-        }
-        catch (e) {
-            reject(e);
-        }
-    });
+    try {
+        let result = await ProductSet.create({
+            id: data.id,
+            name: data.name,
+            description: data.description,
+            newestChap: data.newestChap,
+            image: data.image,
+            providerId: data.providerId,
+            authorId: data.authorId
+        })
+        return result;
+    }
+    catch (e) {
+        return "Error";
+    }
 }
 
 let updateProductSet = async (data) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            let productSet = await ProductSet.findOne({
-                where:
-                    { id: data.id }
-            });
+    try {
+        let productSet = await ProductSet.findOne({
+            where:
+                { id: data.id }
+        });
 
-            productSet.set({
-                id: data.id,
-                name: data.name,
-                description: data.description,
-                newestChap: data.newestChap,
-                image: data.image,
-                providerId: data.providerId,
-                authorId: data.authorId
-            })
-            await productSet.save();
-            resolve(productSet);
-        }
-        catch (e) {
-            reject(e);
-        }
-    });
+        productSet.set({
+            id: data.id,
+            name: data.name,
+            description: data.description,
+            newestChap: data.newestChap,
+            image: data.image,
+            providerId: data.providerId,
+            authorId: data.authorId
+        })
+        await productSet.save();
+        return productSet;
+    }
+    catch (e) {
+        return "Error";
+    }
 }
 
 let deleteProductSet = async (productSetId) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            let productSet = await ProductSet.findOne({
-                where: {
-                    id: productSetId,
-                }
-            });
-            await productSet.destroy();
-            let message = "Deleted";
-            resolve(message);
-        }
-        catch (e) {
-            reject(e);
-        }
-    });
+    try {
+        let productSet = await ProductSet.findOne({
+            where: {
+                id: productSetId,
+            }
+        });
+        await productSet.destroy();
+        let message = "Deleted";
+        return message;
+    }
+    catch (e) {
+        return "Error";
+    }
 }
 
 module.exports = {
