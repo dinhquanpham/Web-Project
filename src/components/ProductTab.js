@@ -26,6 +26,7 @@ function GetProduct(url) {
 }
 
 export default function ProductTab(name, url) {
+    const navigate = useNavigate();
     const productInfo = GetProduct(url);
     const productShow = productInfo.map((data) => (
         <Box
@@ -68,10 +69,17 @@ export default function ProductTab(name, url) {
         </Box>
     ));
 
-    const navigate = useNavigate();
     return (
-        <Box sx={{ flexGrow: 1, width: "100%", height: "300px" }}>
-            <Typography width="100%" float="left" backgroundColor="green">
+        <Box sx={{ flexGrow: 1, width: "100%", height: "100%" }}>
+            <Typography
+                width="100%"
+                float="left"
+                backgroundColor="green"
+                style={{ cursor: "pointer" }}
+                onClick={() =>
+                    navigate(`/product-set/?id=${productInfo[0].productsetId}`)
+                }
+            >
                 {name}
             </Typography>
             <Box sx={{ flexGrow: 1, width: "100%", height: "100%" }}>
@@ -93,7 +101,7 @@ export default function ProductTab(name, url) {
                                 style={{ cursor: "pointer" }}
                                 onClick={() =>
                                     navigate(
-                                        `/product/${productInfo[index].id}`
+                                        `/product/?id=${productInfo[index].id}`
                                     )
                                 }
                                 sx={{

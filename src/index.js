@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Product from "./pages/Product";
+import ProductSet from "./pages/ProductSet";
 
 export default function App() {
     return (
@@ -13,7 +14,10 @@ export default function App() {
                 <Route path="/sign-in" element={<SignIn />}></Route>
                 <Route path="/sign-up" element={<SignUp />}></Route>
                 <Route path="/product" element={<Product />}>
-                    <Route path=":productId" element={<Product />} />
+                    <Route path="?id=" element={<Product />} />
+                </Route>
+                <Route path="/product-set" element={<ProductSet />}>
+                    <Route path="?id=" element={<ProductSet />} />
                 </Route>
             </Routes>
         </BrowserRouter>

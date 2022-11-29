@@ -3,7 +3,7 @@ import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -14,19 +14,44 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
 }));
 
-function GetProductById() {
-    let { productId } = useParams();
-    const [data, setData] = useState([]);
-    useEffect(() => {
-        fetch(`http://localhost:3030/models/product/by-id/${productId}`)
-            .then((res) => res.json())
-            .then((data) => setData(data));
-    }, []);
+async function GetProductById(productId) {
+    let url = "http://localhost:3030/models/product/by-id/" + productId;
+    let data = await fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    }).then((data) => data.json());
+    return data;
+}
+
+async function GetProductSetById(productSetId) {
+    let url = "http://localhost:3030/models/product-set/by-id/" + productSetId;
+    let data = await fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    }).then((data) => data.json());
     return data;
 }
 
 export default function Product() {
-    const productInfo = GetProductById();
+    let search = window.location.search;
+    let params = new URLSearchParams(search);
+    let productId = params.get("id");
+    let [productInfo, setProductInfo] = useState([]);
+    let [productSetInfo, setProductSetInfo] = useState([]);
+    useEffect(() => {
+        handleData();
+    }, []);
+    let handleData = async () => {
+        let productInfo = await GetProductById(productId);
+        setProductInfo(productInfo);
+        let productSetInfo = await GetProductSetById(productInfo.productsetId);
+        setProductSetInfo(productSetInfo);
+    };
+    let navigate = useNavigate();
     const productShow = ((data = productInfo) => (
         <Box width="100%" display="flex">
             <Box
@@ -47,12 +72,22 @@ export default function Product() {
                 justifyContent="flex-end"
                 alignItems="flex-center"
             >
-                <Box>{data.productName}</Box> <br></br>
+                <Box>{data.productName}</Box>
                 <Box>Giá: {data.price}</Box>
+                <Box>
+                    Bộ:
+                    <Box
+                        style={{ cursor: "pointer" }}
+                        onClick={() =>
+                            navigate(`/product-set/?id=${productSetInfo.id}`)
+                        }
+                    >
+                        {productSetInfo.name}
+                    </Box>
+                </Box>
             </Box>
         </Box>
     ))();
-
     return (
         <Box sx={{ flexGrow: 1 }}>
             <Box width="100%">{Header()}</Box>

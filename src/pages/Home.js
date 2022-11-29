@@ -9,8 +9,20 @@ export default function Home() {
             <Box sx={{ width: "100%" }}>{Header()}</Box>
             <Box sx={{ width: "100%", height: "300px", marginTop: "2%" }}>
                 {ProductTab(
-                    "TRUYỆN BÁN CHẠY",
+                    "TRUYỆN HOT",
                     `http://localhost:3030/models/product/get-by-sold/sort`
+                )}
+            </Box>
+            <Box sx={{ width: "100%", height: "300px", marginTop: "2%" }}>
+                {ProductTab(
+                    "TRUYỆN MỚI",
+                    `http://localhost:3030/models/product/by-set/6`
+                )}
+            </Box>
+            <Box sx={{ width: "100%", height: "300px", marginTop: "2%" }}>
+                {ProductTab(
+                    "TRUYỆN NARUTO",
+                    `http://localhost:3030/models/product/by-set/5`
                 )}
             </Box>
         </Box>
