@@ -5,6 +5,12 @@ const getAllAddress = async (req, res) => {
     res.send(result);
 }
 
+const getAddressByUserId = async(req, res) => {
+    let userId = req.params.userId;
+    const result = await addressService.getAddressByUserId(userId);
+    res.send(result);
+}
+
 const getAddressById = async (req, res) => {
     let addressId = req.params.addressId;
     const result = await addressService.getAddressById(addressId);
@@ -30,6 +36,7 @@ const deleteAddress = async (req, res) => {
 }
 
 module.exports = {
+    getAddressByUserId: getAddressByUserId,
     getAllAddress: getAllAddress,
     getAddressById: getAddressById,
     addAddress: addAddress,

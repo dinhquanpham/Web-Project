@@ -16,6 +16,19 @@ let getAddressById = async (addressId) => {
     }
 }
 
+let getAddressByUserId = async(userId) => {
+    try {
+        let searchResult = await sequelize.query(
+            'SELECT * FROM ship_address sa WHERE sa.userId = ?', {
+            raw: true,
+            replacements: [userId],
+            type: QueryTypes.SELECT 
+        });
+        return searchResult;
+    } catch (e) {
+        return "Error";
+    }
+}
 let getAllAddress = async () => {
     try {
         let result = await Address.findAll();
@@ -79,6 +92,7 @@ let deleteAddress = async (addressId) => {
 }
 
 module.exports = {
+    getAddressByUserId: getAddressByUserId,
     getAddressById: getAddressById,
     getAllAddress: getAllAddress,
     addAddress: addAddress,

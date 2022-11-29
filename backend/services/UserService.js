@@ -1,6 +1,31 @@
 const { QueryTypes, Model } = require('sequelize');
 const sequelize = require('../database/connect');
+const ShipAddress = require('../models/ShipAddress');
 const User = require('../models/Users');
+
+let getUserInfo = async (userId) => {
+    try {
+        let user = await User.findOne({
+            where: {
+                id : userId,
+            }
+        });
+        let address = await sequelize.query(
+            "select * from ship_address where userId = ?", {
+            raw: true,
+            replacements: [userId],
+            type: QueryTypes.SELECT 
+            }
+        )
+        let result = {
+            user: user,
+            address: address
+        }
+        return result; 
+    } catch (e) {
+        return "Error";
+    }
+} 
 
 let getUserById = async (userId) => {
     try {
@@ -116,6 +141,7 @@ let deleteUser = async (userId) => {
 }
 
 module.exports = {
+    getUserInfo: getUserInfo,
     getUserById: getUserById,
     getUserByUsernameAndPassword : getUserByUsernameAndPassword,
     getAllUser: getAllUser,

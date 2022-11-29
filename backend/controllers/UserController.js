@@ -6,6 +6,12 @@ const getAllUser = async (req, res) => {
     res.send(result);
 }
 
+const getUserInfo = async (req, res) => {
+    let userId = req.params.userId;
+    const result = await userService.getUserInfo(userId);
+    res.send(result);
+}
+
 const getUserById = async (req, res) => {
     let userId = req.params.userId;
     const result = await userService.getUserById(userId);
@@ -32,6 +38,7 @@ const deleteUser = async (req, res) => {
 
 module.exports = {
     getAllUser: getAllUser,
+    getUserInfo: getUserInfo,
     getUserById: getUserById,
     addUser: addUser,
     updateUser: updateUser,
