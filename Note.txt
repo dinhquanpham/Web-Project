@@ -1,2 +1,0 @@
-sắp xếp theo: giá cả, số lượng mua, ngày tháng
-phân trang
