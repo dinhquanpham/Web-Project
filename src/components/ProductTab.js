@@ -30,6 +30,7 @@ export default function ProductTab(name, url) {
     const productInfo = GetProduct(url);
     const productShow = productInfo.map((data) => (
         <Box
+            key={data.productId}
             sx={{
                 flexGrow: 1,
                 width: "100%",
