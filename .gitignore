@@ -3,5 +3,5 @@ build
 npm-debug.log
 .env
 package-lock.json
-backend/database/connectt.js
+backend/database/connect.js
 Note.txt
