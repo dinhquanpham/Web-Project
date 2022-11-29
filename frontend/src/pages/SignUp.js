@@ -12,6 +12,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useNavigate } from "react-router-dom";
 
 function Copyright(props) {
     return (
@@ -22,8 +23,8 @@ function Copyright(props) {
             {...props}
         >
             {"Copyright © "}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
+            <Link color="inherit" href="/">
+                FAKEHASA
             </Link>{" "}
             {new Date().getFullYear()}
             {"."}
@@ -31,16 +32,46 @@ function Copyright(props) {
     );
 }
 
+function setCookie(cname, cvalue, exdays) {
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    let expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+async function registerUser(credentials) {
+    return fetch('http://localhost:3030/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(credentials)
+    })
+    .then (data => data.json())
+}
+
 const theme = createTheme();
 
 export default function SignUp() {
-    const handleSubmit = (event) => {
+    const navigate = useNavigate();
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get("email"),
+        const response = await registerUser({
+            username: data.get("username"),
             password: data.get("password"),
+            firstname: data.get("firstname"),
+            lastname: data.get("lastname"),
+            email: data.get("email"),
+            phone: data.get("phone")
         });
+        if (response.message !== "Error") {
+            setCookie('token', response.token, 1);
+            navigate('/');
+        }
+        else {
+            console.log("Không tạo được tài khoản");
+        }
     };
 
     return (
@@ -49,7 +80,7 @@ export default function SignUp() {
                 <CssBaseline />
                 <Box
                     sx={{
-                        marginTop: 8,
+                        marginTop: 2,
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
@@ -71,10 +102,10 @@ export default function SignUp() {
                             <Grid item xs={12} sm={6}>
                                 <TextField
                                     autoComplete="given-name"
-                                    name="firstName"
+                                    name="firstname"
                                     required
                                     fullWidth
-                                    id="firstName"
+                                    id="firstname"
                                     label="First Name"
                                     autoFocus
                                 />
@@ -83,9 +114,9 @@ export default function SignUp() {
                                 <TextField
                                     required
                                     fullWidth
-                                    id="lastName"
+                                    id="lastname"
                                     label="Last Name"
-                                    name="lastName"
+                                    name="lastname"
                                     autoComplete="family-name"
                                 />
                             </Grid>
@@ -93,10 +124,10 @@ export default function SignUp() {
                                 <TextField
                                     required
                                     fullWidth
-                                    id="email"
-                                    label="Email Address"
-                                    name="email"
-                                    autoComplete="email"
+                                    id="username"
+                                    label="Username"
+                                    name="username"
+                                    autoComplete="username"
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -111,6 +142,28 @@ export default function SignUp() {
                                 />
                             </Grid>
                             <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    name="email"
+                                    label="Email"
+                                    type="email"
+                                    id="email"
+                                    autoComplete="email"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    name="phone"
+                                    label="Phone"
+                                    type="phone"
+                                    id="phone"
+                                    autoComplete="phone"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
                                 <FormControlLabel
                                     control={
                                         <Checkbox
@@ -118,7 +171,7 @@ export default function SignUp() {
                                             color="primary"
                                         />
                                     }
-                                    label="I want to receive inspiration, marketing promotions and updates via email."
+                                    label="Tôi đồng ý với các điều khoản và điều kiện."
                                 />
                             </Grid>
                         </Grid>
@@ -130,7 +183,7 @@ export default function SignUp() {
                         >
                             Sign Up
                         </Button>
-                        <Grid container justifyContent="flex-end">
+                        <Grid container justifyContent="center">
                             <Grid item>
                                 <Link href="#" variant="body2">
                                     Already have an account? Sign in

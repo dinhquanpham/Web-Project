@@ -1,0 +1,99 @@
+import * as React from "react";
+import { styled } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Header from "../components/Header";
+
+const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: "center",
+    color: theme.palette.text.secondary,
+}));
+
+async function GetProductById(productId) {
+    let url = "http://localhost:3030/models/product/by-id/" + productId;
+    let data = await fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    }).then((data) => data.json());
+    return data;
+}
+
+async function GetProductSetById(productSetId) {
+    let url = "http://localhost:3030/models/product-set/by-id/" + productSetId;
+    let data = await fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    }).then((data) => data.json());
+    return data;
+}
+
+export default function Product() {
+    let search = window.location.search;
+    let params = new URLSearchParams(search);
+    let productId = params.get("id");
+    let [productInfo, setProductInfo] = useState([]);
+    let [productSetInfo, setProductSetInfo] = useState([]);
+    useEffect(() => {
+        handleData();
+    }, []);
+    let handleData = async () => {
+        let productInfo = await GetProductById(productId);
+        setProductInfo(productInfo);
+        let productSetInfo = await GetProductSetById(productInfo.productsetId);
+        setProductSetInfo(productSetInfo);
+    };
+    let navigate = useNavigate();
+    const productShow = ((data = productInfo) => (
+        <Box width="100%" display="flex">
+            <Box
+                width="30%"
+                height="100%"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+            >
+                <img
+                    src={data.image}
+                    alt={data.productName}
+                    style={{ maxWidth: "100%", maxHeight: "100%" }}
+                />
+            </Box>
+            <Box
+                width="70%"
+                height="100%"
+                justifyContent="flex-end"
+                alignItems="flex-center"
+            >
+                <Box>{data.productName}</Box>
+                <Box>Giá: {data.price}</Box>
+                <Box>
+                    Bộ:
+                    <Box
+                        style={{ cursor: "pointer" }}
+                        onClick={() =>
+                            navigate(`/product-set/?id=${productSetInfo.id}`)
+                        }
+                    >
+                        {productSetInfo.name}
+                    </Box>
+                </Box>
+            </Box>
+        </Box>
+    ))();
+    return (
+        <Box sx={{ flexGrow: 1 }}>
+            <Box width="100%">{Header()}</Box>
+            <Box width="100%">
+                <Item style={{ cursor: "pointer" }}>{productShow}</Item>
+            </Box>
+        </Box>
+    );
+}
