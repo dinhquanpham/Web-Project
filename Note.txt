@@ -1,4 +1,2 @@
-username unique
-1 user nhiều ship_address; api liên kết
-user; role; provider; product set; address; 
-foreinkey role_id của các user đều liên kết với bảng role với role là admin
+sắp xếp theo: giá cả, số lượng mua, ngày tháng
+phân trang
