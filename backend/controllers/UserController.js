@@ -1,5 +1,6 @@
 const userService = require('../services/UserService');
 
+//comment
 const getAllUser = async (req, res) => {
     const result = await userService.getAllUser();
     res.send(result);
