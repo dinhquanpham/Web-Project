@@ -22,10 +22,6 @@ const OrderDetails = sequelize.define("orderdetails", {
         allowNull: true,
     },
 
-    total: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-    }
 });
 
 Orders.belongsToMany(Products, {through: OrderDetails});

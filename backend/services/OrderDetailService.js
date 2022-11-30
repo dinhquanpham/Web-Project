@@ -26,15 +26,14 @@ let getAllOrderDetail = async () => {
 }
 
 let addOrderDetail = async (data) => {
+    // as soon as we creat the order, the infomation of product will be add to this table, with unique orderId
     try {
         let orderDetail = await OrderDetail.create({
             id: data.id,
-            orderDate: data.orderDate,
-            shippedDate: data.shippedDate,
-            paidAmount: data.paidAmount,
-            paidStatus:data.paidStatus,
-            paidAt: data.paidAt,
-            userId: data.userId
+            orderNumber: data.orderNumber,
+            price: data.price,
+            orderId: data.orderId,
+            productId: data.productId
         })
         return orderDetail;
     }
@@ -44,23 +43,9 @@ let addOrderDetail = async (data) => {
 }
 
 let updateOrderDetail = async (data) => {
+    //maybe this will not be used
     try {
-        let orderDetail = await OrderDetail.findOne({
-            where: 
-            {id : data.id}
-        });
-        
-        orderDetail.set({
-            id: data.id,
-            orderDate: data.orderDate,
-            shippedDate: data.shippedDate,
-            paidAmount: data.paidAmount,
-            paidStatus:data.paidStatus,
-            paidAt: data.paidAt,
-            userId: data.userId
-        })
-        await orderDetail.save();
-        return orderDetail;
+        return null;
     }
     catch (e) {
         return "Error";

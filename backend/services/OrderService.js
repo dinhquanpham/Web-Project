@@ -2,20 +2,24 @@ const { QueryTypes, Model } = require('sequelize');
 const sequelize = require('../database/connect');
 const Order = require('../models/Orders');
 
-let getOrderById = async (productId) => {
+let getOrderById = async (orderId) => {
     try {
         let result = await Order.findOne({
             where: {
-                id : productId,
+                id : orderId
             }
         });
         resolve(result);
     } catch (e) {
-        console.log("Can't find product");
+        console.log("Can't find order");
         reject(e);
     }
 }
 
+let createNewOrder = async(userId) => {
+    //Todo: Create a new Order to store product
+    return null;
+}
 let getAllOrder = async () => {
     try {
         let result = await Order.findAll();
@@ -27,57 +31,27 @@ let getAllOrder = async () => {
 
 let addOrder = async (data) => {
     try {
-        let order = await Order.create({
-            id: data.id,
-            productname: data.productname,
-            price: data.price,
-            quantityInStock: data.quantityInStock,
-            description: data.description,
-            publishedYear: data.publishedYear,
-            productSize: data.productSize,
-            authorId : data.authorId,
-            productSetId: data.productSetId,
-            providerId: data.providerId
-        })
-        return order;
-    }
-    catch (e) { 
-        return "Error";
+        // Add Order infomation like total price, product quantity and something else into created order (by getting created order info)
+        return null;
+    } catch(e) {
+        return "Error"
     }
 }
 
 let updateOrder = async (data) => {
     try {
-        let order = await Order.findOne({
-            where: 
-            {id : data.id}
-        });
-        
-        order.set({
-            id: data.id,
-            productname: data.productname,
-            price: data.price,
-            quantityInStock: data.quantityInStock,
-            description: data.description,
-            publishedYear: data.publishedYear,
-            productSize: data.productSize,
-            authorId : data.authorId,
-            productSetId: data.productSetId,
-            providerId: data.providerId
-        })
-        await order.save();
-        return order;
-    }
-    catch (e) {
-        return "Error";
+        // we don't need update
+        return null;
+    } catch(e) {
+        return "Error"
     }
 }
 
-let deleteOrder = async (productId) => {
+let deleteOrder = async (orderId) => {
     try {
         let order = await Order.findOne({
             where: {
-                id: productId,
+                id: orderId,
             }
         });
         await order.destroy();
