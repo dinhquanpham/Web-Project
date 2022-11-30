@@ -28,12 +28,12 @@ const Users = sequelize.define("users", {
         allowNull: true,
     },
 
-    middlename:{
+    lastname:{
         type: Sequelize.STRING,
         allowNull: true,
     },
-
-    lastname:{
+    
+    email: {
         type: Sequelize.STRING,
         allowNull: true,
     },

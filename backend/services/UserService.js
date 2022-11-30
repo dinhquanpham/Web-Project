@@ -11,7 +11,7 @@ let getUserInfo = async (userId) => {
             }
         });
         let address = await sequelize.query(
-            "select * from ship_address where userId = ?", {
+            "select sa.id, sa.province, sa.district, sa.street, sa.homeAddress from ship_address sa where userId = ?", {
             raw: true,
             replacements: [userId],
             type: QueryTypes.SELECT 
@@ -87,7 +87,7 @@ let addUser = async (data) => {
             username: data.username,
             password: data.password,
             firstname: data.firstname,
-            middlename: data.middlename,
+            email: data.email,
             lastname: data.lastname,
             address: data.address,
             phone: data.phone,
