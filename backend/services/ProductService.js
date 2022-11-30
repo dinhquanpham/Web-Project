@@ -5,7 +5,7 @@ const Product = require('../models/Products');
 let getProductById = async (productId) => {
     try {
         let product  = await sequelize.query(
-            'select p.*, a.name as authorName, ps.name as setName from products p join authors a on p.authorId = a.id join product_set ps on ps.id = p.productsetId where p.id = ?', {
+            'select p.*, a.name as authorName, ps.name as setName from products p join authors a on p.authorId = a.id left join product_set ps on ps.id = p.productsetId where p.id = ?', {
             raw: true,
             replacements: [productId],
             type: QueryTypes.SELECT
