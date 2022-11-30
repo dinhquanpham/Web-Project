@@ -5,6 +5,7 @@ let router = express.Router();
 
 router.get("/", productController.getAllProduct);
 router.get("/by-time", productController.getAllProductByCreatedTime);
+router.get("/by-category/:categoryId", productController.getProductByCategory);
 router.get("/by-id/:productId", productController.getProductById);
 router.get("/by-set/:productSetId", productController.getProductByProductSet);
 router.get("/by-provider/:providerId", productController.getProductByAuthor);

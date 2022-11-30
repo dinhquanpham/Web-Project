@@ -4,31 +4,59 @@ const Product = require('../models/Products');
 
 let getProductById = async (productId) => {
     try {
-        let result = await Product.findOne({
-            where: {
-                id: productId,
+        let product  = await sequelize.query(
+            'select p.*, a.name as authorName from products p join authors a on p.authorId = a.id where p.id = ?', {
+            raw: true,
+            replacements: [productId],
+            type: QueryTypes.SELECT
             }
-        });
-        return result;
+        )
+
+        let categories = await sequelize.query(
+            'select c2.name from products p join product_category pc on p.id = pc.productId' 
+            + ' join categories c2 on c2.id = pc.categoryId where p.id = ?',{
+                raw: true,
+                replacements: [productId],
+                type: QueryTypes.SELECT
+            }
+        )
+        return result = {
+            product: product,
+            categories: categories,
+        };
     } catch (e) {
         console.log("Can't find product");
         return "Error";
     }
 }
 
-let getAllProductByCreatedTime = function () {
-    return new Promise(async (resolve, reject) => {
-        try {
-            let searchResult = await sequelize.query(
-                'SELECT * FROM products p ORDER BY createdAt DESC', {
+let getAllProductByCreatedTime = async function () {
+    try {
+        let searchResult = await sequelize.query(
+            'SELECT * FROM products p ORDER BY createdAt DESC', {
+            raw: true,
+            type: QueryTypes.SELECT
+        });
+        return searchResult;
+    } catch (e) {
+        return "Error";
+    }
+}
+
+let getProductByCategory = async function(categoryId) {
+    try {
+        let searchResult = await sequelize.query(
+            'select p.* from (product_category join categories c on c.id = product_category.categoryId join products' 
+            + ' p on product_category.productId = p.id) where categoryId = ?;', {
                 raw: true,
+                replacements: [categoryId],
                 type: QueryTypes.SELECT
-            });
-            return searchResult;
-        } catch (e) {
-            return "Error";
-        }
-    });
+            }
+        );
+        return searchResult;
+    } catch (e) {
+        return "Error";
+    }
 }
 
 let getProductByAuthor = async (authorId) => {
@@ -159,6 +187,7 @@ let deleteProduct = async (productId) => {
 
 module.exports = {
     getProductById: getProductById,
+    getProductByCategory: getProductByCategory,
     getProductByProductSet: getProductByProductSet,
     getAllProductByCreatedTime: getAllProductByCreatedTime,
     getProductByAuthor: getProductByAuthor,
