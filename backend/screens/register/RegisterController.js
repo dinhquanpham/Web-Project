@@ -5,11 +5,8 @@ const checkRegister = async (req, res, next) => {
     let data = req.body;
     let result = await userService.addUser(data);
     if (result !== "Error" && result != null) {
-        let token = jwt.sign({
-            data: result,
-        }, "user");
         req.checkRegister = {
-            token: token,
+            userId: result.id,
             roleId: result.roleId
         };
         next();
