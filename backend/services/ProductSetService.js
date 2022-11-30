@@ -4,11 +4,13 @@ const ProductSet = require('../models/ProductSets');
 
 let getProductSetById = async (productSetId) => {
     try {
-        let result = await ProductSet.findOne({
-            where: {
-                id: productSetId,
+        let result = await sequelize.query(
+            'select ps.id, ps.name, ps.newestChap, ps.image, a.name as authorName, p.name as providerName from product_set ps join authors a on ps.authorId = a.id join providers p on ps.providerId = p.id where ps.id = ?',{
+                raw: true,
+                replacements: [productSetId],
+                type: QueryTypes.SELECT
             }
-        });
+        );
         return result;
     } catch (e) {
         console.log("Can't find productSet");
@@ -18,7 +20,12 @@ let getProductSetById = async (productSetId) => {
 
 let getAllProductSet = async () => {
     try {
-        let result = await ProductSet.findAll();
+        let result = await sequelize.query(
+            'select ps.id, ps.name, ps.newestChap, ps.image, a.name as authorName, p.name as providerName from product_set ps join authors a on ps.authorId = a.id join providers p on ps.providerId = p.id',{
+                raw: true,
+                type: QueryTypes.SELECT
+            }
+        );
         return result;
     } catch (e) {
         return "Error";
