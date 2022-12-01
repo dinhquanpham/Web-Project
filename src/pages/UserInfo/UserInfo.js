@@ -233,6 +233,28 @@ export default function UserInfo() {
           </Box>
           </TabPanel>
           <TabPanel value={value} index={2}>
+          <table id ='address-list'>
+                <tbody>
+                    <tr>
+                        <th>Số thứ tự</th>
+                        <th>Số nhà</th>
+                        <th>Đường</th>
+                        <th>Phường / Quận</th>
+                        <th>Thành phố / Tỉnh</th>
+                    </tr>
+                    {addressInfo && addressInfo.map((item, index) => {
+                        return (
+                            <tr key = {index}>
+                                <td>Số thứ tự</td>
+                                <td>
+                                    <button></button>
+                                </td>
+                            </tr>
+                        )
+                     })
+                  }
+                </tbody>
+            </table>
           </TabPanel>
           <TabPanel value={value} index={3}>
           </TabPanel>
