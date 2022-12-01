@@ -29,7 +29,23 @@ const signOut = async (req, res) => {
     }
 }
 
+const updatePassword = async (req, res) => {
+    let data = req.body;
+    let result = await userService.updateUser(data);
+    if (result != "Error") {
+        res.send(data = {
+            message: "Updated"
+        });
+    }
+    else {
+        res.send(data = {
+            message: "Error"
+        });
+    }
+}
+
 module.exports = {
     checkCookie: checkCookie,
     signOut: signOut,
+    updatePassword: updatePassword
 }

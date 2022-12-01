@@ -13,10 +13,7 @@ const init = async () => {
   await sequelize.sync();
 
   //cors
-  app.use(cors({
-    credentials: true,
-    optionsSuccessStatus: 200,
-  }));
+  app.use(cors());
 
   //middleware
   app.use(express.json());
