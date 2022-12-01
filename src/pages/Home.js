@@ -33,19 +33,22 @@ export default function Home() {
                     `http://localhost:3030/models/product/by-time`
                 )}
             </Box>
-            <Box
-                sx={{
-                    width: "100%",
-                    height: 300,
-                    marginTop: "2%",
-                    boxSizing: "border-box",
-                }}
-            >
-                {ProductTab(
-                    "TRUYỆN NARUTO",
-                    `http://localhost:3030/models/product/by-set/5`
-                )}
-            </Box>
+            {Array.from([5, 6, 7, 8]).map((index, i) => (
+                <Box
+                    key={i}
+                    sx={{
+                        width: "100%",
+                        height: 300,
+                        marginTop: "2%",
+                        boxSizing: "border-box",
+                    }}
+                >
+                    {ProductTab(
+                        "SELF",
+                        `http://localhost:3030/models/product/by-set/${index}`
+                    )}
+                </Box>
+            ))}
         </Box>
     );
 }

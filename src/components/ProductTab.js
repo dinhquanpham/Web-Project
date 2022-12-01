@@ -15,19 +15,26 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
 }));
 
-function GetProduct(url) {
-    const [data, setData] = useState([]);
-    useEffect(() => {
-        fetch(url)
-            .then((res) => res.json())
-            .then((data) => setData(data));
-    }, []);
+async function GetProduct(url) {
+    let data = await fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    }).then((data) => data.json());
     return data;
 }
 
 export default function ProductTab(name, url) {
     const navigate = useNavigate();
-    const productInfo = GetProduct(url);
+    const [productInfo, setProductInfo] = useState([]);
+    useEffect(() => {
+        handleData()
+    }, []);
+    let handleData = async () => {
+        let response = await GetProduct(url);
+        setProductInfo(response);
+    }
     const productShow = productInfo.map((data) => (
         <Box
             key={data.productId}
@@ -68,7 +75,6 @@ export default function ProductTab(name, url) {
             </Box>
         </Box>
     ));
-
     return (
         <Box
             sx={{

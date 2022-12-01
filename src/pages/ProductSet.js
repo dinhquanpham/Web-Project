@@ -18,13 +18,15 @@ async function GetProductSetById(productSetId) {
 export default function ProductSet() {
     let search = window.location.search;
     let params = new URLSearchParams(search);
-    let productSetId = params.get("id");
+    let id = params.get("id");
+    let [productSetId, setProductSetId] = useState()
     let [productSetInfo, setProductSetInfo] = useState([]);
     useEffect(() => {
         handleData();
     }, []);
     let handleData = async () => {
-        let productSetInfo = await GetProductSetById(productSetId);
+        let productSetInfo = await GetProductSetById(id);
+        productSetId(id);
         setProductSetInfo(productSetInfo);
     };
 
@@ -41,7 +43,7 @@ export default function ProductSet() {
             >
                 {ProductGrid(
                     productSetInfo.name,
-                    `http://localhost:3030/models/product/by-set/${productSetInfo.id}`
+                    `http://localhost:3030/models/product/by-set/${productSetId} `
                 )}
             </Box>
         </Box>
