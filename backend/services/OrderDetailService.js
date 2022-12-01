@@ -26,16 +26,23 @@ let getAllOrderDetail = async () => {
 }
 
 let addOrderDetail = async (data) => {
+
     // as soon as we creat the order, the infomation of product will be add to this table, with unique orderId
     try {
-        let orderDetail = await OrderDetail.create({
-            id: data.id,
-            orderNumber: data.orderNumber,
-            price: data.price,
-            orderId: data.orderId,
-            productId: data.productId
-        })
-        return orderDetail;
+        var list = [];
+        console.log(data[0]);
+        for (i = 1; i < data.length; i++) {
+            let result = await OrderDetail.create({
+                id: data[i].id,
+                orderNumber: data[i].orderNumber,
+                price: data[i].price,
+                orderId: data[0].id,
+                productId: data[i].productId,
+            });
+            list.push(result)
+        }
+
+        return list;
     }
     catch (e){ 
         return "Error";

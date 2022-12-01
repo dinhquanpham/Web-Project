@@ -1,4 +1,5 @@
 const orderService = require('../services/OrderService');
+const orderDetailService = require('../services/OrderDetailService')
 
 const getAllOrder = async (req, res) => {
     const result = await orderService.getAllOrder();
@@ -13,7 +14,21 @@ const getOrderById = async (req, res) => {
 
 const addOrder = async (req, res) => {
     let data = req.body;
-    const result = await orderService.addOrder(data);
+
+
+
+    let orderData = data[0];
+    let productData = data;
+
+    const order = await orderService.addOrder(orderData);
+    data[0] = order;
+    const product = await orderDetailService.addOrderDetail(productData);
+
+    const result = {
+        order: order,
+        product: product
+    }
+
     res.send(result);
 }
 
