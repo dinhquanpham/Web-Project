@@ -32,13 +32,6 @@ function Copyright(props) {
     );
 }
 
-function setCookie(cname, cvalue, exdays) {
-    const d = new Date();
-    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    let expires = "expires="+ d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
-
 async function registerUser(credentials) {
     return fetch('http://localhost:3030/register', {
       method: 'POST',
@@ -66,7 +59,7 @@ export default function SignUp() {
             phone: data.get("phone")
         });
         if (response.message !== "Error") {
-            setCookie('token', response.token, 1);
+            sessionStorage.setItem('userId', response.userId)
             navigate('/');
         }
         else {

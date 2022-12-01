@@ -15,27 +15,35 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
 }));
 
-function GetProduct(url) {
-    const [data, setData] = useState([]);
-    useEffect(() => {
-        fetch(url)
-            .then((res) => res.json())
-            .then((data) => setData(data));
-    }, []);
+async function GetProductByProductSetId(url) {
+    let data = await fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    }).then((data) => data.json());
     return data;
 }
 
-export default function ProductTab(name, url) {
+export default function ProductGrid(name, url) {
+    let search = window.location.search;
+    let params = new URLSearchParams(search);
+    let productId = params.get("id");
+    let [productInfo, setProductInfo] = useState([]);
+    useEffect(() => {
+        handleData();
+    }, []);
+    let handleData = async () => {
+        let productInfo = await GetProductByProductSetId(url);
+        setProductInfo(productInfo);
+    };
     const navigate = useNavigate();
-    const productInfo = GetProduct(url);
     const productShow = productInfo.map((data) => (
         <Box
-            key={data.productId}
             sx={{
                 flexGrow: 1,
                 width: "100%",
                 height: "100%",
-                boxSizing: "border-box",
             }}
         >
             <Box
@@ -60,7 +68,7 @@ export default function ProductTab(name, url) {
                 sx={{
                     flexGrow: 1,
                     width: "100%",
-                    height: "20%",
+                    maxHeight: "20%",
                 }}
             >
                 {data.productName} <br></br>
@@ -70,14 +78,7 @@ export default function ProductTab(name, url) {
     ));
 
     return (
-        <Box
-            sx={{
-                flexGrow: 1,
-                width: "100%",
-                height: "100%",
-                boxSizing: "border-box",
-            }}
-        >
+        <Box sx={{ flexGrow: 1, width: "100%", height: "100%" }}>
             <Typography
                 width="100%"
                 float="left"
@@ -89,35 +90,18 @@ export default function ProductTab(name, url) {
             >
                 {name}
             </Typography>
-            <Box
-                sx={{
-                    flexGrow: 1,
-                    width: "100%",
-                    height: "100%",
-                    boxSizing: "border-box",
-                }}
-            >
+            <Box sx={{ flexGrow: 1, width: "100%", height: "100%" }}>
                 <Grid
                     container
                     columns={10}
-                    sx={{
-                        flexGrow: 1,
-                        width: "100%",
-                        height: "100%",
-                        boxSizing: "border-box",
-                    }}
+                    sx={{ flexGrow: 1, width: "100%", height: "100%" }}
                 >
-                    {Array.from(Array(5)).map((_, index) => (
+                    {Array.from(Array(10)).map((_, index) => (
                         <Grid
                             item
                             xs={2}
                             key={index}
-                            sx={{
-                                flexGrow: 1,
-                                width: "100%",
-                                height: "100%",
-                                boxSizing: "border-box",
-                            }}
+                            sx={{ flexGrow: 1, width: "100%", height: "100%" }}
                         >
                             <Item
                                 style={{ cursor: "pointer" }}
@@ -130,7 +114,6 @@ export default function ProductTab(name, url) {
                                     flexGrow: 1,
                                     width: "100%",
                                     height: "100%",
-                                    boxSizing: "border-box",
                                 }}
                             >
                                 {productShow[index]}

@@ -16,10 +16,6 @@ let getOrderById = async (orderId) => {
     }
 }
 
-let createNewOrder = async(userId) => {
-    //Todo: Create a new Order to store product
-    return null;
-}
 let getAllOrder = async () => {
     try {
         let result = await Order.findAll();
@@ -31,10 +27,19 @@ let getAllOrder = async () => {
 
 let addOrder = async (data) => {
     try {
-        // Add Order infomation like total price, product quantity and something else into created order (by getting created order info)
-        return null;
-    } catch(e) {
-        return "Error"
+        let result = await Order.create({
+            id: data.id,
+            orderDate: data.orderDate,
+            shippedDate: data.shippedDate,
+            paidAmount: data.paidAmount,
+            paidStatus: data.paidStatus,
+            paidAt: data.paidAt,
+            userId: data.userId
+        })
+        return result;
+    }
+    catch (e) {
+        return "Error";
     }
 }
 
