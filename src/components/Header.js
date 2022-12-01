@@ -56,9 +56,9 @@ export default function Header() {
     const navigate = useNavigate();
     const [auth, setAuth] = useState(false);
     useEffect(() => {
-        handleAccount();
+        handleLogin();
     }, []);
-    const handleAccount = async() => {
+    const handleLogin = async() => {
         let token = sessionStorage.getItem('userId');
         if (token) {
             setAuth(true);
@@ -67,6 +67,11 @@ export default function Header() {
             setAuth(false);
         }
     };
+    const handleUser = async () => {
+        let userId = sessionStorage.getItem('userId');
+        let path = "/user/?id=" + userId;
+        navigate(path);
+    }
     const handleSignOut = async () => {
         let token = sessionStorage.getItem('userId');
         if (token) {
@@ -99,6 +104,7 @@ export default function Header() {
                         <StyledInputBase
                             placeholder="Search..."
                             inputProps={{ "aria-label": "search" }}
+                            autoComplete="off"
                         />
                     </Search>
                     {!auth && (
@@ -118,7 +124,7 @@ export default function Header() {
                             aria-label="account of current user"
                             aria-controls="menu-appbar"
                             aria-haspopup="true"
-                            onClick={handleAccount}
+                            onClick={handleUser}
                             color="inherit"
                             >
                             <AccountCircle />

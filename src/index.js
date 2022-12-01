@@ -6,6 +6,7 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Product from "./pages/Product";
 import ProductSet from "./pages/ProductSet";
+import UserInfo from "./pages/UserInfo/UserInfo";
 import { createTheme } from "@mui/system";
 import { ThemeProvider } from "@emotion/react";
 
@@ -29,6 +30,9 @@ export default function App() {
                 </Route>
                 <Route path="/product-set" element={<ProductSet />}>
                     <Route path="?id=" element={<ProductSet />} />
+                </Route>
+                <Route path="/user" element ={<UserInfo />}>
+                   {/* < Route path="/?id=" element ={<UserInfo />} /> */}
                 </Route>
             </Routes>
         </BrowserRouter >
