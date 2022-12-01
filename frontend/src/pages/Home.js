@@ -5,21 +5,42 @@ import ProductTab from "../components/ProductTab";
 
 export default function Home() {
     return (
-        <Box sx={{ flexGrow: 1, width: "100%" }}>
+        <Box sx={{ width: "100%" }}>
             <Box sx={{ width: "100%" }}>{Header()}</Box>
-            <Box sx={{ width: "100%", height: "300px", marginTop: "2%" }}>
+            <Box
+                sx={{
+                    width: "100%",
+                    height: 300,
+                    marginTop: "2%",
+                    boxSizing: "border-box",
+                }}
+            >
                 {ProductTab(
                     "TRUYỆN HOT",
                     `http://localhost:3030/models/product/get-by-sold/sort`
                 )}
             </Box>
-            <Box sx={{ width: "100%", height: "300px", marginTop: "2%" }}>
+            <Box
+                sx={{
+                    width: "100%",
+                    height: 300,
+                    marginTop: "2%",
+                    boxSizing: "border-box",
+                }}
+            >
                 {ProductTab(
                     "TRUYỆN MỚI",
-                    `http://localhost:3030/models/product/by-set/6`
+                    `http://localhost:3030/models/product/by-time`
                 )}
             </Box>
-            <Box sx={{ width: "100%", height: "300px", marginTop: "2%" }}>
+            <Box
+                sx={{
+                    width: "100%",
+                    height: 300,
+                    marginTop: "2%",
+                    boxSizing: "border-box",
+                }}
+            >
                 {ProductTab(
                     "TRUYỆN NARUTO",
                     `http://localhost:3030/models/product/by-set/5`

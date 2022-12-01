@@ -5,6 +5,7 @@ import Paper from "@mui/material/Paper";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
+import ProductTab from "../components/ProductTab";
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -52,47 +53,66 @@ export default function Product() {
         setProductSetInfo(productSetInfo);
     };
     let navigate = useNavigate();
-    const productShow = ((data = productInfo) => (
-        <Box width="100%" display="flex">
-            <Box
-                width="30%"
-                height="100%"
-                justifyContent="flex-start"
-                alignItems="flex-start"
-            >
-                <img
-                    src={data.image}
-                    alt={data.productName}
-                    style={{ maxWidth: "100%", maxHeight: "100%" }}
-                />
-            </Box>
-            <Box
-                width="70%"
-                height="100%"
-                justifyContent="flex-end"
-                alignItems="flex-center"
-            >
-                <Box>{data.productName}</Box>
-                <Box>Giá: {data.price}</Box>
-                <Box>
-                    Bộ:
-                    <Box
-                        style={{ cursor: "pointer" }}
-                        onClick={() =>
-                            navigate(`/product-set/?id=${productSetInfo.id}`)
-                        }
-                    >
-                        {productSetInfo.name}
+    let productShow = <Box></Box>;
+    if (productInfo.length != 0) {
+        console.log("ok");
+        productShow = ((data = productInfo.product[0]) => (
+            <Box width="100%" display="flex">
+                <Box
+                    width="30%"
+                    height="100%"
+                    justifyContent="flex-start"
+                    alignItems="flex-start"
+                >
+                    <img
+                        src={data.image}
+                        alt={data.productName}
+                        style={{ maxWidth: "100%", maxHeight: "100%" }}
+                    />
+                </Box>
+                <Box
+                    width="70%"
+                    height="100%"
+                    justifyContent="flex-end"
+                    alignItems="flex-center"
+                >
+                    <Box>{data.productName}</Box>
+                    <Box>Giá: {data.price}</Box>
+                    <Box>
+                        Bộ:
+                        <Box
+                            style={{ cursor: "pointer" }}
+                            onClick={() =>
+                                navigate(
+                                    `/product-set/?id=${data.productsetId}`
+                                )
+                            }
+                        >
+                            {data.setName}
+                        </Box>
                     </Box>
                 </Box>
             </Box>
-        </Box>
-    ))();
+        ))();
+    }
     return (
         <Box sx={{ flexGrow: 1 }}>
             <Box width="100%">{Header()}</Box>
             <Box width="100%">
                 <Item style={{ cursor: "pointer" }}>{productShow}</Item>
+            </Box>
+            <Box
+                sx={{
+                    width: "100%",
+                    height: 300,
+                    marginTop: "2%",
+                    boxSizing: "border-box",
+                }}
+            >
+                {ProductTab(
+                    "TRUYỆN HOT",
+                    `http://localhost:3030/models/product/get-by-sold/sort`
+                )}
             </Box>
         </Box>
     );

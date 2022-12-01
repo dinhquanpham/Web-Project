@@ -8,6 +8,9 @@ import SearchIcon from "@mui/icons-material/Search";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
+import IconButton from '@mui/material/IconButton';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import { useEffect, useState } from "react";
 import Menu from "./Menu";
 
 const Search = styled("div")(({ theme }) => ({
@@ -51,6 +54,30 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function Header() {
     const navigate = useNavigate();
+    const [auth, setAuth] = useState(false);
+    useEffect(() => {
+        handleAccount();
+    }, []);
+    const handleAccount = async() => {
+        let token = sessionStorage.getItem('userId');
+        if (token) {
+            setAuth(true);
+        }
+        else {
+            setAuth(false);
+        }
+    };
+    const handleSignOut = async () => {
+        let token = sessionStorage.getItem('userId');
+        if (token) {
+            sessionStorage.removeItem('userId');
+            navigate("/");
+            setAuth(false);
+        }
+        else {
+            console.log("Error");
+        }
+    }
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
@@ -74,12 +101,36 @@ export default function Header() {
                             inputProps={{ "aria-label": "search" }}
                         />
                     </Search>
-                    <Button
-                        color="inherit"
-                        onClick={() => navigate("/sign-in")}
-                    >
-                        SIGN IN
-                    </Button>
+                    {!auth && (
+                        <div>
+                         <Button
+                            color="inherit"
+                            onClick={() => navigate("/sign-in")}
+                        >
+                            SIGN IN
+                        </Button>
+                        </div>
+                    )}
+                    {auth && (
+                       <div>
+                            <IconButton
+                            size="large"
+                            aria-label="account of current user"
+                            aria-controls="menu-appbar"
+                            aria-haspopup="true"
+                            onClick={handleAccount}
+                            color="inherit"
+                            >
+                            <AccountCircle />
+                            </IconButton>
+                            <Button
+                                color="inherit"
+                                onClick={handleSignOut}
+                            >
+                                Sign out
+                            </Button>
+                      </div>
+                    )}
                 </Toolbar>
             </AppBar>
         </Box>

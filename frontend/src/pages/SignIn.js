@@ -34,29 +34,6 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-function setCookie(cname, cvalue, exdays) {
-    const d = new Date();
-    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    let expires = "expires="+ d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
-
-function getCookie(cname) {
-    let name = cname + "=";
-    let decodedCookie = decodeURIComponent(document.cookie);
-    let ca = decodedCookie.split(';');
-    for(let i = 0; i <ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) === ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) === 0) {
-        return c.substring(name.length, c.length);
-      }
-    }
-    return "";
-}
-
 async function loginUser(credentials) {
     return fetch('http://localhost:3030/login', {
       method: 'POST',
@@ -77,8 +54,9 @@ export default function SignIn() {
             username: data.get("username"),
             password: data.get("password")
         });
+        console.log(response.message);
         if(response.message !== "Error") {
-            setCookie('token', response.token, 1);
+            sessionStorage.setItem('userId', response.userId)
             navigate('/');
         }
         else {
@@ -128,12 +106,6 @@ export default function SignIn() {
                             type="password"
                             id="password"
                             autoComplete="current-password"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox value="yes" color="primary" name="remember" />
-                            }
-                            label="Remember me"
                         />
                         <Button
                             type="submit"
