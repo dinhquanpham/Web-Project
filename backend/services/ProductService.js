@@ -20,9 +20,23 @@ let getProductById = async (productId) => {
                 type: QueryTypes.SELECT
             }
         )
+
+        const setId = product[0].productsetId;
+
+        console.log(setId);
+
+        let productBySet = await sequelize.query(
+            'SELECT * FROM products p WHERE p.productsetId LIKE ? ORDER BY createdAt DESC', {
+            raw: true,
+            replacements: [setId],
+            type: QueryTypes.SELECT
+        });
+        console.log(productBySet);
+
         return result = {
             product: product,
             categories: categories,
+            productBySet: productBySet
         };
     } catch (e) {
         console.log("Can't find product");
