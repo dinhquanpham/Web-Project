@@ -1,0 +1,11 @@
+#left, #middle, #right {
+    display: inline-block;
+    *display: inline; 
+    zoom: 1; 
+    vertical-align: top; 
+    font-size: 12px;
+}
+
+.line {
+    display: block;
+}
