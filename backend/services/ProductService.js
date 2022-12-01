@@ -90,14 +90,26 @@ let getProductByAuthor = async (authorId) => {
 
 let getProductByProductSet = async (productSetId) => {
     try {
-        let id = productSetId;
+        let name = await sequelize.query(
+            'SELECT ps.name as setName from product_set ps where ps.id = ?', {
+                raw: true,
+                replacements: [productSetId],
+                type: QueryTypes.SELECT
+            }
+        )
+
         let searchResult = await sequelize.query(
-            'SELECT * FROM products p WHERE p.productsetId LIKE ? ORDER BY createdAt DESC', {
+            'SELECT p.*, ps.name as setName FROM products p left join product_set ps on ps.id = p.productsetId WHERE p.productsetId = ?', {
             raw: true,
-            replacements: [id],
+            replacements: [productSetId],
             type: QueryTypes.SELECT
         });
-        return searchResult;
+
+        return result = {
+            name: name,
+            searchResult: searchResult
+        }
+
     } catch (e) {
         return "Error";
     }
