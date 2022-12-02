@@ -17,9 +17,9 @@ const addOrderDetail = async (req, res) => {
     res.send(result);
 }
 
-const updateOrderDetail = async (req, res) => {
-    let data = req.body;
-    const result = await orderDetailService.updateOrderDetail(data);
+const getOrderDetailByOrderId = async(req, res) => {
+    let orderId = req.params.orderId;
+    const result = await orderDetailService.getOrderDetailByOrderId(orderId);
     res.send(result);
 }
 
@@ -33,6 +33,6 @@ module.exports = {
     getAllOrderDetail: getAllOrderDetail,
     getOrderDetailById: getOrderDetailById,
     addOrderDetail: addOrderDetail,
-    updateOrderDetail: updateOrderDetail,
+    getOrderDetailByOrderId: getOrderDetailByOrderId,
     deleteOrderDetail: deleteOrderDetail,
 }

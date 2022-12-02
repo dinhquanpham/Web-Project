@@ -27,11 +27,10 @@ let getAllOrderDetail = async () => {
 
 let addOrderDetail = async (data) => {
 
-    // as soon as we creat the order, the infomation of product will be add to this table, with unique orderId
     try {
         var list = [];
-        console.log(data[0]);
         for (i = 1; i < data.length; i++) {
+            console.log(data[i].total);
             let result = await OrderDetail.create({
                 id: data[i].id,
                 orderNumber: data[i].orderNumber,
@@ -49,12 +48,21 @@ let addOrderDetail = async (data) => {
     }
 }
 
-let updateOrderDetail = async (data) => {
-    //maybe this will not be used
+let getOrderDetailByOrderId = async (orderId) => {
     try {
-        return null;
-    }
-    catch (e) {
+        let orderDetail = await sequelize.query(
+            'select od.id, p.id, p.productName, od.orderNumber, od.price'
+            + ' from orderdetails od' 
+            + ' join orders o on o.id = od.orderId'
+            + ' join products p on p.id = od.productId'
+            + ' where o.id = ?'
+            + 'order by od.id desc ;', {
+                raw: true,
+                replacements: [orderId],
+                type: QueryTypes.SELECT
+            });
+            return orderDetail;
+    } catch (e) {
         return "Error";
     }
 }
@@ -79,6 +87,6 @@ module.exports = {
     getOrderDetailById: getOrderDetailById,
     getAllOrderDetail: getAllOrderDetail,
     addOrderDetail: addOrderDetail,
-    updateOrderDetail: updateOrderDetail,
+    getOrderDetailByOrderId: getOrderDetailByOrderId,
     deleteOrderDetail : deleteOrderDetail,
 }

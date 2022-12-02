@@ -9,10 +9,9 @@ let getOrderById = async (orderId) => {
                 id : orderId
             }
         });
-        resolve(result);
+        return result;
     } catch (e) {
-        console.log("Can't find order");
-        reject(e);
+        return "error";
     }
 }
 
@@ -21,6 +20,21 @@ let getAllOrder = async () => {
         let result = await Order.findAll();
         return result;
     } catch (e) {
+        return "Error";
+    }
+}
+
+let getOrderByUser = async(userId) => {
+    try {
+        let result = await sequelize.query(
+            'select * from orders where userId = ?', {
+                raw: true,
+                replacements: [userId],
+                type: QueryTypes.SELECT
+            }
+        )
+        return result;
+    } catch(e) {
         return "Error";
     }
 }
@@ -71,6 +85,7 @@ let deleteOrder = async (orderId) => {
 module.exports = {
     getOrderById: getOrderById,
     getAllOrder: getAllOrder,
+    getOrderByUser: getOrderByUser,
     addOrder: addOrder,
     updateOrder: updateOrder,
     deleteOrder : deleteOrder,

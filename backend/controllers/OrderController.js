@@ -12,6 +12,12 @@ const getOrderById = async (req, res) => {
     res.send(result);
 }
 
+const getOrderByUser = async (req, res) => {
+    let userId = req.params.userId;
+    const result = await orderService.getOrderByUser(userId);
+    res.send(result);
+}
+ 
 const addOrder = async (req, res) => {
     let data = req.body;
 
@@ -46,6 +52,7 @@ const deleteOrder = async (req, res) => {
 
 module.exports = {
     getAllOrder: getAllOrder,
+    getOrderByUser, getOrderByUser,
     getOrderById: getOrderById,
     addOrder: addOrder,
     updateOrder: updateOrder,
