@@ -19,6 +19,7 @@ const getAddressById = async (req, res) => {
 
 const addAddress = async (req, res) => {
     let data = req.body;
+    console.log(data);
     const result = await addressService.addAddress(data);
     res.send(result);
 }
@@ -32,7 +33,7 @@ const updateAddress = async (req, res) => {
 const deleteAddress = async (req, res) => {
     let addressId = req.params.addressId;
     const result = await addressService.deleteAddress(addressId);
-    res.send("Deleted!");
+    res.send(result);
 }
 
 module.exports = {

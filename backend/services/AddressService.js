@@ -45,7 +45,8 @@ let addAddress = async (data) => {
             province: data.province,
             district: data.district,
             street: data.street,
-            homeAddress: data.homeAddress
+            homeAddress: data.homeAddress,
+            userId: data.userId
         })
         return result;
     }
@@ -71,7 +72,9 @@ let updateAddress = async (data) => {
         return address;
     }
     catch (e) {
-        return "Error";
+        data = {
+            message: "Error",
+        }
     }
 }
 
@@ -83,11 +86,14 @@ let deleteAddress = async (addressId) => {
             }
         });
         await address.destroy();
-        let message = "Deleted";
-        return message;
+        return data = {
+            message: "Deleted",
+        }
     }
     catch (e) {
-        return "Error";
+        return data = {
+            message: "Error",
+        }
     }
 }
 
