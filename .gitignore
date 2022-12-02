@@ -2,8 +2,6 @@ node_modules
 build
 npm-debug.log
 .env
-package-lock.json
-backend/database/connect.js
 Note.txt
 
 #front

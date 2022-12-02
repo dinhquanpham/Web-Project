@@ -26,27 +26,27 @@ export default function Home() {
     }, []);
     let handleData = async () => {
         let responseProductSetHot = await GetProductBySet(
-            "http://localhost:3030/models/product/get-by-sold/sort"
+            `${process.env.REACT_APP_SV_HOST}/models/product/get-by-sold/sort`
         );
         setproductSetHot(responseProductSetHot);
         let responseProductSetNew = await GetProductBySet(
-            "http://localhost:3030/models/product/by-time"
+            `${process.env.REACT_APP_SV_HOST}/models/product/by-time`
         );
         setproductSetNew(responseProductSetNew);
         let responseProductSet5 = await GetProductBySet(
-            "http://localhost:3030/models/product/by-set/5"
+            `${process.env.REACT_APP_SV_HOST}/models/product/by-set/5`
         );
         setproductSet5(responseProductSet5);
         let responseProductSet6 = await GetProductBySet(
-            "http://localhost:3030/models/product/by-set/6"
+            `${process.env.REACT_APP_SV_HOST}/models/product/by-set/6`
         );
         setproductSet6(responseProductSet6);
         let responseProductSet7 = await GetProductBySet(
-            "http://localhost:3030/models/product/by-set/7"
+            `${process.env.REACT_APP_SV_HOST}/models/product/by-set/7`
         );
         setproductSet7(responseProductSet7);
         let responseProductSet8 = await GetProductBySet(
-            "http://localhost:3030/models/product/by-set/8"
+            `${process.env.REACT_APP_SV_HOST}/models/product/by-set/8`
         );
         setproductSet8(responseProductSet8);
     };

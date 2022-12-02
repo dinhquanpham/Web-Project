@@ -33,7 +33,7 @@ function Copyright(props) {
 }
 
 async function registerUser(credentials) {
-    return fetch('http://localhost:3030/register', {
+    return fetch('${process.env.REACT_APP_SV_HOST}/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

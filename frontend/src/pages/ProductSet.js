@@ -5,12 +5,12 @@ import Header from "../components/Header";
 import ProductGrid from "../components/ProductGrid";
 
 async function GetProductSetById(productSetId) {
-    let url = "http://localhost:3030/models/product/by-set/" + productSetId;
+    let url = `${process.env.REACT_APP_SV_HOST}/models/product/by-set/` + productSetId;
     if (productSetId == "hot") {
-        url = "http://localhost:3030/models/product/get-by-sold/sort";
+        url = `${process.env.REACT_APP_SV_HOST}/models/product/get-by-sold/sort`;
     }
     if (productSetId == "new") {
-        url = "http://localhost:3030/models/product/by-time";
+        url = `${process.env.REACT_APP_SV_HOST}/models/product/by-time`;
     }
     let data = await fetch(url, {
         method: "GET",

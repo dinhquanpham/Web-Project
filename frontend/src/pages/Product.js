@@ -16,7 +16,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 async function GetProductById(productId) {
-    let url = "http://localhost:3030/models/product/by-id/" + productId;
+    let url = `${process.env.REACT_APP_SV_HOST}/models/product/by-id/` + productId;
     let data = await fetch(url, {
         method: "GET",
         headers: {
@@ -57,11 +57,11 @@ export default function Product() {
     }, []);
     let handleData2 = async () => {
         let responseProductSetHot = await GetProductBySet(
-            "http://localhost:3030/models/product/get-by-sold/sort"
+            `${process.env.REACT_APP_SV_HOST}/models/product/get-by-sold/sort`
         );
         setproductSetHot(responseProductSetHot);
         let responseProductSetNew = await GetProductBySet(
-            "http://localhost:3030/models/product/by-time"
+            `${process.env.REACT_APP_SV_HOST}/models/product/by-time`
         );
         setproductSetNew(responseProductSetNew);
     };

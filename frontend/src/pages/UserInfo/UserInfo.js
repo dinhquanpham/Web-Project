@@ -44,7 +44,7 @@ function TabPanel(props) {
   }
 
 async function getUserInfoById(userId) {
-    let url = "http://localhost:3030/models/user/info/" + userId;
+    let url = `${process.env.REACT_APP_SV_HOST}/models/user/info/` + userId;
     let data = await fetch(url, {
         method: "GET",
         headers: {
@@ -55,7 +55,7 @@ async function getUserInfoById(userId) {
 }
 
 async function changePassword(credentials) {
-  return fetch('http://localhost:3030/account/updatePassword', {
+  return fetch('${process.env.REACT_APP_SV_HOST}/account/updatePassword', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
