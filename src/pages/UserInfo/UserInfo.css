@@ -9,3 +9,33 @@
 .line {
     display: block;
 }
+
+/*
+Table
+*/
+#address-list {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#address-list td,
+#address-list th {
+    border: 1px solid white;
+    padding: 8px;
+}
+
+#address-list tr:nth-child(even) {
+    background-color: lightgray;
+}
+
+#address-list tr:hover {
+    background-color: lightblue;
+}
+
+#address-list th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: green;
+    color: white;
+}
