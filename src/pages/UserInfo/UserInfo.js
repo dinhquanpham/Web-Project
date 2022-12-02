@@ -8,8 +8,9 @@ import { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import TextField from '@mui/material/TextField';
 import './UserInfo.css'
-import { Button } from '@mui/material';
+import { Button, Table } from '@mui/material';
 import { useNavigate } from "react-router-dom";
+import TableData  from "../../components/table/Table"
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -65,15 +66,26 @@ async function changePassword(credentials) {
   .then (data => data.json())
 }
 
+async function addAddress(credentials) {
+  return fetch('http://localhost:3030/models/address/add', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(credentials)
+  })
+  .then (data => data.json())
+}
+
 export default function UserInfo() {
     const navigate = useNavigate();
     const [value, setValue] = React.useState(0);
-    let [userInfo, setUserInfo] = useState([
-    ]);
+    let [userInfo, setUserInfo] = useState([]);
+    let [changed, setChanged] = useState(0);
     let [addressInfo, setAddressInfo] = useState([]);
     useEffect(() => {
         handleData();
-    }, []);
+    }, [changed]);
     let handleData = async () => {
         let userId = sessionStorage.getItem('userId');
         let response = await getUserInfoById(userId);
@@ -110,6 +122,32 @@ export default function UserInfo() {
           }
         }
     };
+    const handleAddAddress = async (e) => {
+      e.preventDefault();
+      const data = new FormData(e.currentTarget);
+      const response = await addAddress({
+        homeAddress: data.get('homeAddress'),
+        street : data.get('street'),
+        district : data.get('district'),
+        province :  data.get('province'),
+        userId: sessionStorage.getItem('userId')
+      })
+      if (response.message !== "Error") {
+        window.location.reload()
+      }
+      else {
+        console.log("Lỗi khi thêm địa chỉ nhận hàng");
+      }
+    }
+
+    const columns = [
+      { field: "id", header: "ID" },
+      { field: "homeAddress", header: "Số nhà" },
+      { field: "street", header: "Đường" },
+      { field: "district", header: "Phường/quận" },
+      { field: "province", header: "Tỉnh/thành phố" },
+    ];
+
     const userInfoShow = (() => (
         <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -233,28 +271,41 @@ export default function UserInfo() {
           </Box>
           </TabPanel>
           <TabPanel value={value} index={2}>
-          <table id ='address-list'>
-                <tbody>
-                    <tr>
-                        <th>Số thứ tự</th>
-                        <th>Số nhà</th>
-                        <th>Đường</th>
-                        <th>Phường / Quận</th>
-                        <th>Thành phố / Tỉnh</th>
-                    </tr>
-                    {addressInfo && addressInfo.map((item, index) => {
-                        return (
-                            <tr key = {index}>
-                                <td>Số thứ tự</td>
-                                <td>
-                                    <button></button>
-                                </td>
-                            </tr>
-                        )
-                     })
-                  }
-                </tbody>
-            </table>
+          <Box
+            component="form"
+            onSubmit={handleAddAddress}
+            noValidate
+            sx={{ mt: 1 }}
+          >
+             <TextField
+              id="homeAddress"
+              label="Số nhà"
+              name= "homeAddress"
+              />
+              <TextField
+              id="street"
+              label="Đường"
+              name ="street"
+              />
+              <TextField
+              id="district"
+              label="Phường/quận"
+              name="district"
+              />
+              <TextField
+              id="province"
+              label="Tỉnh/thành phố"
+              name="province"
+              />
+              <Button                             
+              type="submit"
+              variant="contained"
+              size='large'
+              >
+              Submit
+            </Button>
+        </Box>
+          <TableData  columns={columns} hover={true} striped={true} typeId = {"User"} tabIndex = {"1"}/>
           </TabPanel>
           <TabPanel value={value} index={3}>
           </TabPanel>
