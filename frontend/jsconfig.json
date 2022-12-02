@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    // "allowSyntheticDefaultImports": true,
-    // "module": "ESNext",
-    // "target": "ES3",
+    "allowSyntheticDefaultImports": false,
+    "module": "ESNext",
+    "target": "ES3",
     "baseUrl": "./src",
     "checkJs": false,
     "jsx": "react",
