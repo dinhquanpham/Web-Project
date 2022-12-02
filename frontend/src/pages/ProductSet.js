@@ -5,7 +5,13 @@ import Header from "../components/Header";
 import ProductGrid from "../components/ProductGrid";
 
 async function GetProductSetById(productSetId) {
-    let url = "http://localhost:3030/models/product-set/by-id/" + productSetId;
+    let url = "http://localhost:3030/models/product/by-set/" + productSetId;
+    if (productSetId == "hot") {
+        url = "http://localhost:3030/models/product/get-by-sold/sort";
+    }
+    if (productSetId == "new") {
+        url = "http://localhost:3030/models/product/by-time";
+    }
     let data = await fetch(url, {
         method: "GET",
         headers: {
@@ -18,14 +24,14 @@ async function GetProductSetById(productSetId) {
 export default function ProductSet() {
     let search = window.location.search;
     let params = new URLSearchParams(search);
-    let productSetId = params.get("id");
+    let productsetId = params.get("id");
     let [productSetInfo, setProductSetInfo] = useState([]);
     useEffect(() => {
         handleData();
-    }, []);
+    }, [productsetId]);
     let handleData = async () => {
-        let productSetInfo = await GetProductSetById(productSetId);
-        setProductSetInfo(productSetInfo);
+        let response = await GetProductSetById(productsetId);
+        setProductSetInfo(response);
     };
 
     return (
@@ -39,10 +45,7 @@ export default function ProductSet() {
                     boxSizing: "border-box",
                 }}
             >
-                {ProductGrid(
-                    productSetInfo.name,
-                    `http://localhost:3030/models/product/by-set/${productSetInfo.id}`
-                )}
+                {ProductGrid(productSetInfo.name, productSetInfo)}
             </Box>
         </Box>
     );

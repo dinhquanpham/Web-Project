@@ -52,7 +52,7 @@ export default function Menu() {
                     <MenuItem
                         onClick={
                             (handleCloseMenu,
-                            () => navigate(`/product-set/?id=5`))
+                            () => navigate(`/product-set/?id=hot`))
                         }
                     >
                         TRUYỆN HOT
@@ -60,7 +60,7 @@ export default function Menu() {
                     <MenuItem
                         onClick={
                             (handleCloseMenu,
-                            () => navigate(`/product-set/?id=6`))
+                            () => navigate(`/product-set/?id=new`))
                         }
                     >
                         TRUYỆN MỚI

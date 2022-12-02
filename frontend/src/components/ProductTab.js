@@ -4,7 +4,6 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -15,19 +14,8 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
 }));
 
-function GetProduct(url) {
-    const [data, setData] = useState([]);
-    useEffect(() => {
-        fetch(url)
-            .then((res) => res.json())
-            .then((data) => setData(data));
-    }, []);
-    return data;
-}
-
-export default function ProductTab(name, url) {
-    const navigate = useNavigate();
-    const productInfo = GetProduct(url);
+export default function ProductTab(productSetName, productInfo) {
+    let navigate = useNavigate();
     const productShow = productInfo.map((data) => (
         <Box
             key={data.productId}
@@ -68,7 +56,6 @@ export default function ProductTab(name, url) {
             </Box>
         </Box>
     ));
-
     return (
         <Box
             sx={{
@@ -87,7 +74,7 @@ export default function ProductTab(name, url) {
                     navigate(`/product-set/?id=${productInfo[0].productsetId}`)
                 }
             >
-                {name}
+                {productSetName}
             </Typography>
             <Box
                 sx={{
