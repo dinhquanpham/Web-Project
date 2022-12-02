@@ -2,7 +2,6 @@ node_modules
 build
 npm-debug.log
 .env
-Note.txt
 
 #front
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
@@ -28,3 +27,6 @@ Note.txt
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+Web-Project.code-workspace
+Note.txt
