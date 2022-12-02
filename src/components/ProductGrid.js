@@ -15,28 +15,7 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
 }));
 
-async function GetProductByProductSetId(url) {
-    let data = await fetch(url, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        },
-    }).then((data) => data.json());
-    return data;
-}
-
-export default function ProductGrid(name, url) {
-    let search = window.location.search;
-    let params = new URLSearchParams(search);
-    let productId = params.get("id");
-    let [productInfo, setProductInfo] = useState([]);
-    useEffect(() => {
-        handleData();
-    }, []);
-    let handleData = async () => {
-        let productInfo = await GetProductByProductSetId(url);
-        setProductInfo(productInfo);
-    };
+export default function ProductGrid(name, productInfo) {
     const navigate = useNavigate();
     const productShow = productInfo.map((data) => (
         <Box
