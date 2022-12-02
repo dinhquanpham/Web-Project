@@ -11,6 +11,7 @@ import { createTheme } from "@mui/system";
 import { ThemeProvider } from "@emotion/react";
 import { Navigate } from 'react-router-dom';
 import PrivateUserRoute from './components/PrivateRoute'
+import Search from "./pages/Search";
 
 export default function App() {
     const [mode, setMode] = useState("light");
@@ -36,7 +37,10 @@ export default function App() {
                 {/* <Route path="/user" element ={<UserInfo />}>
                 </Route> */}
                 <Route path="/user" element={<PrivateUserRoute Component={UserInfo} />} />
-                     <Route path="/?id=" element={<UserInfo />} />
+                <Route path="/?id=" element={<UserInfo />} />
+                <Route path="/search" element={<Search />}>
+                    <Route path="?name=" element={<Search />} />
+                </Route>
             </Routes>
         </BrowserRouter >
         // </ThemeProvider>

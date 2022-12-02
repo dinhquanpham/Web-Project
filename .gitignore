@@ -1,9 +1,24 @@
+# backend
+# npm
+node_modules
+package-lock.json
+*.log
+*.gz
+
+# Coveralls
+.nyc_output
+coverage
+
+# Benchmarking
+benchmarks/graphs
+
+# ignore additional files using core.excludesFile
 node_modules
 build
 npm-debug.log
 .env
 
-#front
+# frontend
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
@@ -30,3 +45,4 @@ yarn-error.log*
 
 Web-Project.code-workspace
 Note.txt
+frontend/src/template.js
