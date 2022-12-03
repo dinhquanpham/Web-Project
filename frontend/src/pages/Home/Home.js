@@ -23,6 +23,7 @@ export default function Home() {
     let [productSet8, setproductSet8] = useState([]);
     useEffect(() => {
         handleData();
+        window.scrollTo(0, 0);
     }, []);
     let handleData = async () => {
         let responseProductSetHot = await GetProductBySet(
@@ -50,7 +51,6 @@ export default function Home() {
         );
         setproductSet8(responseProductSet8);
     };
-    console.log(productSetHot);
     let height = 400;
     return (
         <Box sx={{ width: "100%" }}>

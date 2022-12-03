@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 import "./ProductTab.css";
@@ -19,36 +20,22 @@ const Item = styled(Paper)(({ theme }) => ({
 export default function ProductTab(productSetName, productInfo) {
     let navigate = useNavigate();
     const productShow = productInfo.map((data) => (
-        <Box
-            key={data.productId}
-            sx={{
-                flexGrow: 1,
-                width: "100%",
-                height: "100%",
-                boxSizing: "border-box",
-            }}
-        >
+        <Box key={data.productId} className="box">
             <Box
+                className="box"
                 sx={{
-                    flexGrow: 1,
-                    width: "100%",
-                    height: "80%",
+                    height: "70%",
                 }}
             >
                 <img
+                    className="image"
                     src={data.image}
                     alt={data.productName}
-                    style={{
-                        width: "100%",
-                        height: "100%",
-                        display: "block",
-                        objectFit: "contain",
-                    }}
                 />
             </Box>
             <Box
+                className="box"
                 sx={{
-                    width: "100%",
                     height: "20%",
                 }}
             >
@@ -56,14 +43,23 @@ export default function ProductTab(productSetName, productInfo) {
                 <Box>Giá: {data.price}</Box>
                 <Box>Đã bán: {data.soldNumber}</Box>
             </Box>
+            <Button
+                className="box button-add-to-cart"
+                sx={{
+                    height: "10%",
+                }}
+                variant="outlined"
+                onClick={() => {}}
+            >
+                MUA
+            </Button>
         </Box>
     ));
     return (
         <Box className="box product-tab">
             <Typography
-                className="product-title"
+                className="box product-title"
                 sx={{
-                    width: "100%",
                     height: "10%",
                     float: "left",
                 }}
@@ -72,23 +68,23 @@ export default function ProductTab(productSetName, productInfo) {
             </Typography>
 
             <Grid
+                className="box"
                 container
                 columns={10}
-                className="box"
                 sx={{
                     height: "80%",
                 }}
             >
                 {Array.from(Array(5)).map((_, index) => (
-                    <Grid item xs={2} key={index} className="box">
+                    <Grid className="box" item xs={2} key={index}>
                         <Item
+                            className="box"
                             style={{ cursor: "pointer" }}
                             onClick={() =>
                                 navigate(
                                     `/product/?id=${productInfo[index].id}`
                                 )
                             }
-                            className="box"
                         >
                             {productShow[index]}
                         </Item>
