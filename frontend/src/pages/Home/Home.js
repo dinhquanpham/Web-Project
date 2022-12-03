@@ -1,8 +1,8 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
-import Header from "../components/Header";
-import ProductTab from "../components/ProductTab";
+import Header from "../../components/Header/Header";
+import ProductTab from "../../components/ProductTab/ProductTab";
 
 async function GetProductBySet(url) {
     let data = await fetch(url, {
@@ -51,13 +51,14 @@ export default function Home() {
         setproductSet8(responseProductSet8);
     };
     console.log(productSetHot);
+    let height = 400;
     return (
         <Box sx={{ width: "100%" }}>
             <Box sx={{ width: "100%" }}>{Header()}</Box>
             <Box
                 sx={{
                     width: "100%",
-                    height: 300,
+                    height: { height },
                     marginTop: "2%",
                     boxSizing: "border-box",
                 }}
@@ -67,7 +68,7 @@ export default function Home() {
             <Box
                 sx={{
                     width: "100%",
-                    height: 300,
+                    height: { height },
                     marginTop: "2%",
                     boxSizing: "border-box",
                 }}
@@ -77,7 +78,7 @@ export default function Home() {
             <Box
                 sx={{
                     width: "100%",
-                    height: 300,
+                    height: { height },
                     marginTop: "2%",
                     boxSizing: "border-box",
                 }}
@@ -87,7 +88,7 @@ export default function Home() {
             <Box
                 sx={{
                     width: "100%",
-                    height: 300,
+                    height: { height },
                     marginTop: "2%",
                     boxSizing: "border-box",
                 }}
@@ -97,7 +98,7 @@ export default function Home() {
             <Box
                 sx={{
                     width: "100%",
-                    height: 300,
+                    height: { height },
                     marginTop: "2%",
                     boxSizing: "border-box",
                 }}
@@ -107,7 +108,7 @@ export default function Home() {
             <Box
                 sx={{
                     width: "100%",
-                    height: 300,
+                    height: { height },
                     marginTop: "2%",
                     boxSizing: "border-box",
                 }}

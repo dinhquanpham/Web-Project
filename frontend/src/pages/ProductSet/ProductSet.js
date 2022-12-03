@@ -1,11 +1,13 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
-import Header from "../components/Header";
-import ProductGrid from "../components/ProductGrid";
+import Header from "../../components/Header/Header";
+import ProductGrid from "../../components/ProductGrid/ProductGrid";
 
 async function GetProductSetById(productSetId) {
-    let url = `${process.env.REACT_APP_SV_HOST}/models/product/by-set/` + productSetId;
+    let url =
+        `${process.env.REACT_APP_SV_HOST}/models/product/by-set/` +
+        productSetId;
     if (productSetId == "hot") {
         url = `${process.env.REACT_APP_SV_HOST}/models/product/get-by-sold/sort`;
     }

@@ -1,0 +1,11 @@
+.logo {
+    color: var(--main-color);
+}
+
+.button-signin {
+    color: var(--main-color) !important;
+}
+
+.header {
+    background-color: white !important;
+}

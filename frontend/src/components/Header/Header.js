@@ -5,12 +5,13 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import IconButton from '@mui/material/IconButton';
+import IconButton from "@mui/material/IconButton";
 import { useNavigate } from "react-router-dom";
-import AccountCircle from '@mui/icons-material/AccountCircle';
+import AccountCircle from "@mui/icons-material/AccountCircle";
 import { useEffect, useState } from "react";
-import Menu from "./Menu";
-import SearchBar from "./SearchBar";
+import Menu from "../Menu/Menu";
+import SearchBar from "../SearchBar/SearchBar";
+import "./Header.css";
 
 export default function Header() {
     const navigate = useNavigate();
@@ -18,36 +19,35 @@ export default function Header() {
     useEffect(() => {
         handleLogin();
     }, []);
-    const handleLogin = async() => {
-        let token = sessionStorage.getItem('userId');
+    const handleLogin = async () => {
+        let token = sessionStorage.getItem("userId");
         if (token) {
             setAuth(true);
-        }
-        else {
+        } else {
             setAuth(false);
         }
     };
     const handleUser = async () => {
-        let userId = sessionStorage.getItem('userId');
+        let userId = sessionStorage.getItem("userId");
         let path = "/user/?id=" + userId;
         navigate(path);
-    }
+    };
     const handleSignOut = async () => {
-        let token = sessionStorage.getItem('userId');
+        let token = sessionStorage.getItem("userId");
         if (token) {
-            sessionStorage.removeItem('userId');
+            sessionStorage.removeItem("userId");
             navigate("/");
             setAuth(false);
-        }
-        else {
+        } else {
             console.log("Error");
         }
-    }
+    };
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static">
+            <AppBar className="header" position="static">
                 <Toolbar>
                     <Typography
+                        className="logo"
                         variant="h6"
                         component="div"
                         sx={{ flexGrow: 0 }}
@@ -60,33 +60,33 @@ export default function Header() {
                     <SearchBar />
                     {!auth && (
                         <div>
-                         <Button
-                            color="inherit"
-                            onClick={() => navigate("/sign-in")}
-                        >
-                            SIGN IN
-                        </Button>
+                            <Button
+                                className="button-signin"
+                                onClick={() => navigate("/sign-in")}
+                            >
+                                SIGN IN
+                            </Button>
                         </div>
                     )}
                     {auth && (
-                       <div>
+                        <div>
                             <IconButton
-                            size="large"
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            onClick={handleUser}
-                            color="inherit"
+                                size="large"
+                                aria-label="account of current user"
+                                aria-controls="menu-appbar"
+                                aria-haspopup="true"
+                                onClick={handleUser}
+                                color="inherit"
                             >
-                            <AccountCircle />
+                                <AccountCircle />
                             </IconButton>
                             <Button
-                                color="inherit"
+                                className="button-signin"
                                 onClick={handleSignOut}
                             >
                                 Sign out
                             </Button>
-                      </div>
+                        </div>
                     )}
                 </Toolbar>
             </AppBar>

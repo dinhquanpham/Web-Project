@@ -4,8 +4,8 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
-import ProductTab from "../components/ProductTab";
+import Header from "../../components/Header/Header";
+import ProductTab from "../../components/ProductTab/ProductTab";
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -16,7 +16,8 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 async function GetProductById(productId) {
-    let url = `${process.env.REACT_APP_SV_HOST}/models/product/by-id/` + productId;
+    let url =
+        `${process.env.REACT_APP_SV_HOST}/models/product/by-id/` + productId;
     let data = await fetch(url, {
         method: "GET",
         headers: {
