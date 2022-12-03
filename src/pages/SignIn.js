@@ -34,36 +34,33 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-
 async function loginUser(credentials) {
-    return fetch('http://localhost:3030/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(credentials)
-    })
-    .then (data => data.json())
+    return fetch("http://localhost:3030/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(credentials),
+    }).then((data) => data.json());
 }
 
 export default function SignIn() {
     const navigate = useNavigate();
-    const handleSubmit = async (e) => {;
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const data = new FormData(e.currentTarget);
         const response = await loginUser({
             username: data.get("username"),
-            password: data.get("password")
+            password: data.get("password"),
         });
         console.log(response.message);
-        if(response.message !== "Error") {
-            sessionStorage.setItem('userId', response.userId)
-            navigate('/');
-        }
-        else {
+        if (response.message !== "Error") {
+            sessionStorage.setItem("userId", response.userId);
+            navigate("/");
+        } else {
             console.log("Sai tài khoản hoặc mật khẩu");
         }
-    }
+    };
     return (
         <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">

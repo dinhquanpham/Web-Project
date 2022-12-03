@@ -1,8 +1,8 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
-import Header from "../components/Header";
-import ProductTab from "../components/ProductTab";
+import Header from "../../components/Header/Header";
+import ProductTab from "../../components/ProductTab/ProductTab";
 
 async function GetProductBySet(url) {
     let data = await fetch(url, {
@@ -50,14 +50,14 @@ export default function Home() {
         );
         setproductSet8(responseProductSet8);
     };
-    console.log(productSetHot);
+    const height = 400;
     return (
         <Box sx={{ width: "100%" }}>
             <Box sx={{ width: "100%" }}>{Header()}</Box>
             <Box
                 sx={{
                     width: "100%",
-                    height: 300,
+                    height: { height },
                     marginTop: "2%",
                     boxSizing: "border-box",
                 }}
@@ -67,7 +67,7 @@ export default function Home() {
             <Box
                 sx={{
                     width: "100%",
-                    height: 300,
+                    height: { height },
                     marginTop: "2%",
                     boxSizing: "border-box",
                 }}
@@ -77,42 +77,42 @@ export default function Home() {
             <Box
                 sx={{
                     width: "100%",
-                    height: 300,
+                    height: { height },
                     marginTop: "2%",
                     boxSizing: "border-box",
                 }}
             >
-                {ProductTab("BỘ", productSet5)}
+                {ProductTab("TRUYỆN NARUTO", productSet5)}
             </Box>
             <Box
                 sx={{
                     width: "100%",
-                    height: 300,
+                    height: { height },
                     marginTop: "2%",
                     boxSizing: "border-box",
                 }}
             >
-                {ProductTab("BỘ", productSet6)}
+                {ProductTab("TRUYỆN DRAGON BALL", productSet6)}
             </Box>
             <Box
                 sx={{
                     width: "100%",
-                    height: 300,
+                    height: { height },
                     marginTop: "2%",
                     boxSizing: "border-box",
                 }}
             >
-                {ProductTab("BỘ", productSet7)}
+                {ProductTab("TRUYỆN ONE PIECE", productSet7)}
             </Box>
             <Box
                 sx={{
                     width: "100%",
-                    height: 300,
+                    height: { height },
                     marginTop: "2%",
                     boxSizing: "border-box",
                 }}
             >
-                {ProductTab("BỘ", productSet8)}
+                {ProductTab("TRUYỆN BLEACH", productSet8)}
             </Box>
         </Box>
     );

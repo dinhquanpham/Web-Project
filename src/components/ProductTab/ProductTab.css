@@ -1,0 +1,13 @@
+.product-tab {
+    background-color: var(--item-background-color) !important;
+}
+
+.product-title {
+    color: var(--main-color) !important;
+    font-size: 18px !important;
+}
+
+.button-more {
+    color: var(--main-color) !important;
+    width: "20%";
+}

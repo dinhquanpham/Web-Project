@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
+import Home from "./pages/Home/Home";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
-import Product from "./pages/Product";
-import ProductSet from "./pages/ProductSet";
+import Product from "./pages/Product/Product";
+import ProductSet from "./pages/ProductSet/ProductSet";
 import UserInfo from "./pages/UserInfo/UserInfo";
 import { createTheme } from "@mui/system";
 import { ThemeProvider } from "@emotion/react";
-import { Navigate } from 'react-router-dom';
-import PrivateUserRoute from './components/PrivateRoute'
+import PrivateUserRoute from "./components/PrivateRoute";
+import "./index.css";
 
 export default function App() {
     const [mode, setMode] = useState("light");
@@ -18,7 +18,7 @@ export default function App() {
     const darkTheme = createTheme({
         palette: {
             mode: mode,
-        }
+        },
     });
     return (
         // <ThemeProvider theme={darkTheme}>
@@ -35,10 +35,13 @@ export default function App() {
                 </Route>
                 {/* <Route path="/user" element ={<UserInfo />}>
                 </Route> */}
-                <Route path="/user" element={<PrivateUserRoute Component={UserInfo} />} />
-                     <Route path="/?id=" element={<UserInfo />} />
+                <Route
+                    path="/user"
+                    element={<PrivateUserRoute Component={UserInfo} />}
+                />
+                <Route path="/?id=" element={<UserInfo />} />
             </Routes>
-        </BrowserRouter >
+        </BrowserRouter>
         // </ThemeProvider>
     );
 }

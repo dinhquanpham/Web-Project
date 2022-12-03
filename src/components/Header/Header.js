@@ -8,18 +8,15 @@ import SearchIcon from "@mui/icons-material/Search";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
-import IconButton from '@mui/material/IconButton';
-import AccountCircle from '@mui/icons-material/AccountCircle';
+import IconButton from "@mui/material/IconButton";
+import AccountCircle from "@mui/icons-material/AccountCircle";
 import { useEffect, useState } from "react";
-import Menu from "./Menu";
+import Menu from "../Menu/Menu";
+import "./Header.css";
 
 const Search = styled("div")(({ theme }) => ({
     position: "relative",
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    "&:hover": {
-        backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
     width: "100%",
     [theme.breakpoints.up("sm")]: {
         margin: "auto",
@@ -39,7 +36,7 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: "inherit",
+    //color: "inherit",
     "& .MuiInputBase-input": {
         padding: theme.spacing(1, 1, 1, 0),
         // vertical padding + font size from searchIcon
@@ -58,84 +55,83 @@ export default function Header() {
     useEffect(() => {
         handleLogin();
     }, []);
-    const handleLogin = async() => {
-        let token = sessionStorage.getItem('userId');
+    const handleLogin = async () => {
+        let token = sessionStorage.getItem("userId");
         if (token) {
             setAuth(true);
-        }
-        else {
+        } else {
             setAuth(false);
         }
     };
     const handleUser = async () => {
-        let userId = sessionStorage.getItem('userId');
+        let userId = sessionStorage.getItem("userId");
         let path = "/user/?id=" + userId;
         navigate(path);
-    }
+    };
     const handleSignOut = async () => {
-        let token = sessionStorage.getItem('userId');
+        let token = sessionStorage.getItem("userId");
         if (token) {
-            sessionStorage.removeItem('userId');
+            sessionStorage.removeItem("userId");
             navigate("/");
             setAuth(false);
-        }
-        else {
+        } else {
             console.log("Error");
         }
-    }
+    };
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static">
+            <AppBar className="header-bar" position="static">
                 <Toolbar>
                     <Typography
+                        className="logo"
                         variant="h6"
                         component="div"
-                        sx={{ flexGrow: 0 }}
                         style={{ cursor: "pointer" }}
                         onClick={() => navigate("/")}
                     >
                         FAKEHASA
                     </Typography>
                     <Menu></Menu>
-                    <Search>
-                        <SearchIconWrapper>
-                            <SearchIcon />
+                    <Search className="Search">
+                        <SearchIconWrapper className="SearchIconWrapper">
+                            <SearchIcon className="SearchIcon" />
                         </SearchIconWrapper>
                         <StyledInputBase
-                            placeholder="Search..."
+                            className="StyledInputBase"
+                            placeholder="Tìm kiếm sản phẩm..."
                             inputProps={{ "aria-label": "search" }}
                             autoComplete="off"
                         />
                     </Search>
                     {!auth && (
                         <div>
-                         <Button
-                            color="inherit"
-                            onClick={() => navigate("/sign-in")}
-                        >
-                            SIGN IN
-                        </Button>
+                            <Button
+                                className="button-signin"
+                                onClick={() => navigate("/sign-in")}
+                            >
+                                SIGN IN
+                            </Button>
                         </div>
                     )}
                     {auth && (
-                       <div>
+                        <div>
                             <IconButton
-                            size="large"
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            onClick={handleUser}
-                            color="inherit"
+                                size="large"
+                                aria-label="account of current user"
+                                aria-controls="menu-appbar"
+                                aria-haspopup="true"
+                                onClick={handleUser}
+                                color="inherit"
                             >
-                            <AccountCircle />
+                                <AccountCircle />
                             </IconButton>
                             <Button
-                                color="inherit"
+                                className="button-signin"
                                 onClick={handleSignOut}
                             >
                                 Sign out
                             </Button>
-                      </div>
+                        </div>
                     )}
                 </Toolbar>
             </AppBar>

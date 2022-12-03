@@ -4,8 +4,8 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
-import ProductTab from "../components/ProductTab";
+import Header from "../../components/Header/Header";
+import ProductTab from "../../components/ProductTab/ProductTab";
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -44,6 +44,7 @@ export default function Product() {
     let [productSetInfo, setProductSetInfo] = useState([]);
     useEffect(() => {
         handleData();
+        window.scrollTo(0, 0);
     }, [productId]);
     let handleData = async () => {
         let response = await GetProductById(productId);
@@ -78,7 +79,7 @@ export default function Product() {
         >
             <Box
                 sx={{
-                    width: "30%",
+                    width: "40%",
                     height: "100%",
                     justifyContent: "flex-start",
                     alignItems: "flex-start",
@@ -97,7 +98,7 @@ export default function Product() {
             </Box>
             <Box
                 sx={{
-                    width: "70%",
+                    width: "60%",
                     height: "100%",
                     justifyContent: "flex-end",
                     alignItems: "flex-center",
@@ -105,16 +106,13 @@ export default function Product() {
             >
                 <Box>{data.productName}</Box>
                 <Box>Giá: {data.price}</Box>
-                <Box>
-                    Bộ:
-                    <Box
-                        style={{ cursor: "pointer" }}
-                        onClick={() =>
-                            navigate(`/product-set/?id=${data.productsetId}`)
-                        }
-                    >
-                        {data.setName}
-                    </Box>
+                <Box
+                    style={{ cursor: "pointer" }}
+                    onClick={() =>
+                        navigate(`/product-set/?id=${data.productsetId}`)
+                    }
+                >
+                    Bộ: {data.setName}
                 </Box>
             </Box>
         </Box>
@@ -140,19 +138,19 @@ export default function Product() {
             </Box>
             <Box
                 sx={{
-                    flexGrow: 1,
                     width: "100%",
                     height: 400,
+                    marginTop: "2%",
                     boxSizing: "border-box",
                 }}
             >
-                <Item style={{ cursor: "pointer" }}>{productShow}</Item>
+                <Item>{productShow}</Item>
             </Box>
             <Box
                 sx={{
                     flexGrow: 1,
                     width: "100%",
-                    height: 300,
+                    height: 400,
                     marginTop: "2%",
                     boxSizing: "border-box",
                 }}
@@ -163,7 +161,7 @@ export default function Product() {
                 sx={{
                     flexGrow: 1,
                     width: "100%",
-                    height: 300,
+                    height: 400,
                     marginTop: "2%",
                     boxSizing: "border-box",
                 }}
@@ -174,7 +172,7 @@ export default function Product() {
                 sx={{
                     flexGrow: 1,
                     width: "100%",
-                    height: 300,
+                    height: 400,
                     marginTop: "2%",
                     boxSizing: "border-box",
                 }}

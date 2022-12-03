@@ -14,16 +14,14 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
 }));
 
-export default function ProductTab(productSetName, productInfo) {
-    let navigate = useNavigate();
+export default function ProductGrid(name, productInfo) {
+    const navigate = useNavigate();
     const productShow = productInfo.map((data) => (
         <Box
-            key={data.productId}
             sx={{
                 flexGrow: 1,
                 width: "100%",
                 height: "100%",
-                boxSizing: "border-box",
             }}
         >
             <Box
@@ -48,7 +46,7 @@ export default function ProductTab(productSetName, productInfo) {
                 sx={{
                     flexGrow: 1,
                     width: "100%",
-                    height: "20%",
+                    maxHeight: "20%",
                 }}
             >
                 {data.productName} <br></br>
@@ -56,55 +54,29 @@ export default function ProductTab(productSetName, productInfo) {
             </Box>
         </Box>
     ));
+
     return (
-        <Box
-            sx={{
-                flexGrow: 1,
-                width: "100%",
-                height: "100%",
-                boxSizing: "border-box",
-            }}
-        >
+        <Box sx={{ flexGrow: 1, width: "100%", height: "100%" }}>
             <Typography
                 width="100%"
                 float="left"
                 backgroundColor="green"
                 style={{ cursor: "pointer" }}
-                onClick={() =>
-                    navigate(`/product-set/?id=${productInfo[0].productsetId}`)
-                }
             >
-                {productSetName}
+                {name}
             </Typography>
-            <Box
-                sx={{
-                    flexGrow: 1,
-                    width: "100%",
-                    height: "100%",
-                    boxSizing: "border-box",
-                }}
-            >
+            <Box sx={{ flexGrow: 1, width: "100%", height: "100%" }}>
                 <Grid
                     container
                     columns={10}
-                    sx={{
-                        flexGrow: 1,
-                        width: "100%",
-                        height: "100%",
-                        boxSizing: "border-box",
-                    }}
+                    sx={{ flexGrow: 1, width: "100%", height: "100%" }}
                 >
-                    {Array.from(Array(5)).map((_, index) => (
+                    {Array.from(Array(10)).map((_, index) => (
                         <Grid
                             item
                             xs={2}
                             key={index}
-                            sx={{
-                                flexGrow: 1,
-                                width: "100%",
-                                height: "100%",
-                                boxSizing: "border-box",
-                            }}
+                            sx={{ flexGrow: 1, width: "100%", height: "100%" }}
                         >
                             <Item
                                 style={{ cursor: "pointer" }}
@@ -117,7 +89,6 @@ export default function ProductTab(productSetName, productInfo) {
                                     flexGrow: 1,
                                     width: "100%",
                                     height: "100%",
-                                    boxSizing: "border-box",
                                 }}
                             >
                                 {productShow[index]}
