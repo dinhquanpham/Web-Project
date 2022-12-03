@@ -30,6 +30,7 @@ export default function ProductSet() {
     let [productSetInfo, setProductSetInfo] = useState([]);
     useEffect(() => {
         handleData();
+        window.scrollTo(0, 0);
     }, [productsetId]);
     let handleData = async () => {
         let response = await GetProductSetById(productsetId);

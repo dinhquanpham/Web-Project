@@ -27,7 +27,23 @@ async function GetProductById(productId) {
     return data;
 }
 
-async function GetProductBySet(url) {
+async function GetProductBySet(productsetId) {
+    let url =
+        `${process.env.REACT_APP_SV_HOST}/models/product/by-set/` +
+        productsetId;
+    let data = await fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    }).then((data) => data.json());
+    return data;
+}
+
+async function GetProductSetById(productsetId) {
+    let url =
+        `${process.env.REACT_APP_SV_HOST}/models/product-set/by-id/` +
+        productsetId;
     let data = await fetch(url, {
         method: "GET",
         headers: {
@@ -43,28 +59,20 @@ export default function Product() {
     let productId = params.get("id");
     let [productInfo, setProductInfo] = useState([]);
     let [productSetInfo, setProductSetInfo] = useState([]);
+    let [productInSetInfo, setProductInSetInfo] = useState([]);
     useEffect(() => {
         handleData();
+        window.scrollTo(0, 0);
     }, [productId]);
     let handleData = async () => {
         let response = await GetProductById(productId);
         setProductInfo(response.product[0]);
-        setProductSetInfo(response.productBySet);
-    };
-    let [productSetHot, setproductSetHot] = useState([]);
-    let [productSetNew, setproductSetNew] = useState([]);
-    useEffect(() => {
-        handleData2();
-    }, []);
-    let handleData2 = async () => {
-        let responseProductSetHot = await GetProductBySet(
-            `${process.env.REACT_APP_SV_HOST}/models/product/get-by-sold/sort`
+        let response2 = await GetProductSetById(
+            response.product[0].productsetId
         );
-        setproductSetHot(responseProductSetHot);
-        let responseProductSetNew = await GetProductBySet(
-            `${process.env.REACT_APP_SV_HOST}/models/product/by-time`
-        );
-        setproductSetNew(responseProductSetNew);
+        setProductSetInfo(response2[0]);
+        let response3 = await GetProductBySet(response.product[0].productsetId);
+        setProductInSetInfo(response3);
     };
     let navigate = useNavigate();
     let productShow = ((data = productInfo) => (
@@ -120,6 +128,7 @@ export default function Product() {
             </Box>
         </Box>
     ))();
+    console.log("productInSetInfo: " + productInSetInfo);
     return (
         <Box
             sx={{
@@ -153,34 +162,12 @@ export default function Product() {
                 sx={{
                     flexGrow: 1,
                     width: "100%",
-                    height: 300,
+                    height: 400,
                     marginTop: "2%",
                     boxSizing: "border-box",
                 }}
             >
-                {ProductTab("TRUYỆN CÙNG THỂ LOẠI", productSetInfo)}
-            </Box>
-            <Box
-                sx={{
-                    flexGrow: 1,
-                    width: "100%",
-                    height: 300,
-                    marginTop: "2%",
-                    boxSizing: "border-box",
-                }}
-            >
-                {ProductTab("TRUYỆN HOT", productSetHot)}
-            </Box>
-            <Box
-                sx={{
-                    flexGrow: 1,
-                    width: "100%",
-                    height: 300,
-                    marginTop: "2%",
-                    boxSizing: "border-box",
-                }}
-            >
-                {ProductTab("TRUYỆN MỚI", productSetNew)}
+                {ProductTab("TRUYỆN CÙNG THỂ LOẠI", productInSetInfo)}
             </Box>
         </Box>
     );
