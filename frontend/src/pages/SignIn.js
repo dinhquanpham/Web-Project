@@ -35,7 +35,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 async function loginUser(credentials) {
-    return fetch('${process.env.REACT_APP_SV_HOST}/login', {
+    return fetch(`${process.env.REACT_APP_SV_HOST}/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
