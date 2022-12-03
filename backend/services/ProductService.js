@@ -1,24 +1,25 @@
 const { QueryTypes, Model } = require('sequelize');
 const sequelize = require('../database/connect');
+const Authors = require('../models/Authors');
 const Product = require('../models/Products');
 
 let getProductById = async (productId) => {
     try {
-        let product  = await sequelize.query(
+        let product = await sequelize.query(
             'select p.*, a.name as authorName, ps.name as setName from products p join authors a on p.authorId = a.id left join product_set ps on ps.id = p.productsetId where p.id = ?', {
             raw: true,
             replacements: [productId],
             type: QueryTypes.SELECT
-            }
+        }
         )
 
         let categories = await sequelize.query(
-            'select c2.name from products p join product_category pc on p.id = pc.productId' 
-            + ' join categories c2 on c2.id = pc.categoryId where p.id = ?',{
-                raw: true,
-                replacements: [productId],
-                type: QueryTypes.SELECT
-            }
+            'select c2.name from products p join product_category pc on p.id = pc.productId'
+            + ' join categories c2 on c2.id = pc.categoryId where p.id = ?', {
+            raw: true,
+            replacements: [productId],
+            type: QueryTypes.SELECT
+        }
         )
 
 
@@ -42,7 +43,7 @@ let getAllProductByCreatedTime = async function (page, size) {
         if (page != null) {
             let pageNumber = parseInt(page);
             let pageSize = parseInt(size);
-            let start = (pageNumber - 1) * pageSize ;
+            let start = (pageNumber - 1) * pageSize;
             return result.slice(start, start + pageSize);
         }
         return result;
@@ -51,21 +52,21 @@ let getAllProductByCreatedTime = async function (page, size) {
     }
 }
 
-let getProductByCategory = async function(categoryId, page, size) {
+let getProductByCategory = async function (categoryId, page, size) {
     try {
         let result = await sequelize.query(
-            'select p.* from (product_category join categories c on c.id = product_category.categoryId join products' 
+            'select p.* from (product_category join categories c on c.id = product_category.categoryId join products'
             + ' p on product_category.productId = p.id) where categoryId = ?;', {
-                raw: true,
-                replacements: [categoryId],
-                type: QueryTypes.SELECT
-            }
+            raw: true,
+            replacements: [categoryId],
+            type: QueryTypes.SELECT
+        }
         );
 
         if (page != null) {
             let pageNumber = parseInt(page);
             let pageSize = parseInt(size);
-            let start = (pageNumber - 1) * pageSize ;
+            let start = (pageNumber - 1) * pageSize;
             return result.slice(start, start + pageSize);
         }
 
@@ -88,7 +89,7 @@ let getProductByAuthor = async (authorId, page, size) => {
         if (page != null) {
             let pageNumber = parseInt(page);
             let pageSize = parseInt(size);
-            let start = (pageNumber - 1) * pageSize ;
+            let start = (pageNumber - 1) * pageSize;
             return result.slice(start, start + pageSize);
         }
 
@@ -110,7 +111,7 @@ let getProductByProductSet = async (productSetId, page, size) => {
         if (page != null) {
             let pageNumber = parseInt(page);
             let pageSize = parseInt(size);
-            let start = (pageNumber - 1) * pageSize ;
+            let start = (pageNumber - 1) * pageSize;
             return result.slice(start, start + pageSize);
         }
         return result;
@@ -129,7 +130,7 @@ let getProductBySoldNumber = async (page, size) => {
         if (page != null) {
             let pageNumber = parseInt(page);
             let pageSize = parseInt(size);
-            let start = (pageNumber - 1) * pageSize ;
+            let start = (pageNumber - 1) * pageSize;
             return result.slice(start, start + pageSize);
         }
         return result;
@@ -144,7 +145,7 @@ let getAllProduct = async (page, size) => {
         if (page != null) {
             let pageNumber = parseInt(page);
             let pageSize = parseInt(size);
-            let start = (pageNumber - 1) * pageSize ;
+            let start = (pageNumber - 1) * pageSize;
             return result.slice(start, start + pageSize);
         }
         return result;
@@ -163,30 +164,30 @@ let getProductInfo = async () => {
             + ' join providers pv on pv.id = p.providerId'
             + ' left join product_set ps on ps.id = p.productsetId'
             + ' order by p.id;', {
-                raw : true,
-                type: QueryTypes.SELECT
-            }
+            raw: true,
+            type: QueryTypes.SELECT
+        }
         );
 
         let authors = await sequelize.query(
             'select name from authors', {
-                raw: true,
-                type: QueryTypes.SELECT
-            }
+            raw: true,
+            type: QueryTypes.SELECT
+        }
         );
 
         let providers = await sequelize.query(
             'select name from providers', {
-                raw: true,
-                type: QueryTypes.SELECT
-            }
+            raw: true,
+            type: QueryTypes.SELECT
+        }
         );
 
         let sets = await sequelize.query(
             'select name from product_set', {
-                raw: true,
-                type: QueryTypes.SELECT
-            }
+            raw: true,
+            type: QueryTypes.SELECT
+        }
         );
 
         return result = {
@@ -200,12 +201,25 @@ let getProductInfo = async () => {
     }
 }
 
-
-let addProduct = async (data) => {
+let addProductAdmin = async(data) => {
     try {
-        if (data.quantityInStock == 0) {
-            soldStatus: 0;
-        }
+
+        let id = await sequelize.query(
+            'select (select id from authors where name = :authorName) as authorId, (select id from providers where name = :providerName) as providerId, (select id from product_set where name = :setName) as setId',
+            {
+                raw: true,
+                replacements: {
+                    authorName: data.authorName,
+                    providerName: data.providerName,
+                    setName: data.setName
+                },
+                type: QueryTypes.SELECT
+            });
+            
+        let authorId = id[0].authorId;
+        let providerId = id[0].providerId;
+        let setId = id[0].setId;
+        
         let product = await Product.create({
             id: data.id,
             productName: data.productName,
@@ -217,7 +231,31 @@ let addProduct = async (data) => {
             pageNumber: data.pageNumber,
             soldNumber: data.soldNumber,
             image: data.image,
-            authorId: data.authorId,
+            authorId: authorId,
+            productsetId: setId,
+            providerId: providerId
+        });
+
+        return product;
+    } catch {
+
+    }
+}
+
+let addProduct = async (data) => {
+    try {
+        let product = await Product.create({
+            id: data.id,
+            productName: data.productName,
+            price: data.price,
+            quantityInStock: data.quantityInStock,
+            description: data.description,
+            publishedYear: data.publishedYear,
+            productSize: data.productSize,
+            pageNumber: data.pageNumber,
+            soldNumber: data.soldNumber,
+            image: data.image,
+            authorId: id,
             productSetId: data.productSetId,
             providerId: data.providerId
         })
@@ -285,6 +323,7 @@ module.exports = {
     getAllProduct: getAllProduct,
     getProductInfo: getProductInfo,
     addProduct: addProduct,
+    addProductAdmin: addProductAdmin,
     updateProduct: updateProduct,
     deleteProduct: deleteProduct,
 }

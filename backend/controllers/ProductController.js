@@ -61,6 +61,12 @@ const addProduct = async (req, res) => {
     res.send(result);
 }
 
+const addProductAdmin = async (req, res) => {
+    let data = req.body;
+    const result = await productService.addProductAdmin(data);
+    res.send(result);
+}
+
 const updateProduct = async (req, res) => {
     let data = req.body;
     const result = await productService.updateProduct(data);
@@ -83,6 +89,7 @@ module.exports = {
     getProductByAuthor: getProductByAuthor,
     getProductInfo: getProductInfo,
     addProduct: addProduct,
+    addProductAdmin: addProductAdmin,
     updateProduct: updateProduct,
     deleteProduct: deleteProduct,
 }
