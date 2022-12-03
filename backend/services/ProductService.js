@@ -21,22 +21,10 @@ let getProductById = async (productId) => {
             }
         )
 
-        const setId = product[0].productsetId;
-
-        console.log(setId);
-
-        let productBySet = await sequelize.query(
-            'SELECT * FROM products p WHERE p.productsetId LIKE ? ORDER BY createdAt DESC', {
-            raw: true,
-            replacements: [setId],
-            type: QueryTypes.SELECT
-        });
-        console.log(productBySet);
 
         return result = {
             product: product,
-            categories: categories,
-            productBySet: productBySet
+            categories: categories
         };
     } catch (e) {
         console.log("Can't find product");
@@ -44,22 +32,28 @@ let getProductById = async (productId) => {
     }
 }
 
-let getAllProductByCreatedTime = async function () {
+let getAllProductByCreatedTime = async function (page, size) {
     try {
-        let searchResult = await sequelize.query(
+        let result = await sequelize.query(
             'SELECT * FROM products p ORDER BY createdAt DESC', {
             raw: true,
             type: QueryTypes.SELECT
         });
-        return searchResult;
+        if (page != null) {
+            let pageNumber = parseInt(page);
+            let pageSize = parseInt(size);
+            let start = (pageNumber - 1) * pageSize ;
+            return result.slice(start, start + pageSize);
+        }
+        return result;
     } catch (e) {
         return "Error";
     }
 }
 
-let getProductByCategory = async function(categoryId) {
+let getProductByCategory = async function(categoryId, page, size) {
     try {
-        let searchResult = await sequelize.query(
+        let result = await sequelize.query(
             'select p.* from (product_category join categories c on c.id = product_category.categoryId join products' 
             + ' p on product_category.productId = p.id) where categoryId = ?;', {
                 raw: true,
@@ -67,63 +61,145 @@ let getProductByCategory = async function(categoryId) {
                 type: QueryTypes.SELECT
             }
         );
-        return searchResult;
-    } catch (e) {
-        return "Error";
-    }
-}
 
-let getProductByAuthor = async (authorId) => {
-    try {
-        let id = authorId;
-        let searchResult = await sequelize.query(
-            'SELECT * FROM products p WHERE p.authorId LIKE ? ORDER BY p.id DESC', {
-            raw: true,
-            replacements: [id],
-            type: QueryTypes.SELECT
-        });
-        return searchResult;
-    } catch (e) {
-        return "Error";
-    }
-}
+        if (page != null) {
+            let pageNumber = parseInt(page);
+            let pageSize = parseInt(size);
+            let start = (pageNumber - 1) * pageSize ;
+            return result.slice(start, start + pageSize);
+        }
 
-let getProductByProductSet = async (productSetId) => {
-    try {
-        let id = productSetId;
-        let searchResult = await sequelize.query(
-            'SELECT * FROM products p WHERE p.productsetId LIKE ? ORDER BY p.id DESC', {
-            raw: true,
-            replacements: [id],
-            type: QueryTypes.SELECT
-        });
-        return searchResult;
-    } catch (e) {
-        return "Error";
-    }
-}
-
-let getProductBySoldNumber = async () => {
-    try {
-        let searchResult = await sequelize.query(
-            'SELECT * FROM products p ORDER BY soldNumber DESC', {
-            raw: true,
-            type: QueryTypes.SELECT
-        });
-        return searchResult;
-    } catch (e) {
-        return "Error";
-    }
-}
-
-let getAllProduct = async () => {
-    try {
-        let result = await Product.findAll();
         return result;
     } catch (e) {
         return "Error";
     }
 }
+
+let getProductByAuthor = async (authorId, page, size) => {
+    try {
+        let id = authorId;
+        let result = await sequelize.query(
+            'SELECT * FROM products p WHERE p.authorId LIKE ? ORDER BY p.id DESC', {
+            raw: true,
+            replacements: [id],
+            type: QueryTypes.SELECT
+        });
+
+        if (page != null) {
+            let pageNumber = parseInt(page);
+            let pageSize = parseInt(size);
+            let start = (pageNumber - 1) * pageSize ;
+            return result.slice(start, start + pageSize);
+        }
+
+        return result;
+    } catch (e) {
+        return "Error";
+    }
+}
+
+let getProductByProductSet = async (productSetId, page, size) => {
+    try {
+        let id = productSetId;
+        let result = await sequelize.query(
+            'SELECT * FROM products p WHERE p.productsetId LIKE ? ORDER BY p.id DESC', {
+            raw: true,
+            replacements: [id],
+            type: QueryTypes.SELECT
+        });
+        if (page != null) {
+            let pageNumber = parseInt(page);
+            let pageSize = parseInt(size);
+            let start = (pageNumber - 1) * pageSize ;
+            return result.slice(start, start + pageSize);
+        }
+        return result;
+    } catch (e) {
+        return "Error";
+    }
+}
+
+let getProductBySoldNumber = async (page, size) => {
+    try {
+        let result = await sequelize.query(
+            'SELECT * FROM products p ORDER BY soldNumber DESC', {
+            raw: true,
+            type: QueryTypes.SELECT
+        });
+        if (page != null) {
+            let pageNumber = parseInt(page);
+            let pageSize = parseInt(size);
+            let start = (pageNumber - 1) * pageSize ;
+            return result.slice(start, start + pageSize);
+        }
+        return result;
+    } catch (e) {
+        return "Error";
+    }
+}
+
+let getAllProduct = async (page, size) => {
+    try {
+        let result = await Product.findAll();
+        if (page != null) {
+            let pageNumber = parseInt(page);
+            let pageSize = parseInt(size);
+            let start = (pageNumber - 1) * pageSize ;
+            return result.slice(start, start + pageSize);
+        }
+        return result;
+    } catch (e) {
+        return "Error";
+    }
+}
+
+let getProductInfo = async () => {
+    try {
+
+        let products = await sequelize.query(
+            'select p.id, p.productName, p.price, p.quantityInStock, p.publishedYear, p.productSize, p.pageNumber, p.image, p.soldStatus, a.name as authorName, pv.name providerName, ps.name as setName'
+            + ' from products p'
+            + ' join authors a on a.id = p.authorId'
+            + ' join providers pv on pv.id = p.providerId'
+            + ' left join product_set ps on ps.id = p.productsetId'
+            + ' order by p.id;', {
+                raw : true,
+                type: QueryTypes.SELECT
+            }
+        );
+
+        let authors = await sequelize.query(
+            'select name from authors', {
+                raw: true,
+                type: QueryTypes.SELECT
+            }
+        );
+
+        let providers = await sequelize.query(
+            'select name from providers', {
+                raw: true,
+                type: QueryTypes.SELECT
+            }
+        );
+
+        let sets = await sequelize.query(
+            'select name from product_set', {
+                raw: true,
+                type: QueryTypes.SELECT
+            }
+        );
+
+        return result = {
+            products: products,
+            authors: authors,
+            providers: providers,
+            sets: sets
+        };
+    } catch (e) {
+        return "Error";
+    }
+}
+
 
 let addProduct = async (data) => {
     try {
@@ -207,6 +283,7 @@ module.exports = {
     getProductByAuthor: getProductByAuthor,
     getProductBySoldNumber: getProductBySoldNumber,
     getAllProduct: getAllProduct,
+    getProductInfo: getProductInfo,
     addProduct: addProduct,
     updateProduct: updateProduct,
     deleteProduct: deleteProduct,

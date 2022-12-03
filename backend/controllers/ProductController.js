@@ -1,7 +1,9 @@
 const productService = require('../services/ProductService');
 
 const getAllProduct = async (req, res) => {
-    const result = await productService.getAllProduct();
+    let page = req.query.page;
+    let size = req.query.size;
+    const result = await productService.getAllProduct(page, size);
     res.send(result);
 }
 
@@ -12,29 +14,44 @@ const getProductById = async (req, res) => {
 }
 
 const getProductByCategory = async (req, res) => {
+    let page = req.query.page;
+    let size = req.query.size;
     let categoryId = req.params.categoryId;
-    const result = await productService.getProductByCategory(categoryId);
+    const result = await productService.getProductByCategory(categoryId, page, size);
     res.send(result);
 }
 const getAllProductByCreatedTime = async(req, res) => {
-    const result = await productService.getAllProductByCreatedTime();
+    let page = req.query.page;
+    let size = req.query.size;
+    const result = await productService.getAllProductByCreatedTime(page,size);
     res.send(result)
 }
 
 const getProductByProductSet = async(req, res) => {
+    let page = req.query.page;
+    let size = req.query.size;
     let productSetId = req.params.productSetId;
-    const result = await productService.getProductByProductSet(productSetId);
+    const result = await productService.getProductByProductSet(productSetId, page, size);
     res.send(result);
 }
 
 const getProductByAuthor = async(req, res) => {
+    let page = req.query.page;
+    let size = req.query.size;
     let authorId = req.params.authorId;
-    const result = await productService.getProductByAuthor(authorId);
+    const result = await productService.getProductByAuthor(authorId, page, size);
+    res.send(result);
+}
+
+const getProductInfo = async(req, res) => {
+    const result = await productService.getProductInfo();
     res.send(result);
 }
 
 const getProductBySoldNumber = async(req, res) => {
-    const result = await productService.getProductBySoldNumber();
+    let page = req.query.page;
+    let size = req.query.size;
+    const result = await productService.getProductBySoldNumber(page, size);
     res.send(result);
 }
 
@@ -64,6 +81,7 @@ module.exports = {
     getProductByProductSet: getProductByProductSet,
     getProductBySoldNumber: getProductBySoldNumber,
     getProductByAuthor: getProductByAuthor,
+    getProductInfo: getProductInfo,
     addProduct: addProduct,
     updateProduct: updateProduct,
     deleteProduct: deleteProduct,
