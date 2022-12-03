@@ -1,10 +1,10 @@
 const { QueryTypes, Model } = require('sequelize');
 const sequelize = require('../database/connect');
 
-let getSearchResult = async(data) => {
+let getSearchResult = async(data, page, size) => {
     try {
         let searchData = "%" + data + "%";
-        let searchResult = await sequelize.query(
+        let result = await sequelize.query(
             "select p.*, ps.name setName, ps.id setId, a.name " 
             + "from products p " 
             + "join authors a on p.authorId = a.id "
@@ -15,7 +15,13 @@ let getSearchResult = async(data) => {
                 replacements: {searchData},
                 type: QueryTypes.SELECT
             });
-        return searchResult;
+        if (page != null) {
+            let pageNumber = parseInt(page);
+            let pageSize = parseInt(size);
+            let start = (pageNumber - 1) * pageSize ;
+            return result.slice(start, start + pageSize);
+        }
+        return result;
     } catch (e) {
         return "Error";
     }
