@@ -166,15 +166,13 @@ let getProductInfo = async () => {
             + ' order by p.id;', {
             raw: true,
             type: QueryTypes.SELECT
-        }
-        );
+        });
 
         let authors = await sequelize.query(
             'select name from authors', {
             raw: true,
             type: QueryTypes.SELECT
-        }
-        );
+        });
 
         let providers = await sequelize.query(
             'select name from providers', {
@@ -187,14 +185,25 @@ let getProductInfo = async () => {
             'select name from product_set', {
             raw: true,
             type: QueryTypes.SELECT
-        }
-        );
+        });
 
+        let authorList = [];
+        for (let i = 0; i < authors.length; i++) {
+            authorList.push(authors[i].name);
+        }
+        let providerList = [];
+        for (let i = 0; i < providers.length; i++) {
+            providerList.push(providers[i].name);
+        }
+        let setList = [];
+        for (let i = 0; i < sets.length; i++) {
+            setList.push(sets[i].name);
+        }
         return result = {
             products: products,
-            authors: authors,
-            providers: providers,
-            sets: sets
+            authors: authorList,
+            providers: providerList,
+            sets: setList
         };
     } catch (e) {
         return "Error";

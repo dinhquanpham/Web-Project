@@ -55,7 +55,7 @@ async function getUserInfoById(userId) {
 }
 
 async function changePassword(credentials) {
-    return fetch(`${process.env.REACT_APP_SV_HOST}/account/updatePassword", {
+    return fetch(`${process.env.REACT_APP_SV_HOST}/account/updatePassword`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
