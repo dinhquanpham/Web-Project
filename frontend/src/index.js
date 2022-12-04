@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home/Home";
-import SignIn from "./pages/SignIn";
-import SignUp from "./pages/SignUp";
+import SignIn from "./pages/SignIn/SignIn";
+import SignUp from "./pages/SignUp/SignUp";
 import Product from "./pages/Product/Product";
 import ProductSet from "./pages/ProductSet/ProductSet";
 import UserInfo from "./pages/UserInfo/UserInfo";
 import { createTheme } from "@mui/system";
 import { ThemeProvider } from "@emotion/react";
 import { Navigate } from "react-router-dom";
-import PrivateUserRoute from "./components/PrivateRoute";
+import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import Search from "./pages/Search/Search";
 import "./index.css";
 
@@ -35,11 +35,9 @@ export default function App() {
                 <Route path="/product-set" element={<ProductSet />}>
                     <Route path="?id=" element={<ProductSet />} />
                 </Route>
-                {/* <Route path="/user" element ={<UserInfo />}>
-                </Route> */}
                 <Route
                     path="/user"
-                    element={<PrivateUserRoute Component={UserInfo} />}
+                    element={<PrivateRoute Component={UserInfo} />}
                 />
                 <Route path="/?id=" element={<UserInfo />} />
                 <Route path="/search" element={<Search />}>
