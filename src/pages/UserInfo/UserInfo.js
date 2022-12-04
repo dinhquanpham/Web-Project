@@ -8,9 +8,9 @@ import { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import TextField from '@mui/material/TextField';
 import './UserInfo.css'
-import { Button, Table } from '@mui/material';
+import { Button } from '@mui/material';
 import { useNavigate } from "react-router-dom";
-import TableData  from "../../components/table/Table"
+import TableData  from "../../components/table/UserTable"
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -305,7 +305,7 @@ export default function UserInfo() {
               Submit
             </Button>
         </Box>
-          <TableData  columns={columns} hover={true} striped={true} typeId = {"User"} tabIndex = {"1"}/>
+          <TableData  columns={columns} hover={true} striped={true}/>
           </TabPanel>
           <TabPanel value={value} index={3}>
           </TabPanel>
