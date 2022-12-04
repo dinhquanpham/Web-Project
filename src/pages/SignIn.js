@@ -54,10 +54,17 @@ export default function SignIn() {
             password: data.get("password"),
         });
         console.log(response.message);
-        if (response.message !== "Error") {
-            sessionStorage.setItem("userId", response.userId);
-            navigate("/");
-        } else {
+        if(response.message !== "Error") {
+            sessionStorage.setItem('userId', response.userId);
+            if (response.roleId === 1) {
+                sessionStorage.setItem('admin', 'true');
+            }
+            else {
+                sessionStorage.setItem('admin', 'false');
+            }
+            navigate('/');
+        }
+        else {
             console.log("Sai tài khoản hoặc mật khẩu");
         }
     };
