@@ -65,11 +65,14 @@ let deleteProvider = async (providerId) => {
             }
         });
         await provider.destroy();
-        let message = "Deleted";
-        return message;
+        return data = {
+            message: "Deleted",
+        }
     }
     catch (e) {
-        return "Error";
+        return data = {
+            message: "Error",
+        }
     }
 }
 

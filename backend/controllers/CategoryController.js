@@ -26,7 +26,7 @@ const updateCategory = async (req, res) => {
 const deleteCategory = async (req, res) => {
     let categoryId = req.params.categoryId;
     const result = await categoryService.deleteCategory(categoryId);
-    res.send("Deleted!");
+    res.send(result);
 }
 
 module.exports = {

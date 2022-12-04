@@ -26,7 +26,7 @@ const updateAuthor = async (req, res) => {
 const deleteAuthor = async (req, res) => {
     let authorId = req.params.authorId;
     const result = await authorService.deleteAuthor(authorId);
-    res.send("Deleted!");
+    res.send(result);
 }
 
 module.exports = {

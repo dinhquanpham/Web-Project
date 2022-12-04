@@ -33,7 +33,7 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
     let userId = req.params.userId;
     const result = await userService.deleteUser(userId);
-    res.send("Deleted!");
+    res.send(result);
 }
 
 module.exports = {

@@ -43,7 +43,7 @@ const updateProductSet = async (req, res) => {
 const deleteProductSet = async (req, res) => {
     let productSetId = req.params.productSetId;
     const result = await productSetService.deleteProductSet(productSetId);
-    res.send("Deleted!");
+    res.send(result);
 }
 
 module.exports = {

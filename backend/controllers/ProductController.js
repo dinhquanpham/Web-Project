@@ -76,7 +76,7 @@ const updateProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
     let productId = req.params.productId;
     const result = await productService.deleteProduct(productId);
-    res.send("Deleted!");
+    res.send(result);
 }
 
 module.exports = {

@@ -158,7 +158,7 @@ let getProductInfo = async () => {
     try {
 
         let products = await sequelize.query(
-            'select p.id, p.productName, p.price, p.quantityInStock, p.publishedYear, p.productSize, p.pageNumber, p.image, p.soldStatus, a.name as authorName, pv.name providerName, ps.name as setName'
+            'select p.id, p.productName, p.price, p.quantityInStock, p.publishedYear, p.productSize, p.pageNumber, p.image, p.soldNumber, p.soldStatus, a.name as authorName, pv.name providerName, ps.name as setName'
             + ' from products p'
             + ' join authors a on a.id = p.authorId'
             + ' join providers pv on pv.id = p.providerId'
@@ -206,7 +206,9 @@ let getProductInfo = async () => {
             sets: setList
         };
     } catch (e) {
-        return "Error";
+        return data = {
+            message: "Error",
+        }
     }
 }
 
@@ -271,7 +273,9 @@ let addProduct = async (data) => {
         return product;
     }
     catch (e) {
-        return "Error";
+        return data = {
+            message: "Error",
+        }
     }
 }
 
@@ -302,7 +306,9 @@ let updateProduct = async (data) => {
         return product;
     }
     catch (e) {
-        return "Error";
+        return data = {
+            message: "Error",
+        }
     }
 }
 
@@ -314,11 +320,14 @@ let deleteProduct = async (productId) => {
             }
         });
         await product.destroy();
-        let message = "Deleted";
-        return message;
+        return data = {
+            message: "Deleted",
+        }
     }
     catch (e) {
-        return "Error";
+        return data = {
+            message: "Error",
+        }
     }
 }
 

@@ -26,7 +26,7 @@ const updateRole = async (req, res) => {
 const deleteRole = async (req, res) => {
     let roleId = req.params.roleId;
     const result = await roleService.deleteRole(roleId);
-    res.send("Deleted!");
+    res.send(result);
 }
 
 module.exports = {

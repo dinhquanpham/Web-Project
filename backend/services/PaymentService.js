@@ -67,11 +67,14 @@ let deletePayment = async (paymentId) => {
             }
         });
         await payment.destroy();
-        let message = "Deleted";
-        return message;
+        return data = {
+            message: "Deleted",
+        }
     }
     catch (e) {
-        return "Error";
+        return data = {
+            message: "Error",
+        }
     }
 }
 

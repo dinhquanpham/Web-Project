@@ -132,11 +132,14 @@ let deleteUser = async (userId) => {
             }
         });
         await user.destroy();
-        let message = "Deleted";
-        return message;
+        return data = {
+            message: "Deleted",
+        }
     }
     catch (e) {
-        return "Error";
+        return data = {
+            message: "Error",
+        }
     }
 }
 

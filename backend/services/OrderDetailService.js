@@ -75,11 +75,14 @@ let deleteOrderDetail = async (orderDetailId) => {
             }
         });
         await orderDetail.destroy();
-        let message = "Deleted";
-        return message;
+        return data = {
+            message: "Deleted",
+        }
     }
     catch (e) {
-        return "Error";
+        return data = {
+            message: "Error",
+        }
     }
 }
 

@@ -26,7 +26,7 @@ const getOrderDetailByOrderId = async(req, res) => {
 const deleteOrderDetail = async (req, res) => {
     let orderDetailId = req.params.orderDetailId;
     const result = await orderDetailService.deleteOrderDetail(orderDetailId);
-    res.send("Deleted!");
+    res.send(result);
 }
 
 module.exports = {

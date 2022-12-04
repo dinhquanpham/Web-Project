@@ -26,7 +26,7 @@ const updateProvider = async (req, res) => {
 const deleteProvider = async (req, res) => {
     let providerId = req.params.providerId;
     const result = await providerService.deleteProvider(providerId);
-    res.send("Deleted!");
+    res.send(result);
 }
 
 module.exports = {

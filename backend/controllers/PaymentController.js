@@ -26,7 +26,7 @@ const updatePayment = async (req, res) => {
 const deletePayment = async (req, res) => {
     let paymentId = req.params.paymentId;
     const result = await paymentService.deletePayment(paymentId);
-    res.send("Deleted!");
+    res.send(result);
 }
 
 module.exports = {

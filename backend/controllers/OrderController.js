@@ -47,7 +47,7 @@ const updateOrder = async (req, res) => {
 const deleteOrder = async (req, res) => {
     let orderId = req.params.orderId;
     const result = await orderService.deleteOrder(orderId);
-    res.send("Deleted!");
+    res.send(result);
 }
 
 module.exports = {

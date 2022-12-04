@@ -50,11 +50,11 @@ let getProductSetByProvider = async (providerId) => {
 let getProducSetInfo = async () => {
     try {
         let productSet = await sequelize.query(
-                'select ps.* from product_set ps',{
-                    raw: true,
-                    type: QueryTypes.SELECT
+            'select ps.id, ps.name, ps.newestChap, ps.description, ps.image, a.name as authorName, p.name as providerName from product_set ps join authors a on ps.authorId = a.id join providers p on ps.providerId = p.id',{
+                raw: true,
+                type: QueryTypes.SELECT
             }
-         );
+        );
          let authors = await sequelize.query(
             'select name from authors', {
             raw: true,
@@ -143,7 +143,6 @@ let updateProductSet = async (data) => {
             where:
                 { id: data.id }
         });
-
         productSet.set({
             id: data.id,
             name: data.name,
@@ -169,11 +168,14 @@ let deleteProductSet = async (productSetId) => {
             }
         });
         await productSet.destroy();
-        let message = "Deleted";
-        return message;
+        return data = {
+            message: "Deleted",
+        }
     }
     catch (e) {
-        return "Error";
+        return data = {
+            message: "Error",
+        }
     }
 }
 
