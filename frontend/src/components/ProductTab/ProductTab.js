@@ -20,92 +20,85 @@ const Item = styled(Paper)(({ theme }) => ({
 export default function ProductTab(productSetName, productInfo) {
     let navigate = useNavigate();
     const productShow = productInfo.map((data) => (
-        <Box key={data.productId} className="box">
+        <Box key={data.id} className="box">
             <Box
-                className="box"
+                className="box product-tab box-show-product"
                 sx={{
-                    height: "70%",
+                    height: "90%",
                 }}
+                style={{ cursor: "pointer" }}
+                onClick={() => navigate(`/product/?id=${data.id}`)}
             >
-                <img
-                    className="image"
-                    src={data.image}
-                    alt={data.productName}
-                />
-            </Box>
-            <Box
-                className="box"
-                sx={{
-                    height: "20%",
-                }}
-            >
-                <Box>{data.productName}</Box>
-                <Box>Giá: {data.price}</Box>
-                <Box>Đã bán: {data.soldNumber}</Box>
+                <Box
+                    className="box"
+                    sx={{
+                        height: "70%",
+                    }}
+                >
+                    <img
+                        className="image"
+                        src={data.image}
+                        alt={data.productName}
+                    />
+                </Box>
+                <Box
+                    className="box"
+                    sx={{
+                        height: "30%",
+                    }}
+                >
+                    <Box className="box product-tab box-product-name">
+                        {data.productName}
+                    </Box>
+                    <Box className="box product-tab box-product-price">
+                        Giá: {data.price}
+                    </Box>
+                    <Box>Đã bán: {data.soldNumber}</Box>
+                </Box>
             </Box>
             <Button
-                className="box button-add-to-cart"
-                sx={{
-                    height: "10%",
-                }}
+                className="box product-tab button-add-to-cart"
                 variant="outlined"
-                onClick={() => {}}
+                onClick={() => {
+                    let amount = localStorage.getItem(data.id);
+                    amount++;
+                    localStorage.setItem(data.id, amount);
+                }}
             >
-                MUA
+                THÊM VÀO GIỎ
             </Button>
         </Box>
     ));
     return (
-        <Box className="box product-tab">
-            <Typography
-                className="box product-title"
-                sx={{
-                    height: "10%",
-                    float: "left",
-                }}
-            >
-                {productSetName}
-            </Typography>
-
-            <Grid
-                className="box"
-                container
-                columns={10}
-                sx={{
-                    height: "80%",
-                }}
-            >
+        <Box className="box product-tab box-product-tab">
+            <Box className="box product-tab box-product-title">
+                <Typography className="box product-tab text-product-title">
+                    {productSetName}
+                </Typography>
+            </Box>
+            <Box className="box product-tab box-product-info">
                 {Array.from(Array(5)).map((_, index) => (
-                    <Grid className="box" item xs={2} key={index}>
-                        <Item
-                            className="box"
-                            style={{ cursor: "pointer" }}
-                            onClick={() =>
-                                navigate(
-                                    `/product/?id=${productInfo[index].id}`
-                                )
-                            }
-                        >
-                            {productShow[index]}
-                        </Item>
-                    </Grid>
+                    <Item className="box product-tab box-product-item">
+                        {productShow[index]}
+                    </Item>
                 ))}
-            </Grid>
-            <Button
-                className="box button-more"
-                sx={{
-                    height: "10%",
-                }}
-                variant="outlined"
-                onClick={() => {
-                    let productsetId = productInfo[0].productsetId;
-                    if (productSetName == "TRUYỆN HOT") productsetId = "hot";
-                    if (productSetName == "TRUYỆN MỚI") productsetId = "new";
-                    navigate(`/product-set/?id=${productsetId}`);
-                }}
-            >
-                Xem thêm
-            </Button>
+            </Box>
+            <Box className="box product-tab box-button-watch-more">
+                <Button
+                    className="box product-tab button-watch-more"
+                    variant="outlined"
+                    onClick={() => {
+                        let productsetId = productInfo[0].productsetId;
+                        if (productSetName == "TRUYỆN HOT")
+                            productsetId = "hot";
+                        if (productSetName == "TRUYỆN MỚI")
+                            productsetId = "new";
+                        navigate(`/product-set/?id=${productsetId}`);
+                    }}
+                >
+                    Xem thêm
+                </Button>
+            </Box>
         </Box>
     );
 }

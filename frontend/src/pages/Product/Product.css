@@ -1,0 +1,16 @@
+.box.product.box-product {
+    height: 400px;
+    display: flex;
+}
+
+.box.product.box-product-image {
+    width: 35%;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.box.product.box-product-info {
+    width: 65%;
+    justify-content: flex-end;
+    align-items: flex-end;
+}

@@ -51,7 +51,7 @@ export default function Home() {
         );
         setproductSet8(responseProductSet8);
     };
-    let height = 400;
+    let height = 450;
     return (
         <Box sx={{ width: "100%" }}>
             <Box sx={{ width: "100%" }}>{Header()}</Box>
