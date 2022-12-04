@@ -17,9 +17,20 @@ const getProductSetByProvider = async(req, res) => {
     res.send(result);
 }
 
+const getProducSetInfo = async(req, res) => {
+    const result = await productSetService.getProducSetInfo();
+    res.send(result);
+}
+
 const addProductSet = async (req, res) => {
     let data = req.body;
     const result = await productSetService.addProductSet(data);
+    res.send(result);
+}
+
+const addProductSetByAdmin = async (req, res) => {
+    let data = req.body;
+    const result = await productSetService.addProductSetByAdmin(data);
     res.send(result);
 }
 
@@ -39,7 +50,9 @@ module.exports = {
     getAllProductSet: getAllProductSet,
     getProductSetById: getProductSetById,
     getProductSetByProvider: getProductSetByProvider,
+    getProducSetInfo: getProducSetInfo,
     addProductSet: addProductSet,
+    addProductSetByAdmin: addProductSetByAdmin,
     updateProductSet: updateProductSet,
     deleteProductSet: deleteProductSet,
 }

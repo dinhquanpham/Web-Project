@@ -47,6 +47,46 @@ let getProductSetByProvider = async (providerId) => {
     }
 }
 
+let getProducSetInfo = async () => {
+    try {
+        let productSet = await sequelize.query(
+                'select ps.* from product_set ps',{
+                    raw: true,
+                    type: QueryTypes.SELECT
+            }
+         );
+         let authors = await sequelize.query(
+            'select name from authors', {
+            raw: true,
+            type: QueryTypes.SELECT
+        });
+
+        let providers = await sequelize.query(
+            'select name from providers', {
+            raw: true,
+            type: QueryTypes.SELECT
+        }); 
+
+        let authorList = [];
+        for (let i = 0; i < authors.length; i++) {
+            authorList.push(authors[i].name);
+        }
+
+        let providerList = [];
+        for (let i = 0; i < providers.length; i++) {
+            providerList.push(providers[i].name);
+        }
+
+        return result = {
+            productSet: productSet,
+            authors: authorList,
+            providers: providerList,
+        };
+    } catch (e) {
+        return "Error";
+    }
+}
+
 let addProductSet = async (data) => {
     try {
         let result = await ProductSet.create({
@@ -65,6 +105,38 @@ let addProductSet = async (data) => {
     }
 }
 
+let addProductSetByAdmin = async(data) => {
+    try {
+
+        let id = await sequelize.query(
+            'select (select id from authors where name = :authorName) as authorId, (select id from providers where name = :providerName) as providerId',
+            {
+                raw: true,
+                replacements: {
+                    authorName: data.authorName,
+                    providerName: data.providerName,
+                },
+                type: QueryTypes.SELECT
+            });
+
+        let authorId = id[0].authorId;
+        let providerId = id[0].providerId;
+
+        let result = await ProductSet.create({
+            id: data.id,
+            name: data.name,
+            description: data.description,
+            newestChap: data.newestChap,
+            image: data.image,
+            providerId: providerId,
+            authorId: authorId
+        })
+
+        return result;
+    } catch(e) {
+        return "Error";
+    }
+}
 let updateProductSet = async (data) => {
     try {
         let productSet = await ProductSet.findOne({
@@ -109,7 +181,9 @@ module.exports = {
     getProductSetById: getProductSetById,
     getAllProductSet: getAllProductSet,
     getProductSetByProvider: getProductSetByProvider,
+    getProducSetInfo: getProducSetInfo,
     addProductSet: addProductSet,
+    addProductSetByAdmin: addProductSetByAdmin,
     updateProductSet: updateProductSet,
     deleteProductSet: deleteProductSet,
 }
