@@ -26,7 +26,7 @@ const sliceData = (data, page, rowsPerPage) => {
 };
 
 async function getData(type) {
-  let url = "http://localhost:3030/models/";
+  let url = `${process.env.REACT_APP_SV_HOST}/models/`;
   if (type === 'product' || type === 'product-set') url = url + type + "/admin/info";
   else {
     url = url + type;
