@@ -59,7 +59,13 @@ export default function SignUp() {
             phone: data.get("phone")
         });
         if (response.message !== "Error") {
-            sessionStorage.setItem('userId', response.userId)
+            sessionStorage.setItem('userId', response.userId);
+            if (response.roleId === 1) {
+                sessionStorage.setItem('admin', 'true');
+            }
+            else {
+                sessionStorage.setItem('admin', 'false');
+            }
             navigate('/');
         }
         else {

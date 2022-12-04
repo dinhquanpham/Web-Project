@@ -36,6 +36,7 @@ export default function Header() {
         let token = sessionStorage.getItem("userId");
         if (token) {
             sessionStorage.removeItem("userId");
+            sessionStorage.removeItem('admin');
             navigate("/");
             setAuth(false);
         } else {
