@@ -55,16 +55,7 @@ export default function Home() {
     return (
         <Box sx={{ width: "100%" }}>
             <Box sx={{ width: "100%" }}>{Header()}</Box>
-            <Box
-                sx={{
-                    width: "100%",
-                    height: { height },
-                    marginTop: "2%",
-                    boxSizing: "border-box",
-                }}
-            >
-                {ProductTab("TRUYỆN HOT", productSetHot)}
-            </Box>
+            <Box className="box">{ProductTab("TRUYỆN HOT", productSetHot)}</Box>
             <Box
                 sx={{
                     width: "100%",

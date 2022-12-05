@@ -1,5 +1,7 @@
-.box.product.box-product {
+.box.product.box-product-info {
     height: 400px;
+    width: 96%;
+    margin: 2%;
     display: flex;
 }
 
@@ -9,8 +11,94 @@
     align-items: flex-start;
 }
 
-.box.product.box-product-info {
+.box.product.box-product-detail {
     width: 65%;
     justify-content: flex-end;
     align-items: flex-end;
+}
+
+.box.product.box-product-text {
+    height: 70%;
+    justify-content: flex-right;
+    align-items: flex-center;
+}
+
+.box.product.box-product-name {
+    width: fit-content !important;
+    height: fit-content !important;
+    margin: auto;
+    color: #000000;
+    font-size: 30px !important;
+}
+
+.box.product.box-product-price {
+    width: fit-content !important;
+    height: fit-content !important;
+    margin: auto;
+    font-size: 30px !important;
+    font-weight: bold;
+    color: var(--main-color) !important;
+}
+
+.box.product.box-product-set-name {
+    width: fit-content !important;
+    height: fit-content !important;
+    margin: auto;
+    font-size: 16px !important;
+    font-weight: bold;
+    color: var(--main-color) !important;
+}
+
+.box.product.box-quantity-control {
+    width: 20%;
+    height: 10%;
+    margin: 0 auto;
+    display: flex;
+}
+
+.box.product.button-quantity-change {
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--main-color);
+}
+
+.box.product.button-quantity-change:hover {
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--main-color);
+    background-color: var(--hover-color);
+}
+
+.box.product.box-quantity-num {
+    display: inline-block;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+    padding-top: 8px;
+}
+
+.box.product.button-add-to-cart {
+    width: 40%;
+    height: 16%;
+    margin: 2%;
+    color: var(--item-background-color);
+    border-color: var(--main-color);
+    background-color: var(--main-color);
+    position: relative;
+    top: 0;
+    transition: top ease-in-out 0.1s;
+}
+
+.box.product.button-add-to-cart:hover {
+    width: 40%;
+    height: 16%;
+    margin: 2%;
+    color: var(--main-color);
+    border-color: var(--main-color);
+    background-color: var(--item-background-color);
+    position: relative;
+    top: -2px;
 }

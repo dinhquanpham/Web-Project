@@ -77,8 +77,12 @@ export default function Product() {
         setProductInSetInfo(response3);
     };
     let navigate = useNavigate();
+    let [amount, setAmount] = useState(1);
+    function changeAmount(value) {
+        setAmount((counter) => Math.max(1, counter + value));
+    }
     let productShow = ((data = productInfo) => (
-        <Box className="box product box-product">
+        <Item className="box product box-product-info">
             <Box className="box product box-product-image">
                 <img
                     className="image"
@@ -86,19 +90,16 @@ export default function Product() {
                     alt={data.productName}
                 />
             </Box>
-            <Box className="box product box-product-info">
-                <Box
-                    className="box "
-                    sx={{
-                        height: "80%",
-                        justifyContent: "flex-left",
-                        alignItems: "flex-left",
-                    }}
-                >
-                    <Box>{data.productName}</Box>
-                    <Box>Giá: {data.price}</Box>
+            <Box className="box product box-product-detail">
+                <Box className="box product box-product-text">
+                    <Box className="box product box-product-name">
+                        {data.productName}
+                    </Box>
+                    <Box className="box product box-product-price">
+                        Giá: {data.price}
+                    </Box>
                     <Box
-                        style={{ cursor: "pointer" }}
+                        className="box product box-product-set-name"
                         onClick={() =>
                             navigate(`/product-set/?id=${data.productsetId}`)
                         }
@@ -106,42 +107,53 @@ export default function Product() {
                         Bộ: {data.setName}
                     </Box>
                 </Box>
-                <Box className="box quantity-box" sx={{ height: "10%" }}></Box>
+                <Box className="box product box-quantity-control">
+                    <Button
+                        className="box product button-quantity-change"
+                        onClick={() => {
+                            changeAmount(-1);
+                        }}
+                    >
+                        -
+                    </Button>
+                    <Box className="box product box-quantity-num">{amount}</Box>
+                    <Button
+                        className="box product button-quantity-change"
+                        onClick={() => {
+                            changeAmount(1);
+                        }}
+                    >
+                        +
+                    </Button>
+                </Box>
                 <Button
-                    className="box add-to-cart"
-                    sx={{
-                        height: "10%",
-                        justifyContent: "flex-center",
-                        alignItems: "flex-center",
-                    }}
+                    className="box product button-add-to-cart"
                     variant="outlined"
                     onClick={() => {
-                        let amount = localStorage.getItem(data.id);
-                        amount++;
-                        localStorage.setItem(data.id, {
-                            ok: 1,
-                            ok: amount,
-                        });
+                        let info = localStorage.getItem(data.id);
+                        info = JSON.parse(info);
+                        let quantity = info == null ? 0 : info.quantity;
+                        quantity += amount;
+                        let newInfo = {
+                            productName: data.productName,
+                            image: data.image,
+                            price: data.price,
+                            quantity: quantity,
+                        };
+                        newInfo = JSON.stringify(newInfo);
+                        localStorage.setItem(data.id, newInfo);
                     }}
                 >
                     THÊM VÀO GIỎ
                 </Button>
             </Box>
-        </Box>
+        </Item>
     ))();
     return (
         <Box className="box">
             <Box className="box">{Header()}</Box>
+            <Box className="box">{productShow}</Box>
             <Box className="box">
-                <Item style={{ cursor: "pointer" }}>{productShow}</Item>
-            </Box>
-            <Box
-                className="box"
-                sx={{
-                    height: 400,
-                    marginTop: "2%",
-                }}
-            >
                 {ProductTab("TRUYỆN CÙNG THỂ LOẠI", productInSetInfo)}
             </Box>
         </Box>
