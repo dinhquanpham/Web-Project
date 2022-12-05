@@ -84,6 +84,14 @@ export default function Admin() {
         { field: "id", header: "ID" },
         { field: "name", header: "Tên" },
       ];
+      const orderColumns = [
+        { field: "id", header: "ID" },
+        { field: "username", header: "Tài khoản" },
+        { field: "orderDate", header: "Thời gian mua hàng" },
+        { field: "shippedDate", header: "Thời gian nhận hàng" },
+        { field: "paidAt", header: "Thời gian thanh toán" },
+        { field: "paidAmount", header: "Tổng tiền" },
+      ];
     const navigate = useNavigate();
     const [value, setValue] = React.useState(0);
     const handleChange = (event, newValue) => {
@@ -100,7 +108,6 @@ export default function Admin() {
             <Tab label="Tác giả" {...a11yProps(4)} />
             <Tab label="Nhà xuất bản" {...a11yProps(5)} />
             <Tab label="Đơn hàng" {...a11yProps(6)} />
-            <Tab label="Chi tiết đơn hàng" {...a11yProps(7)} />
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
@@ -120,6 +127,9 @@ export default function Admin() {
           </TabPanel>
           <TabPanel value={value} index={5}>
           <TableData  columns={providerColumns} hover={true} striped={true} type={'provider'}/>
+          </TabPanel>
+          <TabPanel value={value} index={6}>
+          <TableData  columns={orderColumns} hover={true} striped={true} type={'order'}/>
           </TabPanel>
       </Box>
     ))();

@@ -39,9 +39,8 @@ export default function App() {
                 <Route path="/cart" element={<Cart />}></Route>
                 <Route
                     path="/user"
-                    element={<PrivateRoute Component={UserInfo} />}
+                    element={<PrivateRoute type={"user"} />}
                 />
-                <Route path="/?id=" element={<UserInfo />} />
                 <Route path="/search" element={<Search />}>
                     <Route path="?name=" element={<Search />} />
                 </Route>
