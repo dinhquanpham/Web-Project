@@ -2,9 +2,7 @@ import * as React from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 import "./ProductTab.css";
@@ -19,14 +17,10 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export default function ProductTab(productSetName, productInfo) {
     let navigate = useNavigate();
-    const productShow = productInfo.map((data) => (
-        <Box key={data.id} className="box">
+    const productTabShow = productInfo.map((data) => (
+        <Box className="box">
             <Box
-                className="box product-tab box-show-product"
-                sx={{
-                    height: "90%",
-                }}
-                style={{ cursor: "pointer" }}
+                className="box product-tab box-product-detail"
                 onClick={() => navigate(`/product/?id=${data.id}`)}
             >
                 <Box
@@ -53,16 +47,27 @@ export default function ProductTab(productSetName, productInfo) {
                     <Box className="box product-tab box-product-price">
                         Giá: {data.price}
                     </Box>
-                    <Box>Đã bán: {data.soldNumber}</Box>
+                    <Box className="box product-tab box-product-sold">
+                        Đã bán: {data.soldNumber}
+                    </Box>
                 </Box>
             </Box>
             <Button
                 className="box product-tab button-add-to-cart"
                 variant="outlined"
                 onClick={() => {
-                    let amount = localStorage.getItem(data.id);
-                    amount++;
-                    localStorage.setItem(data.id, amount);
+                    let info = localStorage.getItem(data.id);
+                    info = JSON.parse(info);
+                    let quantity = info == null ? 0 : info.quantity;
+                    quantity++;
+                    let newInfo = {
+                        productName: data.productName,
+                        image: data.image,
+                        price: data.price,
+                        quantity: quantity,
+                    };
+                    newInfo = JSON.stringify(newInfo);
+                    localStorage.setItem(data.id, newInfo);
                 }}
             >
                 THÊM VÀO GIỎ
@@ -70,16 +75,19 @@ export default function ProductTab(productSetName, productInfo) {
         </Box>
     ));
     return (
-        <Box className="box product-tab box-product-tab">
-            <Box className="box product-tab box-product-title">
-                <Typography className="box product-tab text-product-title">
+        <Item className="box product-tab box-product-tab">
+            <Box className="box product-tab box-product-set-title">
+                <Typography className="box product-tab text-product-set-title">
                     {productSetName}
                 </Typography>
             </Box>
-            <Box className="box product-tab box-product-info">
+            <Box className="box product-tab box-product-set-info">
                 {Array.from(Array(5)).map((_, index) => (
-                    <Item className="box product-tab box-product-item">
-                        {productShow[index]}
+                    <Item
+                        className="box product-tab box-product-info"
+                        key={index}
+                    >
+                        {productTabShow[index]}
                     </Item>
                 ))}
             </Box>
@@ -99,6 +107,6 @@ export default function ProductTab(productSetName, productInfo) {
                     Xem thêm
                 </Button>
             </Box>
-        </Box>
+        </Item>
     );
 }

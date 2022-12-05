@@ -8,6 +8,7 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import { useNavigate } from "react-router-dom";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useEffect, useState } from "react";
 import Menu from "../Menu/Menu";
 import SearchBar from "../SearchBar/SearchBar";
@@ -36,7 +37,7 @@ export default function Header() {
         let token = sessionStorage.getItem("userId");
         if (token) {
             sessionStorage.removeItem("userId");
-            sessionStorage.removeItem('admin');
+            sessionStorage.removeItem("admin");
             navigate("/");
             setAuth(false);
         } else {
@@ -51,7 +52,6 @@ export default function Header() {
                         className="logo"
                         variant="h6"
                         component="div"
-                        sx={{ flexGrow: 0 }}
                         style={{ cursor: "pointer" }}
                         onClick={() => navigate("/")}
                     >
@@ -59,6 +59,13 @@ export default function Header() {
                     </Typography>
                     <Menu></Menu>
                     <SearchBar />
+                    <IconButton
+                        className="ShoppingCartIcon"
+                        onClick={() => navigate("/cart")}
+                    >
+                        <ShoppingCartIcon />
+                    </IconButton>
+
                     {!auth && (
                         <div>
                             <Button
@@ -79,7 +86,12 @@ export default function Header() {
                                 onClick={handleUser}
                                 color="inherit"
                             >
-                                <AccountCircle />
+                                <Box
+                                    className="AccountCircle"
+                                    onClick={() => navigate("/cart")}
+                                >
+                                    <AccountCircle />
+                                </Box>
                             </IconButton>
                             <Button
                                 className="button-signin"

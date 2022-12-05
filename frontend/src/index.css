@@ -2,6 +2,7 @@
     background-color: #f0f0f0;
     --main-color: #c92127;
     --item-background-color: #ffffff;
+    --hover-color: #ecdfdf;
 }
 
 .box {

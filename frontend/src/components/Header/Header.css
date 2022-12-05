@@ -9,3 +9,12 @@
 .header {
     background-color: white !important;
 }
+
+.AccountCircle {
+    color: var(--main-color) !important;
+}
+
+.ShoppingCartIcon {
+    color: var(--main-color) !important;
+    cursor: pointer;
+}
