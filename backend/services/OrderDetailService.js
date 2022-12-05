@@ -44,14 +44,17 @@ let addOrderDetail = async (data) => {
                 }
             });
             let amount = product.quantityInStock - data[i].orderNumber;
+            let soldNumber = product.soldNumber + data[i].orderNumber;
             if (amount < 0) {
                 amount = 0;
             }
             
             product.set({
                 quantityInStock: amount,
-                soldStatus: !(amount == 0)
+                soldStatus: !(amount == 0),
+                soldNumber: soldNumber
             })
+            
             product.save();
             list.push(result)
         }

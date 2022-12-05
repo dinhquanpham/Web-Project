@@ -101,7 +101,7 @@ const Table = ({
                 {columns.map((col) => (
                 <td>{row[col.field]}</td>
                 ))}
-                <td>
+                  <td>
                     <Button                             
                     type="submit"
                     variant="contained"

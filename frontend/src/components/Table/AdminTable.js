@@ -11,6 +11,7 @@ import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { DataArray } from "@mui/icons-material";
+import { Navigate } from "react-router-dom";
 
 const calculateRange = (data, rowsPerPage) => {
     const range = [];
@@ -32,6 +33,17 @@ async function getData(type) {
     url = url + type;
   }
   console.log(url);
+  let data = await fetch(url, {
+      method: "GET",
+      headers: {
+          "Content-Type": "application/json",
+      },
+  }).then((data) => data.json());
+  return data;
+}
+
+async function getOrderDetailByOrderId(id) {
+  let url = `${process.env.REACT_APP_SV_HOST}/models/order-detail/by-order/${id}`;
   let data = await fetch(url, {
       method: "GET",
       headers: {
@@ -77,6 +89,7 @@ const Table = ({
 }) => {
     const [page, setPage] = useState(1);
     let [currentData, setCurrentData] = useState([]);
+    let [currentOrderData, setCurrentOrderData] = useState([]);
     let [soldStatus, setSoldStatus] = useState("");
     let [productSet, setProductSet] = useState([]);
     let [author, setAuthor] = useState([]);
@@ -110,7 +123,7 @@ const Table = ({
       setTableRange([...range]);
       const slice = sliceData(currentData, page, rowsPerPage);
       setSlice([...slice]);
-    }, [setTableRange, page, setSlice, currentData, author]);
+    }, [setTableRange, page, setSlice, currentData, author, currentOrderData]);
     const getCaps = (head, field) => {
         if (head) return head.toUpperCase();
         return field.toUpperCase();
@@ -130,7 +143,7 @@ const Table = ({
             productSize: data.get('productSize'),
             pageNumber: data.get('pageNumber'),
             soldNumber: data.get('soldNumber'),
-            image: data.get('data'),
+            image: data.get('image'),
             soldStatus: data.get('soldStatus'),
             authorName: currentAuthor,
             setName: currentProductSet,
@@ -189,6 +202,7 @@ const Table = ({
             console.log("Error");
         }
     }
+
     const handleSoldStatusChange = (event) => {
       console.log(event.target.value);
       setSoldStatus(event.target.value);
@@ -220,8 +234,8 @@ const Table = ({
                 {columns.map((col) => (
                 <td>{row[col.field]}</td>
                 ))}
-                {row.roleId !== 1 && (
-                    <td>
+                {row.roleId !== 1 && type !== 'order' && (
+                  <td>
                     <Button                             
                     type="submit"
                     variant="contained"
@@ -229,8 +243,9 @@ const Table = ({
                     onClick= {(e)=> handleDeleteData(row.id)}>
                     Delete
                     </Button>
-                </td>
+                  </td>
                 )}
+                
                 </tr>
             ))}
         </tbody>
@@ -532,7 +547,7 @@ const Table = ({
                   Add
               </Button>
             </Box>
-            )}         
+            )}       
     </div>
   );
 };
