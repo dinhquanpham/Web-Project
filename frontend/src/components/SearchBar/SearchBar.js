@@ -72,7 +72,7 @@ export default function SearchBar() {
     const handleSearch = (event) => {
         event.preventDefault();
         // if (searchValue)
-        navigate(`/search/?name=${searchValue}`);
+        navigate(`/search/?name=${searchValue}&page=1&size=10`);
     };
 
     return (
