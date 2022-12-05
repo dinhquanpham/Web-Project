@@ -18,7 +18,11 @@ let getOrderById = async (orderId) => {
 let getAllOrder = async () => {
     try {
         let result = await sequelize.query(
-            'select o.*, u.username from orders o join users u on u.id = o.userId;'
+            'select o.*, u.username from orders o join users u on u.id = o.userId;',
+            {
+                raw : true,
+                type : QueryTypes.SELECT
+            }
         );
         return result;
     } catch (e) {
