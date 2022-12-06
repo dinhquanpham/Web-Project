@@ -66,8 +66,9 @@ export default function ProductTab(productSetName, productInfo) {
                         price: data.price,
                         quantity: quantity,
                     };
+                    let userId = sessionStorage.getItem("userId");
                     newInfo = JSON.stringify(newInfo);
-                    localStorage.setItem(data.id, newInfo);
+                    localStorage.setItem(userId * 1000 + data.id, newInfo);
                 }}
             >
                 THÊM VÀO GIỎ

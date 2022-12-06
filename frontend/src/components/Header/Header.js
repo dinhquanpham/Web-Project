@@ -6,10 +6,10 @@ import Button from "@mui/material/Button";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
-import { useNavigate } from "react-router-dom";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Menu from "../Menu/Menu";
 import SearchBar from "../SearchBar/SearchBar";
 import "./Header.css";
@@ -79,6 +79,7 @@ export default function Header() {
                     {auth && (
                         <div>
                             <IconButton
+                                className="AccountCircle"
                                 size="large"
                                 aria-label="account of current user"
                                 aria-controls="menu-appbar"
@@ -86,12 +87,7 @@ export default function Header() {
                                 onClick={handleUser}
                                 color="inherit"
                             >
-                                <Box
-                                    className="AccountCircle"
-                                    onClick={() => navigate("/cart")}
-                                >
-                                    <AccountCircle />
-                                </Box>
+                                <AccountCircle />
                             </IconButton>
                             <Button
                                 className="button-signin"
