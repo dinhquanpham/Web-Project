@@ -1,10 +1,10 @@
-table{
+#table-data {
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
 }
 
-td, th{
+#table-data td, th{
     border-bottom:1px #dddddd solid;
     text-align: left;
     padding: 8px;

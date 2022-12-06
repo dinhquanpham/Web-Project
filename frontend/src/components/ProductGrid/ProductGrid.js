@@ -15,7 +15,7 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
 }));
 
-export default function ProductGrid(name, productInfo) {
+export default function ProductGrid(name, productInfo, pageSize) {
     const navigate = useNavigate();
     const productShow = productInfo.map((data) => (
         <Box
@@ -72,10 +72,10 @@ export default function ProductGrid(name, productInfo) {
             <Box sx={{ flexGrow: 1, width: "100%", height: "100%" }}>
                 <Grid
                     container
-                    columns={10}
+                    columns={pageSize}
                     sx={{ flexGrow: 1, width: "100%", height: "100%" }}
                 >
-                    {Array.from(Array(10)).map((_, index) => (
+                    {Array.from(Array(pageSize)).map((_, index) => (
                         <Grid
                             item
                             xs={2}

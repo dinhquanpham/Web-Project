@@ -142,14 +142,20 @@ export default function UserInfo() {
       }
     }
 
-    const columns = [
+    const addressColumns = [
       { field: "id", header: "ID" },
       { field: "homeAddress", header: "Số nhà" },
       { field: "street", header: "Đường" },
       { field: "district", header: "Phường/quận" },
       { field: "province", header: "Tỉnh/thành phố" },
     ];
-
+    const orderColumns = [
+      { field: "id", header: "ID" },
+      { field: "orderDate", header: "Thời gian mua hàng" },
+      { field: "shippedDate", header: "Thời gian nhận hàng" },
+      { field: "paidAt", header: "Thời gian thanh toán" },
+      { field: "paidAmount", header: "Tổng tiền" },
+    ];
     const userInfoShow = (() => (
         <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -307,9 +313,10 @@ export default function UserInfo() {
               Submit
             </Button>
         </Box>
-          <TableData  columns={columns} hover={true} striped={true}/>
+          <TableData  columns={addressColumns} hover={true} striped={true} type="address"/>
           </TabPanel>
           <TabPanel value={value} index={3}>
+          <TableData  columns={orderColumns} hover={true} striped={true} type="order"/>
           </TabPanel>
       </Box>
     ))();

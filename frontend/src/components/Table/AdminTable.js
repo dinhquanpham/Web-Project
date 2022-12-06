@@ -11,7 +11,7 @@ import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { DataArray } from "@mui/icons-material";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const calculateRange = (data, rowsPerPage) => {
     const range = [];
@@ -87,9 +87,9 @@ const Table = ({
   rowsPerPage = 5,
   type = null
 }) => {
+    const navigate = useNavigate();
     const [page, setPage] = useState(1);
     let [currentData, setCurrentData] = useState([]);
-    let [currentOrderData, setCurrentOrderData] = useState([]);
     let [soldStatus, setSoldStatus] = useState("");
     let [productSet, setProductSet] = useState([]);
     let [author, setAuthor] = useState([]);
@@ -123,7 +123,7 @@ const Table = ({
       setTableRange([...range]);
       const slice = sliceData(currentData, page, rowsPerPage);
       setSlice([...slice]);
-    }, [setTableRange, page, setSlice, currentData, author, currentOrderData]);
+    }, [setTableRange, page, setSlice, currentData, author]);
     const getCaps = (head, field) => {
         if (head) return head.toUpperCase();
         return field.toUpperCase();
@@ -143,7 +143,7 @@ const Table = ({
             productSize: data.get('productSize'),
             pageNumber: data.get('pageNumber'),
             soldNumber: data.get('soldNumber'),
-            image: data.get('image'),
+            image: data.get('data'),
             soldStatus: data.get('soldStatus'),
             authorName: currentAuthor,
             setName: currentProductSet,
@@ -186,6 +186,12 @@ const Table = ({
         else {
           console.log("Thêm dữ liệu lỗi");
         }
+    }
+    const handleOrderId = async (id) => {
+        let response = await getOrderDetailByOrderId(id);
+        let data = JSON.stringify(response);
+        sessionStorage.setItem('orderdetail', data);
+        navigate('/order-detail/?id=' + id);
     }
     const handleDeleteData = async (id) => {
         let response = await deleteData(type, id);
@@ -234,6 +240,17 @@ const Table = ({
                 {columns.map((col) => (
                 <td>{row[col.field]}</td>
                 ))}
+                {type === 'order' && (
+                  <td>
+                    <Button                             
+                    type="submit"
+                    variant="contained"
+                    size="small"
+                    onClick= {(e)=> handleOrderId(row.id)}>
+                    Chi tiết
+                    </Button>
+                </td>
+                )}
                 {row.roleId !== 1 && type !== 'order' && (
                   <td>
                     <Button                             
@@ -241,11 +258,10 @@ const Table = ({
                     variant="contained"
                     size="small"
                     onClick= {(e)=> handleDeleteData(row.id)}>
-                    Delete
+                    Xóa
                     </Button>
                   </td>
-                )}
-                
+                )}   
                 </tr>
             ))}
         </tbody>
@@ -547,7 +563,7 @@ const Table = ({
                   Add
               </Button>
             </Box>
-            )}       
+            )}      
     </div>
   );
 };

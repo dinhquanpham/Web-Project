@@ -48,7 +48,7 @@ export default function ProductSet() {
                     boxSizing: "border-box",
                 }}
             >
-                {ProductGrid(productSetInfo.name, productSetInfo)}
+                {ProductGrid(productSetInfo.name, productSetInfo, 10)}
             </Box>
         </Box>
     );
