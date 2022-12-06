@@ -14,6 +14,10 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header/Header";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
 
 function Copyright(props) {
     return (
@@ -48,6 +52,7 @@ const theme = createTheme();
 
 export default function SignUp() {
     const navigate = useNavigate();
+    const [open, setOpen] = React.useState(false);
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -70,10 +75,13 @@ export default function SignUp() {
             navigate('/');
         }
         else {
-            console.log("Không tạo được tài khoản");
+            setOpen(true);
         }
     };
 
+    const handleClose = () => {
+        setOpen(false);
+      };
     return (
         <Box sx={{ flexGrow: 1 }}>
             <Box width="100%">{Header()}</Box>
@@ -93,7 +101,7 @@ export default function SignUp() {
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Sign up
+                        Đăng ký
                     </Typography>
                     <Box
                         component="form"
@@ -166,17 +174,6 @@ export default function SignUp() {
                                     autoComplete="phone"
                                 />
                             </Grid>
-                            <Grid item xs={12}>
-                                <FormControlLabel
-                                    control={
-                                        <Checkbox
-                                            value="allowExtraEmails"
-                                            color="primary"
-                                        />
-                                    }
-                                    label="Tôi đồng ý với các điều khoản và điều kiện."
-                                />
-                            </Grid>
                         </Grid>
                         <Button
                             type="submit"
@@ -184,13 +181,26 @@ export default function SignUp() {
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
                         >
-                            Sign Up
+                            Đăng ký
                         </Button>
                     </Box>
                 </Box>
                 <Copyright sx={{ mt: 5 }} />
             </Container>
         </ThemeProvider>
+        <Dialog
+                open={open}
+                onClose={handleClose}
+            >
+                <DialogContent>
+                <DialogContentText>
+                    Tài khoản đã tồn tại
+                </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={handleClose}>Đồng ý</Button>
+                </DialogActions>
+            </Dialog>  
             </Box>
         </Box>
     );

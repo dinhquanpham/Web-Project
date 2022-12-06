@@ -14,6 +14,10 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header/Header";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
 
 function Copyright(props) {
     return (
@@ -48,6 +52,7 @@ async function loginUser(credentials) {
 
 export default function SignIn() {
     const navigate = useNavigate();
+    const [open, setOpen] = React.useState(false);
     const handleSubmit = async (e) => {
         e.preventDefault();
         const data = new FormData(e.currentTarget);
@@ -67,9 +72,13 @@ export default function SignIn() {
             navigate('/');
         }
         else {
-            console.log("Sai tài khoản hoặc mật khẩu");
+            setOpen(true);
         }
     };
+    
+      const handleClose = () => {
+        setOpen(false);
+      };
     return (
         <Box sx={{ flexGrow: 1 }}>
             <Box width="100%">{Header()}</Box>
@@ -89,7 +98,7 @@ export default function SignIn() {
                             <LockOutlinedIcon />
                         </Avatar>
                         <Typography component="h1" variant="h5">
-                            Sign in
+                            Đăng nhập
                         </Typography>
                         <Box
                             component="form"
@@ -123,17 +132,12 @@ export default function SignIn() {
                                 variant="contained"
                                 sx={{ mt: 3, mb: 2 }}
                             >
-                                Sign In
+                                Đăng nhập
                             </Button>
                             <Grid container>
-                                <Grid item xs>
-                                    <Link href="#" variant="body2">
-                                        Forgot password?
-                                    </Link>
-                                </Grid>
                                 <Grid item>
                                     <Link href="/sign-up" variant="body2">
-                                        {"Don't have an account? Sign Up"}
+                                        {"Đăng ký tài khoản"}
                                     </Link>
                                 </Grid>
                             </Grid>
@@ -141,7 +145,20 @@ export default function SignIn() {
                     </Box>
                     <Copyright sx={{ mt: 8, mb: 4 }} />
                 </Container>
-            </ThemeProvider>  
+            </ThemeProvider>
+            <Dialog
+                open={open}
+                onClose={handleClose}
+            >
+                <DialogContent>
+                <DialogContentText>
+                    Tài khoản hoặc mật khẩu không chính xác
+                </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={handleClose}>Đồng ý</Button>
+                </DialogActions>
+            </Dialog>  
             </Box>
         </Box>
     );
