@@ -6,12 +6,12 @@ const Product = require('../models/Products');
 let getProductById = async (productId) => {
     try {
         let product = await sequelize.query(
-            'select p.*, a.name as authorName, ps.name as setName from products p join authors a on p.authorId = a.id left join product_set ps on ps.id = p.productsetId where p.id = ?', {
+            'select p.*, a.name as authorName, ps.name as setName, pr.name as providerName '
+            + 'from products p join authors a on p.authorId = a.id left join product_set ps on ps.id = p.productsetId join providers pr on pr.id = p.providerId where p.id = ?', {
             raw: true,
             replacements: [productId],
             type: QueryTypes.SELECT
-        }
-        )
+        })
 
         let categories = await sequelize.query(
             'select c2.name from products p join product_category pc on p.id = pc.productId'
@@ -19,9 +19,7 @@ let getProductById = async (productId) => {
             raw: true,
             replacements: [productId],
             type: QueryTypes.SELECT
-        }
-        )
-
+        })
 
         return result = {
             product: product,
