@@ -3,6 +3,7 @@ import "./Table.css";
 import { useState, useEffect } from "react";
 import TableFooter from "./TableFooter";
 import { Button } from '@mui/material';
+import { useNavigate } from "react-router-dom";
 
 const calculateRange = (data, rowsPerPage) => {
     const range = [];
@@ -16,6 +17,32 @@ const calculateRange = (data, rowsPerPage) => {
 const sliceData = (data, page, rowsPerPage) => {
     return data.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 };
+
+async function getDataById(type, id) {
+  let url = `${process.env.REACT_APP_SV_HOST}/models/`;
+  if (type === 'order') {
+    url = url + type + "/by-user/" + id;
+  }
+  console.log(url);
+  let data = await fetch(url, {
+      method: "GET",
+      headers: {
+          "Content-Type": "application/json",
+      },
+  }).then((data) => data.json());
+  return data;
+}
+
+async function getOrderDetailByOrderId(id) {
+  let url = `${process.env.REACT_APP_SV_HOST}/models/order-detail/by-order/${id}`;
+  let data = await fetch(url, {
+      method: "GET",
+      headers: {
+          "Content-Type": "application/json",
+      },
+  }).then((data) => data.json());
+  return data;
+}
 
 async function getUserInfoById(userId) {
   let url = `${process.env.REACT_APP_SV_HOST}/models/user/info/${userId}`;
@@ -44,15 +71,23 @@ const Table = ({
   hover = true,
   striped = true,
   rowsPerPage = 5,
+  type = null,
 }) => {
+    const navigate = useNavigate();
     const [page, setPage] = useState(1);
     let [currentData, setCurrentData] = useState([]);
     let [tableRange, setTableRange] = useState([]);
     let [slice, setSlice] = useState([]);
     let handleData = async () => {
       let userId = sessionStorage.getItem('userId');
-      let response = await getUserInfoById(userId);
-      setCurrentData(response.address);
+      if (type === 'address') {
+        let response = await getUserInfoById(userId);
+        setCurrentData(response.address);
+      }
+      if (type === 'order') {
+        let response = await getDataById(type, userId);
+        setCurrentData(response);
+      }
     }
     useEffect (() => {
       handleData();
@@ -67,6 +102,12 @@ const Table = ({
         if (head) return head.toUpperCase();
         return field.toUpperCase();
     };
+    const handleOrderId = async (id) => {
+      let response = await getOrderDetailByOrderId(id);
+      let data = JSON.stringify(response);
+      sessionStorage.setItem('orderdetail', data);
+      navigate('/order-detail/?id=' + id);
+  }
     const handleDeleteData = async (id) => {
         let response = await deleteData(id);
         if(response.message === 'Deleted') {
@@ -101,6 +142,18 @@ const Table = ({
                 {columns.map((col) => (
                 <td>{row[col.field]}</td>
                 ))}
+                {type === 'order' && (
+                  <td>
+                    <Button                             
+                    type="submit"
+                    variant="contained"
+                    size="small"
+                    onClick= {(e)=> handleOrderId(row.id)}>
+                    Chi tiết
+                    </Button>
+                </td>
+                )}
+                {type === 'address' && (
                   <td>
                     <Button                             
                     type="submit"
@@ -109,7 +162,8 @@ const Table = ({
                     onClick= {(e)=> handleDeleteData(row.id)}>
                     Delete
                     </Button>
-                </td>
+                  </td>
+                )}
                 </tr>
             ))}
         </tbody>

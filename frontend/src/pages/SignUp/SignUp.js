@@ -13,6 +13,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
+import Header from "../../components/Header/Header";
 
 function Copyright(props) {
     return (
@@ -74,7 +75,10 @@ export default function SignUp() {
     };
 
     return (
-        <ThemeProvider theme={theme}>
+        <Box sx={{ flexGrow: 1 }}>
+            <Box width="100%">{Header()}</Box>
+            <Box width="100%">
+            <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Box
@@ -182,17 +186,12 @@ export default function SignUp() {
                         >
                             Sign Up
                         </Button>
-                        <Grid container justifyContent="center">
-                            <Grid item>
-                                <Link href="#" variant="body2">
-                                    Already have an account? Sign in
-                                </Link>
-                            </Grid>
-                        </Grid>
                     </Box>
                 </Box>
                 <Copyright sx={{ mt: 5 }} />
             </Container>
         </ThemeProvider>
+            </Box>
+        </Box>
     );
 }

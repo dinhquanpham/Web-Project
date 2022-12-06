@@ -41,6 +41,10 @@ export default function App() {
                     path="/user"
                     element={<PrivateRoute type={"user"} />}
                 />
+                <Route
+                    path="/order-detail"
+                    element={<PrivateRoute type={"order-detail"} />}
+                />
                 <Route path="/search" element={<Search />}>
                     <Route path="?name=" element={<Search />} />
                 </Route>
