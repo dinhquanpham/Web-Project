@@ -55,6 +55,18 @@ async function GetProductSetById(productsetId) {
     return data;
 }
 
+async function GetProviderById(providerId) {
+    let url =
+        `${process.env.REACT_APP_SV_HOST}/models/provider/by-id/` + providerId;
+    let data = await fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    }).then((data) => data.json());
+    return data;
+}
+
 export default function Product() {
     let search = window.location.search;
     let params = new URLSearchParams(search);
@@ -62,6 +74,7 @@ export default function Product() {
     let [productInfo, setProductInfo] = useState([]);
     let [productSetInfo, setProductSetInfo] = useState([]);
     let [productInSetInfo, setProductInSetInfo] = useState([]);
+    let [categoryInfo, setCategoryInfo] = useState([]);
     useEffect(() => {
         handleData();
         window.scrollTo(0, 0);
@@ -75,6 +88,8 @@ export default function Product() {
         setProductSetInfo(response2[0]);
         let response3 = await GetProductBySet(response.product[0].productsetId);
         setProductInSetInfo(response3);
+        setCategoryInfo(response.categories);
+        setAmount((counter) => 1);
     };
     let navigate = useNavigate();
     let [amount, setAmount] = useState(1);
@@ -95,9 +110,6 @@ export default function Product() {
                     <Box className="box product box-product-name">
                         {data.productName}
                     </Box>
-                    <Box className="box product box-product-price">
-                        Giá: {data.price}
-                    </Box>
                     <Box
                         className="box product box-product-set-name"
                         onClick={() =>
@@ -105,6 +117,12 @@ export default function Product() {
                         }
                     >
                         Bộ: {data.setName}
+                    </Box>
+                    <Box className="box product box-product-provider-name">
+                        Nhà xuất bản: {data.providerName}
+                    </Box>
+                    <Box className="box product box-product-price">
+                        Giá: {data.price}
                     </Box>
                 </Box>
                 <Box className="box product box-quantity-control">
@@ -130,7 +148,10 @@ export default function Product() {
                     className="box product button-add-to-cart"
                     variant="outlined"
                     onClick={() => {
-                        let info = localStorage.getItem(data.id);
+                        let userId = sessionStorage.getItem("userId");
+                        let info = localStorage.getItem(
+                            userId * 1000 + data.id
+                        );
                         info = JSON.parse(info);
                         let quantity = info == null ? 0 : info.quantity;
                         quantity += amount;
@@ -141,7 +162,7 @@ export default function Product() {
                             quantity: quantity,
                         };
                         newInfo = JSON.stringify(newInfo);
-                        localStorage.setItem(data.id, newInfo);
+                        localStorage.setItem(userId * 1000 + data.id, newInfo);
                     }}
                 >
                     THÊM VÀO GIỎ
@@ -149,10 +170,39 @@ export default function Product() {
             </Box>
         </Item>
     ))();
+    let categoryShow =
+        Array.isArray(categoryInfo) &&
+        categoryInfo.map((data) => (
+            <Box className="box product category-show">{data.name} </Box>
+        ));
+
+    let productInfoDetailShow = ((data = productInfo) => (
+        <Item className="box product product-info-detail-show">
+            <Box className="box product product-info-detail-show-element">
+                Nhà xuất bản: {data.providerName}{" "}
+            </Box>
+            <Box className="box product product-info-detail-show-element">
+                Tác giả: {data.authorName}{" "}
+            </Box>
+            <Box className="box product product-info-detail-show-element">
+                Năm xuất bản: {data.publishedYear}{" "}
+            </Box>
+            <Box className="box product product-info-detail-show-element">
+                Kích thước bìa: {data.productSize}{" "}
+            </Box>
+            <Box className="box product product-info-detail-show-element">
+                Số trang: {data.pageNumber}{" "}
+            </Box>
+            <Box className="box product product-info-detail-show-element">
+                Thể loại: {categoryShow}{" "}
+            </Box>
+        </Item>
+    ))();
     return (
         <Box className="box">
             <Box className="box">{Header()}</Box>
             <Box className="box">{productShow}</Box>
+            <Box className="box">{productInfoDetailShow}</Box>
             <Box className="box">
                 {ProductTab("TRUYỆN CÙNG THỂ LOẠI", productInSetInfo)}
             </Box>

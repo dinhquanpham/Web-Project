@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import "./Cart.css";
+import { ConstructionOutlined } from "@mui/icons-material";
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -24,10 +25,10 @@ function GetAllStorage(userId) {
         i = keys.length;
     while (i--) {
         let id = parseInt(keys[i]);
-        let curUserId = parseInt(id / 1000);
-        if (curUserId == userId) {
-            var obj = localStorage.getItem(keys[i]);
-            storage.push(JSON.parse(obj));
+        let thisUserId = parseInt(id / 1000);
+        if (thisUserId == userId) {
+            var obj = JSON.parse(localStorage.getItem(keys[i]));
+            storage.push({ ...obj, id });
         }
     }
     return storage;
@@ -37,24 +38,39 @@ export default function Cart() {
     let navigate = useNavigate();
     let userId = sessionStorage.getItem("userId");
     userId = parseInt(userId);
-    let cartInfo = GetAllStorage(userId);
-    let totalPayment = 0;
-    let [amount, setAmount] = useState(1);
+    let [cartInfo, setCartInfo] = useState([]);
+    useEffect(() => {
+        handleData();
+    }, []);
+    let handleData = () => {
+        let response = GetAllStorage(userId);
+        setCartInfo(response);
+    };
 
+    let totalPayment = 0;
+    console.log(cartInfo);
     if (Array.isArray(cartInfo)) {
         for (let i in cartInfo) {
             let product = cartInfo[i];
             totalPayment += product.quantity * product.price;
         }
     }
-
-    function changeAmount(value) {
-        setAmount((counter) => Math.max(1, counter + value));
+    function changeAmount(index, value) {
+        if (Array.isArray(cartInfo)) {
+            let nextCartInfo = cartInfo.map((data, idx) => {
+                if (idx == index) {
+                    return {
+                        ...data,
+                        quantity: Math.max(1, data.quantity + value),
+                    };
+                } else return data;
+            });
+            setCartInfo(nextCartInfo);
+        }
     }
-
     let cartShow =
         Array.isArray(cartInfo) &&
-        cartInfo.map((data) => (
+        cartInfo.map((data, index) => (
             <Item className="box cart box-product-info">
                 <Box className="box cart box-product-image">
                     <img
@@ -72,23 +88,49 @@ export default function Cart() {
                             Giá: {data.price}
                         </Box>
                     </Box>
-                    <Box className="box cart box-product-quantity">
-                        <Box className="box product box-quantity-control">
+                    <Box className="box cart box-quantity">
+                        <Box className="box cart box-quantity-control">
                             <Button
-                                className="box product button-quantity-change"
+                                className="box cart button-quantity-change"
                                 onClick={() => {
-                                    changeAmount(-1);
+                                    changeAmount(index, -1);
+                                    let info = localStorage.getItem(data.id);
+                                    info = JSON.parse(info);
+                                    let quantity =
+                                        info == null ? 0 : info.quantity;
+                                    quantity = Math.max(1, quantity - 1);
+                                    let newInfo = {
+                                        productName: data.productName,
+                                        image: data.image,
+                                        price: data.price,
+                                        quantity: quantity,
+                                    };
+                                    newInfo = JSON.stringify(newInfo);
+                                    localStorage.setItem(data.id, newInfo);
                                 }}
                             >
                                 -
                             </Button>
-                            <Box className="box product box-quantity-num">
-                                {amount}
+                            <Box className="box cart box-quantity-num">
+                                {data.quantity}
                             </Box>
                             <Button
-                                className="box product button-quantity-change"
+                                className="box cart button-quantity-change"
                                 onClick={() => {
-                                    changeAmount(1);
+                                    changeAmount(index, 1);
+                                    let info = localStorage.getItem(data.id);
+                                    info = JSON.parse(info);
+                                    let quantity =
+                                        info == null ? 0 : info.quantity;
+                                    quantity = quantity + 1;
+                                    let newInfo = {
+                                        productName: data.productName,
+                                        image: data.image,
+                                        price: data.price,
+                                        quantity: quantity,
+                                    };
+                                    newInfo = JSON.stringify(newInfo);
+                                    localStorage.setItem(data.id, newInfo);
                                 }}
                             >
                                 +
@@ -106,29 +148,38 @@ export default function Cart() {
                 </Box>
             </Item>
         ));
-
-    return (
-        <Box className="box">
-            <Box className="box">{Header()}</Box>
-            <Box className="box cart box-cart-info">
-                <Item className="box cart box-list-product">{cartShow}</Item>
-                <Item className="box cart box-payment">
-                    <Box className="box cart box-total-payment">
-                        Tổng số tiền: {totalPayment}
-                    </Box>
-                    <Button
-                        className="box cart button-payment"
-                        onClick={() => {
-                            navigate(`/payment`);
-                        }}
-                    >
-                        Thanh toán
-                    </Button>
+    if (cartInfo.length == 0) {
+        return (
+            <Box className="box">
+                <Box className="box">{Header()}</Box>
+                <Item className="box cart no-item">
+                    Bạn không có sản phẩm nào trong giỏ
                 </Item>
             </Box>
+        );
+    } else {
+        return (
             <Box className="box">
-                <Item>Bạn không có sản phẩm nào trong giỏ</Item>
+                <Box className="box">{Header()}</Box>
+                <Box className="box cart box-cart-info">
+                    <Item className="box cart box-list-product">
+                        {cartShow}
+                    </Item>
+                    <Item className="box cart box-payment">
+                        <Box className="box cart box-total-payment">
+                            Tổng số tiền: {totalPayment}
+                        </Box>
+                        <Button
+                            className="box cart button-payment"
+                            onClick={() => {
+                                navigate(`/payment`);
+                            }}
+                        >
+                            Thanh toán
+                        </Button>
+                    </Item>
+                </Box>
             </Box>
-        </Box>
-    );
+        );
+    }
 }
