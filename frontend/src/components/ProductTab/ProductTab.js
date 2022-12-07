@@ -58,7 +58,6 @@ export default function ProductTab(productSetName, productInfo) {
                 onClick={() => {
                     let userId = sessionStorage.getItem("userId");
                     let info = localStorage.getItem(userId * 1000 + data.id);
-                    console.log(info);
                     info = JSON.parse(info);
                     let quantity = info == null ? 0 : info.quantity;
                     quantity++;

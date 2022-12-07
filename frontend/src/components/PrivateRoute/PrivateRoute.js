@@ -4,6 +4,7 @@ import UserInfo from "../../pages/UserInfo/UserInfo";
 import AdminInfo from "../../pages/Admin/Admin";
 import OrderDetail from "../../pages/OrderDetail/OrderDetail";
 import Cart from "../../pages/Cart/Cart";
+import Payment from "../../pages/Payment/Payment";
 
 export default function PrivateRoute({ type = null }) {
     if (type === "user") {
@@ -27,6 +28,15 @@ export default function PrivateRoute({ type = null }) {
         if (auth) {
             let admin = sessionStorage.getItem("admin");
             return <Cart />;
+        }
+        return <Navigate to="/sign-in" />;
+    }
+
+    if (type === "payment") {
+        const auth = sessionStorage.getItem("userId");
+        if (auth) {
+            let admin = sessionStorage.getItem("admin");
+            return <Payment />;
         }
         return <Navigate to="/sign-in" />;
     }

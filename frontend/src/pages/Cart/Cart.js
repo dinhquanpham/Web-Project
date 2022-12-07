@@ -48,13 +48,13 @@ export default function Cart() {
     };
 
     let totalPayment = 0;
-    console.log(cartInfo);
     if (Array.isArray(cartInfo)) {
         for (let i in cartInfo) {
             let product = cartInfo[i];
             totalPayment += product.quantity * product.price;
         }
     }
+
     function changeAmount(index, value) {
         if (Array.isArray(cartInfo)) {
             let nextCartInfo = cartInfo.map((data, idx) => {
@@ -65,6 +65,19 @@ export default function Cart() {
                     };
                 } else return data;
             });
+            setCartInfo(nextCartInfo);
+        }
+    }
+
+    function deleteCart(index) {
+        if (Array.isArray(cartInfo)) {
+            let nextCartInfo = cartInfo.map((data, idx) => {
+                if (idx == index) {
+                    return null;
+                } else return data;
+            });
+            let idx = nextCartInfo.indexOf(null);
+            nextCartInfo.splice(idx, 1);
             setCartInfo(nextCartInfo);
         }
     }
@@ -141,7 +154,13 @@ export default function Cart() {
                         Tổng giá: {data.quantity * data.price}
                     </Box>
                     <Box className="box cart box-product-delete">
-                        <IconButton className="box cart button-product-delete">
+                        <IconButton
+                            className="box cart button-product-delete"
+                            onClick={() => {
+                                localStorage.removeItem(data.id);
+                                deleteCart(index);
+                            }}
+                        >
                             <DeleteIcon />
                         </IconButton>
                     </Box>
