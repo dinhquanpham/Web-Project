@@ -56,7 +56,9 @@ export default function ProductTab(productSetName, productInfo) {
                 className="box product-tab button-add-to-cart"
                 variant="outlined"
                 onClick={() => {
-                    let info = localStorage.getItem(data.id);
+                    let userId = sessionStorage.getItem("userId");
+                    let info = localStorage.getItem(userId * 1000 + data.id);
+                    console.log(info);
                     info = JSON.parse(info);
                     let quantity = info == null ? 0 : info.quantity;
                     quantity++;
@@ -66,7 +68,6 @@ export default function ProductTab(productSetName, productInfo) {
                         price: data.price,
                         quantity: quantity,
                     };
-                    let userId = sessionStorage.getItem("userId");
                     newInfo = JSON.stringify(newInfo);
                     localStorage.setItem(userId * 1000 + data.id, newInfo);
                 }}
@@ -77,8 +78,8 @@ export default function ProductTab(productSetName, productInfo) {
     ));
     return (
         <Item className="box product-tab box-product-tab">
-            <Box className="box product-tab box-product-set-title">
-                <Typography className="box product-tab text-product-set-title">
+            <Box className="box product-tab box-product-set-name">
+                <Typography className="box product-tab text-product-set-name">
                     {productSetName}
                 </Typography>
             </Box>
