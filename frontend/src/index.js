@@ -37,6 +37,10 @@ export default function App() {
                     <Route path="?id=" element={<ProductSet />} />
                 </Route>
                 <Route path="/cart" element={<PrivateRoute type={"cart"} />} />
+                <Route
+                    path="/payment"
+                    element={<PrivateRoute type={"payment"} />}
+                />
                 <Route path="/user" element={<PrivateRoute type={"user"} />} />
                 <Route
                     path="/order-detail"
