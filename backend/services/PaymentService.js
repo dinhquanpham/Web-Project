@@ -29,8 +29,7 @@ let addPayment = async (data) => {
     try {
         let result = await Payment.create({
             id: data.id,
-            name: data.name,
-            description: data.description,
+            type: data.type,
         })
         return result;
     }
@@ -48,8 +47,7 @@ let updatePayment = async (data) => {
 
         payment.set({
             id: data.id,
-            name: data.name,
-            description: data.description,
+            type: data.type
         })
         await payment.save();
         return payment;
