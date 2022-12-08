@@ -1,6 +1,6 @@
 .box.payment.box-all-address {
     width: 70%;
-    margin: 2% auto;
+    margin: 1% auto;
 }
 
 .box.payment.box-address-title {
@@ -35,6 +35,7 @@
     align-items: center;
     text-align: center;
     vertical-align: middle;
+    color: var(--main-color);
 }
 
 .box.payment.box-address-info {
@@ -47,6 +48,7 @@
     align-items: center;
     text-align: center;
     vertical-align: middle;
+    padding-left: 5px;
     color: #000000;
     font-size: 16px;
 }
@@ -69,4 +71,87 @@
     width: fit-content;
     height: fit-content;
     color: var(--main-color);
+}
+
+.box.payment.box-all-order {
+    width: 70%;
+    margin: 1% auto;
+}
+
+.box.payment.box-order-title {
+    height: 50;
+}
+
+.box.payment.text-order-title {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    text-align: center;
+    vertical-align: middle;
+    padding-left: 10px;
+    color: #000000;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.box.payment.box-product-info {
+    height: 200px;
+    display: flex;
+    margin: 1% auto;
+}
+
+.box.payment.box-product-image {
+    width: 20%;
+}
+
+.box.payment.box-product-details {
+    width: 70%;
+    display: flex;
+}
+
+.box.payment.box-product-productInfo {
+    width: 30%;
+}
+
+.box.payment.box-product-productName {
+    height: 50%;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    text-align: left;
+    color: #000000;
+    font-size: 20px !important;
+}
+
+.box.payment.box-product-price {
+    height: 50%;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    text-align: left;
+    font-size: 20px !important;
+    font-weight: bold;
+    color: var(--main-color) !important;
+}
+
+.box.payment.box-quantity {
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+}
+
+.box.payment.box-product-total {
+    width: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
 }

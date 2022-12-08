@@ -32,6 +32,21 @@ async function GetAddressByUserId(userId) {
     return data;
 }
 
+function GetAllStorage(userId) {
+    var storage = [], // Notice change here
+        keys = Object.keys(localStorage),
+        i = keys.length;
+    while (i--) {
+        let id = parseInt(keys[i]);
+        let thisUserId = parseInt(id / 1000);
+        if (thisUserId == userId) {
+            var obj = JSON.parse(localStorage.getItem(keys[i]));
+            storage.push({ ...obj, id });
+        }
+    }
+    return storage;
+}
+
 export default function Payment() {
     let userId = sessionStorage.getItem("userId");
     let [addressInfo, setAddressInfo] = useState([]);
@@ -43,7 +58,19 @@ export default function Payment() {
         setAddressInfo(response);
     };
 
-    let [selectedValue, setSelectedValue] = React.useState("a");
+    function deleteAddress(index) {
+        if (Array.isArray(addressInfo)) {
+            let nextAddressInfo = addressInfo.map((data, idx) => {
+                if (idx == index) {
+                    return null;
+                } else return data;
+            });
+            let idx = nextAddressInfo.indexOf(null);
+            nextAddressInfo.splice(idx, 1);
+            setAddressInfo(nextAddressInfo);
+        }
+    }
+    let [selectedValue, setSelectedValue] = useState(0);
     let handleChange = (event) => {
         setSelectedValue(event.target.value);
     };
@@ -55,6 +82,9 @@ export default function Payment() {
                     <Radio
                         name="address-radio-buttons"
                         className="box payment address-radio-buttons"
+                        checked={selectedValue == index}
+                        onChange={handleChange}
+                        value={index}
                     />
                 </Box>
                 <Box className="box payment box-address-info">
@@ -65,19 +95,73 @@ export default function Payment() {
                 </Box>
                 <Box className="box payment box-address-change">
                     <Box className="box payment box-address-edit">
-                        <IconButton className="box payment button-address-edit">
+                        <IconButton
+                            className="box payment button-address-edit"
+                            onClick={() => {
+                                changeAddress(index);
+                            }}
+                        >
                             <EditIcon />
                         </IconButton>
                     </Box>
                     <Box className="box payment box-address-delete">
-                        <IconButton className="box payment button-address-delete">
+                        <IconButton
+                            className="box payment button-address-delete"
+                            onClick={() => {
+                                deleteAddress(index);
+                            }}
+                        >
                             <DeleteIcon />
                         </IconButton>
                     </Box>
                 </Box>
             </Item>
         ));
-
+    userId = parseInt(userId);
+    let [cartInfo, setCartInfo] = useState([]);
+    useEffect(() => {
+        handleData2();
+    }, []);
+    let handleData2 = () => {
+        let response = GetAllStorage(userId);
+        setCartInfo(response);
+    };
+    let totalPayment = 0;
+    if (Array.isArray(cartInfo)) {
+        for (let i in cartInfo) {
+            let product = cartInfo[i];
+            totalPayment += product.quantity * product.price;
+        }
+    }
+    let cartShow =
+        Array.isArray(cartInfo) &&
+        cartInfo.map((data, index) => (
+            <Item className="box payment box-product-info">
+                <Box className="box payment box-product-image">
+                    <img
+                        className="image"
+                        src={data.image}
+                        alt={data.productName}
+                    />
+                </Box>
+                <Box className="box payment box-product-details">
+                    <Box className="box payment box-product-productInfo">
+                        <Box className="box payment box-product-productName">
+                            {data.productName}
+                        </Box>
+                        <Box className="box payment box-product-price">
+                            Giá: {data.price}
+                        </Box>
+                    </Box>
+                    <Box className="box payment box-quantity">
+                        Số lượng: {data.quantity}
+                    </Box>
+                    <Box className="box payment box-product-total">
+                        Tổng giá: {data.quantity * data.price}
+                    </Box>
+                </Box>
+            </Item>
+        ));
     return (
         <Box className="box">
             <Box className="box">{Header()}</Box>
@@ -88,6 +172,12 @@ export default function Payment() {
                     </Box>
                 </Box>
                 {addressShow}
+            </Item>
+            <Item className="box payment box-all-order">
+                <Box className="box payment box-order-title">
+                    <Box className="box payment text-order-title">ĐƠN HÀNG</Box>
+                </Box>
+                {cartShow}
             </Item>
         </Box>
     );
