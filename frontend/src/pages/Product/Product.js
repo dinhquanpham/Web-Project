@@ -71,6 +71,7 @@ export default function Product() {
     let search = window.location.search;
     let params = new URLSearchParams(search);
     let productId = params.get("id");
+    let userId = sessionStorage.getItem("userId");
     let [productInfo, setProductInfo] = useState([]);
     let [productSetInfo, setProductSetInfo] = useState([]);
     let [productInSetInfo, setProductInSetInfo] = useState([]);
@@ -148,7 +149,6 @@ export default function Product() {
                     className="box product button-add-to-cart"
                     variant="outlined"
                     onClick={() => {
-                        let userId = sessionStorage.getItem("userId");
                         let info = localStorage.getItem(
                             userId * 1000 + data.id
                         );

@@ -11,14 +11,14 @@
 }
 
 .box.product-tab.text-product-set-name {
-    font-size: 18px !important;
-    font-weight: bold;
-    padding-left: 20px;
     display: flex;
     justify-content: left;
     align-items: center;
     text-align: center;
+    padding-left: 20px;
     color: var(--main-color) !important;
+    font-size: 18px !important;
+    font-weight: bold;
 }
 
 .box.product-tab.box-product-set-info {
