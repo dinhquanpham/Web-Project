@@ -1,4 +1,72 @@
-.box.payment.box-payment-method {
-    width: 96%;
-    margin: 2%;
+.box.payment.box-all-address {
+    width: 70%;
+    margin: 2% auto;
+}
+
+.box.payment.box-address-title {
+    height: 50;
+}
+
+.box.payment.text-address-title {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    text-align: center;
+    vertical-align: middle;
+    padding-left: 10px;
+    color: #000000;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.box.payment.box-address {
+    height: 70px;
+    display: flex;
+    margin-top: 1%;
+}
+
+.box.payment.box-checkbox {
+    width: 5%;
+}
+
+.box.payment.address-radio-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.box.payment.box-address-info {
+    width: 85%;
+}
+
+.box.payment.text-address-info {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    text-align: center;
+    vertical-align: middle;
+    color: #000000;
+    font-size: 16px;
+}
+
+.box.payment.box-address-change {
+    width: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.box.payment.button-address-edit {
+    width: fit-content;
+    height: fit-content;
+    color: var(--main-color);
+}
+
+.box.payment.button-address-delete {
+    width: fit-content;
+    height: fit-content;
+    color: var(--main-color);
 }

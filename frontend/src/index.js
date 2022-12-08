@@ -7,6 +7,7 @@ import SignUp from "./pages/SignUp/SignUp";
 import Product from "./pages/Product/Product";
 import ProductSet from "./pages/ProductSet/ProductSet";
 import Cart from "./pages/Cart/Cart";
+import Payment from "./pages/Payment/Payment";
 import UserInfo from "./pages/UserInfo/UserInfo";
 import { createTheme } from "@mui/system";
 import { ThemeProvider } from "@emotion/react";
