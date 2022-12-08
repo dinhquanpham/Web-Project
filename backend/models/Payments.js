@@ -1,5 +1,6 @@
 const Sequelize = require("sequelize");
 const sequelize = require('../database/connect');
+const Orders = require("./Orders");
 
 const Payments = sequelize.define("payments", {
 
@@ -14,11 +15,9 @@ const Payments = sequelize.define("payments", {
         type: Sequelize.STRING,
         allowNull: true,
     },
-
-    allowed:{
-        type: Sequelize.STRING,
-        allowNull: true,
-    }
 });
+
+Payments.hasOne(Orders);
+Orders.belongsTo(Payments);
 
 module.exports = Payments;
