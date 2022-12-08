@@ -111,16 +111,18 @@ let updateUser = async (data) => {
             username: data.username,
             password: data.password,
             firstname: data.firstname,
-            middlename: data.middlename,
             lastname: data.lastname,
             address: data.address,
             phone: data.phone,
+            email: data.email,
         })
         await user.save();
         return user;
     }
     catch (e) {
-        return "Error";
+        return data = {
+            message: "Error",
+        }
     }
 }
 

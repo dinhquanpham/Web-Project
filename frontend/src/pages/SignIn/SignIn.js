@@ -3,8 +3,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -14,10 +12,8 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header/Header";
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
+import Alert from '@mui/material/Alert';
+import { useState } from "react";
 
 function Copyright(props) {
     return (
@@ -52,7 +48,7 @@ async function loginUser(credentials) {
 
 export default function SignIn() {
     const navigate = useNavigate();
-    const [open, setOpen] = React.useState(false);
+    let [message, setMessage] = useState("");
     const handleSubmit = async (e) => {
         e.preventDefault();
         const data = new FormData(e.currentTarget);
@@ -69,16 +65,13 @@ export default function SignIn() {
             else {
                 sessionStorage.setItem('admin', 'false');
             }
-            navigate('/');
+            setMessage("success-login");
+            setTimeout(() => navigate('/'), 1500);
         }
         else {
-            setOpen(true);
+            setMessage("error-login");
         }
     };
-    
-      const handleClose = () => {
-        setOpen(false);
-      };
     return (
         <Box sx={{ flexGrow: 1 }}>
             <Box width="100%">{Header()}</Box>
@@ -88,7 +81,7 @@ export default function SignIn() {
                     <CssBaseline />
                     <Box
                         sx={{
-                            marginTop: 8,
+                            marginTop: 3,
                             display: "flex",
                             flexDirection: "column",
                             alignItems: "center",
@@ -130,7 +123,7 @@ export default function SignIn() {
                                 type="submit"
                                 fullWidth
                                 variant="contained"
-                                sx={{ mt: 3, mb: 2 }}
+                                sx={{ mt: 2, mb: 2 }}
                             >
                                 Đăng nhập
                             </Button>
@@ -142,23 +135,16 @@ export default function SignIn() {
                                 </Grid>
                             </Grid>
                         </Box>
+                        {message === 'error-login' && (
+                            <Alert severity="warning" sx={{ mt: 3}}>Tài khoản hoặc mật khẩu không chính xác</Alert>
+                        )}
+                        {message === 'success-login' && (
+                            <Alert severity="success" sx={{ mt: 3}}>Đăng nhập thành công</Alert>
+                        )}
                     </Box>
-                    <Copyright sx={{ mt: 8, mb: 4 }} />
+                    <Copyright sx={{ mt: 15, mb: 4 }} />
                 </Container>
             </ThemeProvider>
-            <Dialog
-                open={open}
-                onClose={handleClose}
-            >
-                <DialogContent>
-                <DialogContentText>
-                    Tài khoản hoặc mật khẩu không chính xác
-                </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                <Button onClick={handleClose}>Đồng ý</Button>
-                </DialogActions>
-            </Dialog>  
             </Box>
         </Box>
     );

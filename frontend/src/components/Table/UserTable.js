@@ -70,7 +70,7 @@ const Table = ({
   columns = null,
   hover = true,
   striped = true,
-  rowsPerPage = 5,
+  rowsPerPage = 3,
   type = null,
 }) => {
     const navigate = useNavigate();
@@ -160,7 +160,7 @@ const Table = ({
                     variant="contained"
                     size="small"
                     onClick= {(e)=> handleDeleteData(row.id)}>
-                    Delete
+                    Xóa
                     </Button>
                   </td>
                 )}

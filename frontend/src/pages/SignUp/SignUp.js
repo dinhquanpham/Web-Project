@@ -14,10 +14,8 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header/Header";
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
+import { useState } from "react";
+import Alert from '@mui/material/Alert';
 
 function Copyright(props) {
     return (
@@ -52,36 +50,38 @@ const theme = createTheme();
 
 export default function SignUp() {
     const navigate = useNavigate();
-    const [open, setOpen] = React.useState(false);
+    let [message, setMessage] = useState("");
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        const response = await registerUser({
-            username: data.get("username"),
-            password: data.get("password"),
-            firstname: data.get("firstname"),
-            lastname: data.get("lastname"),
-            email: data.get("email"),
-            phone: data.get("phone")
-        });
-        if (response.message !== "Error") {
-            sessionStorage.setItem('userId', response.userId);
-            if (response.roleId === 1) {
-                sessionStorage.setItem('admin', 'true');
-            }
-            else {
-                sessionStorage.setItem('admin', 'false');
-            }
-            navigate('/');
+        if (data.get("username") === '' || data.get("password") === '') {
+            setMessage("null-value");
         }
         else {
-            setOpen(true);
+            const response = await registerUser({
+                username: data.get("username"),
+                password: data.get("password"),
+                firstname: data.get("firstname"),
+                lastname: data.get("lastname"),
+                email: data.get("email"),
+                phone: data.get("phone")
+            });
+            if (response.message !== "Error") {
+                sessionStorage.setItem('userId', response.userId);
+                if (response.roleId === 1) {
+                    sessionStorage.setItem('admin', 'true');
+                }
+                else {
+                    sessionStorage.setItem('admin', 'false');
+                }
+                setMessage("success-register");
+                setTimeout(() => navigate('/'), 1500);
+            }
+            else {
+                setMessage("error-register");
+            }
         }
     };
-
-    const handleClose = () => {
-        setOpen(false);
-      };
     return (
         <Box sx={{ flexGrow: 1 }}>
             <Box width="100%">{Header()}</Box>
@@ -179,28 +179,24 @@ export default function SignUp() {
                             type="submit"
                             fullWidth
                             variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
+                            sx={{ mt: 3}}
                         >
                             Đăng ký
                         </Button>
+                        {message === 'null-value' && (
+                            <Alert severity="warning" sx={{ mt: 3}}>Vui lòng nhập tài khoản và mật khẩu</Alert>
+                        )}
+                        {message === 'error-register' && (
+                            <Alert severity="warning" sx={{ mt: 3}}>Tài khoản đã tồn tại</Alert>
+                        )}
+                        {message === 'success-register' && (
+                            <Alert severity="success" sx={{ mt: 3}}>Đăng ký thành công</Alert>
+                        )}
                     </Box>
                 </Box>
                 <Copyright sx={{ mt: 5 }} />
             </Container>
         </ThemeProvider>
-        <Dialog
-                open={open}
-                onClose={handleClose}
-            >
-                <DialogContent>
-                <DialogContentText>
-                    Tài khoản đã tồn tại
-                </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                <Button onClick={handleClose}>Đồng ý</Button>
-                </DialogActions>
-            </Dialog>  
             </Box>
         </Box>
     );

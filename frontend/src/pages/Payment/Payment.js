@@ -17,7 +17,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export default function Payment() {
 
-    let addressShow = (data = addressInfo) => ()();
+    //let addressShow = (data = addressInfo) => ()();
     return (
         <Box className="box">
             <Box className="box">{Header()}</Box>
