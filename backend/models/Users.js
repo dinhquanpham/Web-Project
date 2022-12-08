@@ -38,11 +38,6 @@ const Users = sequelize.define("users", {
         allowNull: true,
     },
 
-    address:{
-        type: Sequelize.STRING,
-        allowNull: true,
-    },
-
     phone:{
         type: Sequelize.STRING,
         allowNull: true,

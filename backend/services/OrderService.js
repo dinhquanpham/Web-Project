@@ -54,7 +54,8 @@ let addOrder = async (data) => {
             paidAmount: data.paidAmount,
             paidStatus: data.paidStatus,
             paidAt: data.paidAt,
-            userId: data.userId
+            userId: data.userId,
+            paymentId: data.paymentId
         })
         return result;
     }

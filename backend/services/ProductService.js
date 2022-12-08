@@ -186,6 +186,13 @@ let getProductInfo = async () => {
             type: QueryTypes.SELECT
         });
 
+        let categories = await sequelize.query(
+            'select name from categories', {
+                raw: true,
+                type: QueryTypes.SELECT
+            }
+        )
+
         let authorList = [];
         for (let i = 0; i < authors.length; i++) {
             authorList.push(authors[i].name);
@@ -198,11 +205,16 @@ let getProductInfo = async () => {
         for (let i = 0; i < sets.length; i++) {
             setList.push(sets[i].name);
         }
+        let categoryList = [];
+        for (let i = 0; i < categories.length; i++) {
+            categoryList.push(categories[i].name);
+        }
         return result = {
             products: products,
             authors: authorList,
             providers: providerList,
-            sets: setList
+            sets: setList,
+            categories: categoryList
         };
     } catch (e) {
         return data = {
