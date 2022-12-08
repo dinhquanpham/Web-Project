@@ -77,6 +77,7 @@ export default function Payment() {
                 </Box>
             </Item>
         ));
+
     return (
         <Box className="box">
             <Box className="box">{Header()}</Box>

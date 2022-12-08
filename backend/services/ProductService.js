@@ -1,6 +1,8 @@
 const { QueryTypes, Model } = require('sequelize');
 const sequelize = require('../database/connect');
 const Authors = require('../models/Authors');
+const Category = require('../models/Categories');
+const ProductCategories = require('../models/ProductCategories');
 const Product = require('../models/Products');
 
 let getProductById = async (productId) => {
@@ -154,7 +156,6 @@ let getAllProduct = async (page, size) => {
 
 let getProductInfo = async () => {
     try {
-
         let products = await sequelize.query(
             'select p.id, p.productName, p.price, p.quantityInStock, p.publishedYear, p.productSize, p.pageNumber, p.image, p.soldNumber, p.soldStatus, a.name as authorName, pv.name providerName, ps.name as setName'
             + ' from products p'
@@ -212,9 +213,10 @@ let getProductInfo = async () => {
 
 let addProductAdmin = async(data) => {
     try {
-
         let id = await sequelize.query(
-            'select (select id from authors where name = :authorName) as authorId, (select id from providers where name = :providerName) as providerId, (select id from product_set where name = :setName) as setId',
+            'select (select id from authors where name = :authorName) as authorId,'
+            + ' (select id from providers where name = :providerName) as providerId,'
+            + ' (select id from product_set where name = :setName) as setId',
             {
                 raw: true,
                 replacements: {
@@ -245,7 +247,36 @@ let addProductAdmin = async(data) => {
             providerId: providerId
         });
 
-        return product;
+        let categoryData = data.categories;
+        let list = [];
+        if (categoryData != null) {
+            for (let i = 0; i < categoryData.length; i++) {
+                let catId = categoryData[i];
+                let prodId = data.id;
+                let res;
+                let proCat = await ProductCategories.findOne({
+                    where: {
+                        productId: prodId,
+                        categoryId: catId
+                    }
+                });
+                if (proCat != null) {
+                    res = proCat;
+                } else {
+                    res = await ProductCategories.create({
+                        productId: prodId,
+                        categoryId: catId
+                    });
+                    console.log(res);
+                }
+                list.push(res);
+            }
+        }
+
+        return result = {
+            product: product,
+            categories: list
+        }
     } catch {
 
     }
@@ -283,7 +314,34 @@ let updateProduct = async (data) => {
             where:
                 { id: data.id }
         });
+        
+        let categoryData = data.categories;
+        let productCategoryList = [];
+        if (categoryData != null) {
+            for (let i = 0; i < categoryData.length; i++) {
+                
+                let catId = categoryData[i];
+                let prodId = data.id;
 
+                let proCat = await ProductCategories.findOne({
+                    where: {
+                        productId: prodId,
+                        categoryId: catId
+                    }
+                });
+                let res;
+                if (proCat != null) {
+                    res = proCat;
+                } else {
+                    res = await ProductCategories.create({
+                        productId: prodId,
+                        categoryId: catId
+                    })
+                }
+                productCategoryList.push(res);
+            }
+        }
+        
         product.set({
             id: data.id,
             productname: data.productname,
@@ -300,10 +358,19 @@ let updateProduct = async (data) => {
             productSetId: data.productSetId,
             providerId: data.providerId
         })
+
         await product.save();
-        return product;
-    }
-    catch (e) {
+        
+        if (categoryData != null) {
+            return res = {
+                product: product,
+                productCategory: productCategoryList
+            };
+        }
+        else {
+            return product;
+        }
+    } catch (e) {
         return data = {
             message: "Error",
         }
