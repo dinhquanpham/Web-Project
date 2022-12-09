@@ -69,13 +69,8 @@ export default function ProductGrid(name, productInfo, pageSize) {
         </Box>
     ));
 
-    let h = (pageSize / 5) * 400 + 50;
-    console.log(h);
     return (
-        <Item
-            style={{ height: h }}
-            className="box product-grid box-product-grid"
-        >
+        <Item className="box product-grid box-product-grid">
             <Box className="box product-grid box-product-grid-name">
                 <Typography className="box product-grid text-product-grid-name">
                     {name}
