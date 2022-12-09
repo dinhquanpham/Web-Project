@@ -1,6 +1,7 @@
 import * as React from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
@@ -19,89 +20,81 @@ const Item = styled(Paper)(({ theme }) => ({
 export default function ProductGrid(name, productInfo, pageSize) {
     const navigate = useNavigate();
     const productShow = productInfo.map((data) => (
-        <Box
-            sx={{
-                flexGrow: 1,
-                width: "100%",
-                height: "100%",
-            }}
-        >
+        <Box className="box">
             <Box
-                sx={{
-                    flexGrow: 1,
-                    width: "100%",
-                    height: "80%",
+                className="box product-grid box-product-detail"
+                onClick={() => navigate(`/product/?id=${data.id}`)}
+            >
+                <Box className="box product-grid box-product-image">
+                    <img
+                        className="image"
+                        src={data.image}
+                        alt={data.productName}
+                    />
+                </Box>
+                <Box className="box product-grid box-product-detail-text">
+                    <Box className="box product-grid box-product-name">
+                        {data.productName}
+                    </Box>
+                    <Box className="box product-grid box-product-price">
+                        Giá: {data.price}
+                    </Box>
+                    <Box className="box product-grid box-product-sold">
+                        Đã bán: {data.soldNumber}
+                    </Box>
+                </Box>
+            </Box>
+            <Button
+                className="box product-grid button-add-to-cart"
+                variant="outlined"
+                onClick={() => {
+                    let userId = sessionStorage.getItem("userId");
+                    let info = localStorage.getItem(userId * 1000 + data.id);
+                    info = JSON.parse(info);
+                    let quantity = info == null ? 0 : info.quantity;
+                    quantity++;
+                    let newInfo = {
+                        productName: data.productName,
+                        image: data.image,
+                        price: data.price,
+                        quantity: quantity,
+                    };
+                    newInfo = JSON.stringify(newInfo);
+                    localStorage.setItem(userId * 1000 + data.id, newInfo);
+                    setOpen(true);
                 }}
             >
-                <img
-                    src={data.image}
-                    alt={data.productName}
-                    style={{
-                        width: "100%",
-                        height: "100%",
-                        display: "block",
-                        objectFit: "contain",
-                    }}
-                />
-            </Box>
-            <Box
-                sx={{
-                    flexGrow: 1,
-                    width: "100%",
-                    maxHeight: "20%",
-                }}
-            >
-                {data.productName} <br></br>
-                <Box>Giá: {data.price}</Box>
-            </Box>
+                THÊM VÀO GIỎ
+            </Button>
         </Box>
     ));
 
+    let h = (pageSize / 5) * 400 + 50;
+    console.log(h);
     return (
-        <Box sx={{ flexGrow: 1, width: "100%", height: "100%" }}>
-            <Typography
-                width="100%"
-                float="left"
-                backgroundColor="green"
-                style={{ cursor: "pointer" }}
-                onClick={() =>
-                    navigate(`/product-set/?id=${productInfo[0].productsetId}`)
-                }
-            >
-                {name}
-            </Typography>
-            <Box sx={{ flexGrow: 1, width: "100%", height: "100%" }}>
-                <Grid
-                    container
-                    columns={pageSize}
-                    sx={{ flexGrow: 1, width: "100%", height: "100%" }}
-                >
-                    {Array.from(Array(pageSize)).map((_, index) => (
-                        <Grid
-                            item
-                            xs={2}
-                            key={index}
-                            sx={{ flexGrow: 1, width: "100%", height: "100%" }}
-                        >
-                            <Item
-                                style={{ cursor: "pointer" }}
-                                onClick={() =>
-                                    navigate(
-                                        `/product/?id=${productInfo[index].id}`
-                                    )
-                                }
-                                sx={{
-                                    flexGrow: 1,
-                                    width: "100%",
-                                    height: "100%",
-                                }}
-                            >
-                                {productShow[index]}
-                            </Item>
-                        </Grid>
-                    ))}
-                </Grid>
+        <Item
+            style={{ height: h }}
+            className="box product-grid box-product-grid"
+        >
+            <Box className="box product-grid box-product-grid-name">
+                <Typography className="box product-grid text-product-grid-name">
+                    {name}
+                </Typography>
             </Box>
-        </Box>
+            <Box className="box">
+                {Array.from(Array(pageSize / 5)).map((_, index1) => (
+                    <Box className="box product-grid box-product-grid-info">
+                        {Array.from(Array(5)).map((_, index2) => (
+                            <Item
+                                className="box product-grid box-product-info"
+                                key={index1 * 5 + index2}
+                            >
+                                {productShow[index1 * 5 + index2]}
+                            </Item>
+                        ))}
+                    </Box>
+                ))}
+            </Box>
+        </Item>
     );
 }

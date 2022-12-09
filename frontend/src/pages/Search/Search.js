@@ -1,11 +1,12 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Pagination from '@mui/material/Pagination';
-import PaginationItem from '@mui/material/PaginationItem';
+import Pagination from "@mui/material/Pagination";
+import PaginationItem from "@mui/material/PaginationItem";
 import { useEffect, useState } from "react";
 import Header from "../../components/Header/Header";
 import ProductGrid from "../../components/ProductGrid/ProductGrid";
 import { Link } from "react-router-dom";
+import "./Search.css";
 
 async function SearchProductByName(searchName, page, pageSize) {
     let url = `${process.env.REACT_APP_SV_HOST}/search/?name=${searchName}&page=${page}&size=${pageSize}`;
@@ -23,8 +24,8 @@ export default function Search() {
     let params = new URLSearchParams(search);
     let searchName = params.get("name");
     if (searchName === null) searchName = "";
-    let page = parseInt(params.get("page") || '1', 10);
-    let pageSize = parseInt(params.get("size") || '10', 10);
+    let page = parseInt(params.get("page") || "1", 10);
+    let pageSize = parseInt(params.get("size") || "10", 10);
     let [productInfo, setProductInfo] = useState([]);
     useEffect(() => {
         handleData();
@@ -35,30 +36,25 @@ export default function Search() {
     };
 
     return (
-        <Box sx={{ flexGrow: 1, width: "100%", height: "100%" }}>
-            <Box width="100%">{Header()}</Box>
-            <Box
-                sx={{
-                    width: "100%",
-                    height: 300,
-                    marginTop: "2%",
-                    boxSizing: "border-box",
-                }}
-            >
-                {ProductGrid("Search Result", productInfo, pageSize)}
+        <Box className="box">
+            <Box className="box">{Header()}</Box>
+            <Box className="box">
+                {ProductGrid("KẾT QUẢ TÌM KIẾM", productInfo, pageSize)}
             </Box>
-            <Box sx={{ flexGrow: 1, width: "100%", height: "100%" }}>
+            <Box className="box search box-pagination">
                 <Pagination
+                    className="box search pagination"
                     page={page}
                     count={10}
                     renderItem={(item) => (
                         <PaginationItem
+                            className="box search pagination-item"
                             component={Link}
                             to={`/search/?name=${searchName}&page=${item.page}&size=${pageSize}`}
                             {...item}
                         />
                     )}
-                    siblingCount={0} 
+                    siblingCount={0}
                     boundaryCount={0}
                 />
             </Box>

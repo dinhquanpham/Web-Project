@@ -8,6 +8,10 @@ import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import ProductTab from "../../components/ProductTab/ProductTab";
 import "./Product.css";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -76,6 +80,8 @@ export default function Product() {
     let [productSetInfo, setProductSetInfo] = useState([]);
     let [productInSetInfo, setProductInSetInfo] = useState([]);
     let [categoryInfo, setCategoryInfo] = useState([]);
+    const [open, setOpen] = React.useState(false);
+    let navigate = useNavigate();
     useEffect(() => {
         handleData();
         window.scrollTo(0, 0);
@@ -92,11 +98,13 @@ export default function Product() {
         setCategoryInfo(response.categories);
         setAmount((counter) => 1);
     };
-    let navigate = useNavigate();
     let [amount, setAmount] = useState(1);
     function changeAmount(value) {
         setAmount((counter) => Math.max(1, counter + value));
     }
+    const handleClose = () => {
+        setOpen(false);
+    };
     let productShow = ((data = productInfo) => (
         <Item className="box product box-product-info">
             <Box className="box product box-product-image">
@@ -163,6 +171,7 @@ export default function Product() {
                         };
                         newInfo = JSON.stringify(newInfo);
                         localStorage.setItem(userId * 1000 + data.id, newInfo);
+                        setOpen(true);
                     }}
                 >
                     THÊM VÀO GIỎ
@@ -206,6 +215,14 @@ export default function Product() {
             <Box className="box">
                 {ProductTab("TRUYỆN CÙNG THỂ LOẠI", productInSetInfo)}
             </Box>
+            <Dialog open={open} onClose={handleClose}>
+                <DialogContent>
+                    <DialogContentText>ĐÃ THÊM VÀO GIỎ HÀNG</DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>ĐỒNG Ý</Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 }
