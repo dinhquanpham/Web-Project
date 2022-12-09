@@ -12,7 +12,7 @@ let getAuthorById = async (authorId) => {
         return result;
     } catch (e) {
         console.log("Can't find author");
-        return "Error";
+        throw e;
     }
 }
 
@@ -21,7 +21,7 @@ let getAllAuthor = async () => {
         let result = await Author.findAll();
         return result;
     } catch (e) {
-        return "Error";
+        throw e;
     }
 }
 
@@ -34,7 +34,7 @@ let addAuthor = async (data) => {
         return result;
     }
     catch (e) {
-        return "Error";
+        throw e;
     }
 }
 
@@ -53,7 +53,7 @@ let updateAuthor = async (data) => {
         return author;
     }
     catch (e) {
-        return "Error";
+        throw e;
     }
 }
 
@@ -70,9 +70,7 @@ let deleteAuthor = async (authorId) => {
         }
     }
     catch (e) {
-        return data = {
-            message: "Error",
-        }
+        throw e;
     }
 }
 

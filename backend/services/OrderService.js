@@ -11,7 +11,7 @@ let getOrderById = async (orderId) => {
         });
         return result;
     } catch (e) {
-        return "error";
+        throw e;
     }
 }
 
@@ -26,7 +26,7 @@ let getAllOrder = async () => {
         );
         return result;
     } catch (e) {
-        return "Error";
+        throw e;
     }
 }
 
@@ -41,7 +41,7 @@ let getOrderByUser = async(userId) => {
         )
         return result;
     } catch(e) {
-        return "Error";
+        throw e;
     }
 }
 
@@ -69,7 +69,7 @@ let updateOrder = async (data) => {
         // we don't need update
         return null;
     } catch(e) {
-        return "Error"
+        throw e
     }
 }
 
@@ -86,9 +86,7 @@ let deleteOrder = async (orderId) => {
         }
     }
     catch (e) {
-        return data = {
-            message: "Error",
-        }
+        throw e;
     }
 }
 

@@ -29,7 +29,7 @@ let getProductById = async (productId) => {
         };
     } catch (e) {
         console.log("Can't find product");
-        return "Error";
+        throw e;
     }
 }
 
@@ -48,7 +48,7 @@ let getAllProductByCreatedTime = async function (page, size) {
         }
         return result;
     } catch (e) {
-        return "Error";
+        throw e;
     }
 }
 
@@ -72,7 +72,7 @@ let getProductByCategory = async function (categoryId, page, size) {
 
         return result;
     } catch (e) {
-        return "Error";
+        throw e;
     }
 }
 
@@ -95,7 +95,7 @@ let getProductByAuthor = async (authorId, page, size) => {
 
         return result;
     } catch (e) {
-        return "Error";
+        throw e;
     }
 }
 
@@ -116,7 +116,7 @@ let getProductByProductSet = async (productSetId, page, size) => {
         }
         return result;
     } catch (e) {
-        return "Error";
+        throw e;
     }
 }
 
@@ -135,7 +135,7 @@ let getProductBySoldNumber = async (page, size) => {
         }
         return result;
     } catch (e) {
-        return "Error";
+        throw e;
     }
 }
 
@@ -150,7 +150,7 @@ let getAllProduct = async (page, size) => {
         }
         return result;
     } catch (e) {
-        return "Error";
+        throw e;
     }
 }
 
@@ -217,14 +217,14 @@ let getProductInfo = async () => {
             categories: categoryList
         };
     } catch (e) {
-        return data = {
-            message: "Error",
-        }
+        throw e;
     }
 }
 
 let addProductAdmin = async(data) => {
     try {
+        
+        console.log("bbb" + data.categories);
         let id = await sequelize.query(
             'select (select id from authors where name = :authorName) as authorId,'
             + ' (select id from providers where name = :providerName) as providerId,'
@@ -260,10 +260,22 @@ let addProductAdmin = async(data) => {
         });
 
         let categoryData = data.categories;
+        console.log("aaaa" + data.categories);
+        let idList = await sequelize.query(
+        'select id from categories where name in (?)',
+        {
+            raw: true,
+            replacements: [categoryData],
+            type: QueryTypes.SELECT
+        });
+        let categoryIdList = [];
+        for (let i = 0; i < idList.length; i++) {
+            categoryIdList.push(idList[i].id);
+        }
         let list = [];
         if (categoryData != null) {
-            for (let i = 0; i < categoryData.length; i++) {
-                let catId = categoryData[i];
+            for (let i = 0; i < categoryIdList.length; i++) {
+                let catId = categoryIdList[i];
                 let prodId = data.id;
                 let res;
                 let proCat = await ProductCategories.findOne({
@@ -279,17 +291,17 @@ let addProductAdmin = async(data) => {
                         productId: prodId,
                         categoryId: catId
                     });
-                    console.log(res);
                 }
                 list.push(res);
             }
         }
 
         return result = {
-            product: product
+            product: product,
+            categories: list
         }
-    } catch {
-
+    } catch(e) {
+        throw e;
     }
 }
 
@@ -380,9 +392,7 @@ let updateProduct = async (data) => {
             return product;
         }
     } catch (e) {
-        return data = {
-            message: "Error",
-        }
+        throw e;
     }
 }
 
@@ -399,9 +409,7 @@ let deleteProduct = async (productId) => {
         }
     }
     catch (e) {
-        return data = {
-            message: "Error",
-        }
+        throw e;
     }
 }
 
