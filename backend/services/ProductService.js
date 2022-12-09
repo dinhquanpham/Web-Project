@@ -188,9 +188,9 @@ let getProductInfo = async () => {
 
         let categories = await sequelize.query(
             'select name from categories', {
-                raw: true,
-                type: QueryTypes.SELECT
-            }
+            raw: true,
+            type: QueryTypes.SELECT
+        }
         )
 
         let authorList = [];
@@ -221,10 +221,8 @@ let getProductInfo = async () => {
     }
 }
 
-let addProductAdmin = async(data) => {
+let addProductAdmin = async (data) => {
     try {
-        
-        console.log("bbb" + data.categories);
         let id = await sequelize.query(
             'select (select id from authors where name = :authorName) as authorId,'
             + ' (select id from providers where name = :providerName) as providerId,'
@@ -238,11 +236,10 @@ let addProductAdmin = async(data) => {
                 },
                 type: QueryTypes.SELECT
             });
-            
         let authorId = id[0].authorId;
         let providerId = id[0].providerId;
         let setId = id[0].setId;
-        
+
         let product = await Product.create({
             id: data.id,
             productName: data.productName,
@@ -258,9 +255,8 @@ let addProductAdmin = async(data) => {
             productsetId: setId,
             providerId: providerId
         });
-
+        let productId = product.id;
         let categoryData = data.categories;
-        console.log("aaaa" + data.categories);
         let idList = await sequelize.query(
         'select id from categories where name in (?)',
         {
@@ -276,8 +272,9 @@ let addProductAdmin = async(data) => {
         if (categoryData != null) {
             for (let i = 0; i < categoryIdList.length; i++) {
                 let catId = categoryIdList[i];
-                let prodId = data.id;
+                let prodId = productId;
                 let res;
+                console.log("I " + data.id);
                 let proCat = await ProductCategories.findOne({
                     where: {
                         productId: prodId,
@@ -295,12 +292,9 @@ let addProductAdmin = async(data) => {
                 list.push(res);
             }
         }
-
-        return result = {
-            product: product,
-            categories: list
-        }
-    } catch(e) {
+        return product;
+    }
+    catch (e) {
         throw e;
     }
 }
@@ -335,12 +329,12 @@ let updateProduct = async (data) => {
             where:
                 { id: data.id }
         });
-        
+
         let categoryData = data.categories;
         let productCategoryList = [];
         if (categoryData != null) {
             for (let i = 0; i < categoryData.length; i++) {
-                
+
                 let catId = categoryData[i];
                 let prodId = data.id;
 
@@ -362,7 +356,7 @@ let updateProduct = async (data) => {
                 productCategoryList.push(res);
             }
         }
-        
+
         product.set({
             id: data.id,
             productname: data.productname,
@@ -381,7 +375,7 @@ let updateProduct = async (data) => {
         })
 
         await product.save();
-        
+
         if (categoryData != null) {
             return res = {
                 product: product,
