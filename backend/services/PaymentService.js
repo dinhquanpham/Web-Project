@@ -12,7 +12,10 @@ let getPaymentById = async (paymentId) => {
         return result;
     } catch (e) {
         console.log("Can't find payment");
-        throw e;
+                return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 }
 
@@ -21,7 +24,10 @@ let getAllPayment = async () => {
         let result = await Payment.findAll();
         return result;
     } catch (e) {
-        throw e;
+                return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 }
 
@@ -34,7 +40,10 @@ let addPayment = async (data) => {
         return result;
     }
     catch (e) {
-        throw e;
+                return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 }
 
@@ -53,7 +62,10 @@ let updatePayment = async (data) => {
         return payment;
     }
     catch (e) {
-        throw e;
+                return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 }
 
@@ -70,7 +82,10 @@ let deletePayment = async (paymentId) => {
         }
     }
     catch (e) {
-        throw e;
+                return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 }
 

@@ -11,7 +11,10 @@ let getOrderById = async (orderId) => {
         });
         return result;
     } catch (e) {
-        throw e;
+                return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 }
 
@@ -26,7 +29,10 @@ let getAllOrder = async () => {
         );
         return result;
     } catch (e) {
-        throw e;
+                return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 }
 
@@ -41,7 +47,10 @@ let getOrderByUser = async(userId) => {
         )
         return result;
     } catch(e) {
-        throw e;
+                return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 }
 
@@ -60,7 +69,10 @@ let addOrder = async (data) => {
         return result;
     }
     catch (e) {
-        throw e;
+                return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 }
 
@@ -69,7 +81,10 @@ let updateOrder = async (data) => {
         // we don't need update
         return null;
     } catch(e) {
-        throw e
+                return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        }
     }
 }
 
@@ -86,7 +101,10 @@ let deleteOrder = async (orderId) => {
         }
     }
     catch (e) {
-        throw e;
+                return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 }
 

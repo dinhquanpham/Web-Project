@@ -23,7 +23,10 @@ let getUserInfo = async (userId) => {
         }
         return result; 
     } catch (e) {
-        throw e;
+                return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 } 
 
@@ -37,7 +40,10 @@ let getUserById = async (userId) => {
         return result;
     } catch (e) {
         console.log("Can't find user");
-        throw e;
+                return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 }
 
@@ -51,7 +57,10 @@ let getUserByUsernameAndPassword = async (data) => {
         });
         return result;
     } catch (e) {
-        throw e;
+                return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 }
 
@@ -63,7 +72,10 @@ let getUserByUsername = async() => {
         return result;
     }
     catch (e) {
-        throw e;
+                return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 }
 
@@ -76,7 +88,10 @@ let getAllUser = async () => {
         let result = await User.findAll();
         return result;
     } catch (e) {
-        throw e;
+                return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 }
 
@@ -95,7 +110,10 @@ let addUser = async (data) => {
         return user;
     }
     catch (e){ 
-        throw e;
+                return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 }
 
@@ -120,7 +138,10 @@ let updateUser = async (data) => {
         return user;
     }
     catch (e) {
-        throw e;
+                return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 }
 
@@ -137,7 +158,10 @@ let deleteUser = async (userId) => {
         }
     }
     catch (e) {
-        throw e;
+                return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 }
 

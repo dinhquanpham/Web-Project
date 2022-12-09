@@ -13,7 +13,10 @@ let getOrderDetailById = async (orderDetailId) => {
         return result;
     } catch (e) {
         console.log("Can't find orderDetail");
-        throw e;
+                return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 }
 
@@ -22,7 +25,10 @@ let getAllOrderDetail = async () => {
         let result = await OrderDetail.findAll();
         return result;
     } catch (e) {
-        throw e;
+                return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 }
 
@@ -62,7 +68,10 @@ let addOrderDetail = async (data) => {
         return list;
     }
     catch (e){ 
-        throw e;
+                return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 }
 
@@ -81,7 +90,10 @@ let getOrderDetailByOrderId = async (orderId) => {
             });
             return orderDetail;
     } catch (e) {
-        throw e;
+                return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 }
 
@@ -98,7 +110,10 @@ let deleteOrderDetail = async (orderDetailId) => {
         }
     }
     catch (e) {
-        throw e;
+                return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 }
 
