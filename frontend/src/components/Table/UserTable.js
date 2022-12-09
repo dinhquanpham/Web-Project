@@ -6,16 +6,16 @@ import { Button } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 
 const calculateRange = (data, rowsPerPage) => {
-    const range = [];
-    const num = Math.ceil(data.length / rowsPerPage);
-    for (let index = 1; index <= num; index++) {
-      range.push(index);
-    }
-    return range;
+  const range = [];
+  const num = Math.ceil(data.length / rowsPerPage);
+  for (let index = 1; index <= num; index++) {
+    range.push(index);
+  }
+  return range;
 };
-  
+
 const sliceData = (data, page, rowsPerPage) => {
-    return data.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+  return data.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 };
 
 async function getDataById(type, id) {
@@ -25,10 +25,10 @@ async function getDataById(type, id) {
   }
   console.log(url);
   let data = await fetch(url, {
-      method: "GET",
-      headers: {
-          "Content-Type": "application/json",
-      },
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
   }).then((data) => data.json());
   return data;
 }
@@ -36,10 +36,10 @@ async function getDataById(type, id) {
 async function getOrderDetailByOrderId(id) {
   let url = `${process.env.REACT_APP_SV_HOST}/models/order-detail/by-order/${id}`;
   let data = await fetch(url, {
-      method: "GET",
-      headers: {
-          "Content-Type": "application/json",
-      },
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
   }).then((data) => data.json());
   return data;
 }
@@ -47,23 +47,23 @@ async function getOrderDetailByOrderId(id) {
 async function getUserInfoById(userId) {
   let url = `${process.env.REACT_APP_SV_HOST}/models/user/info/${userId}`;
   let data = await fetch(url, {
-      method: "GET",
-      headers: {
-          "Content-Type": "application/json",
-      },
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
   }).then((data) => data.json());
   return data;
 }
 
 async function deleteData(id) {
-    let url = `${process.env.REACT_APP_SV_HOST}/models/address/delete/${id}`;
-    return fetch(url, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    })
-    .then (data => data.json())
+  let url = `${process.env.REACT_APP_SV_HOST}/models/address/delete/${id}`;
+  return fetch(url, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  })
+    .then(data => data.json())
 }
 
 const Table = ({
@@ -73,57 +73,57 @@ const Table = ({
   rowsPerPage = 3,
   type = null,
 }) => {
-    const navigate = useNavigate();
-    const [page, setPage] = useState(1);
-    let [currentData, setCurrentData] = useState([]);
-    let [tableRange, setTableRange] = useState([]);
-    let [slice, setSlice] = useState([]);
-    let handleData = async () => {
-      let userId = sessionStorage.getItem('userId');
-      if (type === 'address') {
-        let response = await getUserInfoById(userId);
-        setCurrentData(response.address);
-      }
-      if (type === 'order') {
-        let response = await getDataById(type, userId);
-        setCurrentData(response);
-      }
+  const navigate = useNavigate();
+  const [page, setPage] = useState(1);
+  let [currentData, setCurrentData] = useState([]);
+  let [tableRange, setTableRange] = useState([]);
+  let [slice, setSlice] = useState([]);
+  let handleData = async () => {
+    let userId = sessionStorage.getItem('userId');
+    if (type === 'address') {
+      let response = await getUserInfoById(userId);
+      setCurrentData(response.address);
     }
-    useEffect (() => {
-      handleData();
-    },[])
-    useEffect(() => {
-      const range = calculateRange(currentData, rowsPerPage);
-      setTableRange([...range]);
-      const slice = sliceData(currentData, page, rowsPerPage);
-      setSlice([...slice]);
-    }, [setTableRange, page, setSlice, currentData]);
-    const getCaps = (head, field) => {
-        if (head) return head.toUpperCase();
-        return field.toUpperCase();
-    };
-    const handleOrderId = async (id) => {
-      let response = await getOrderDetailByOrderId(id);
-      let data = JSON.stringify(response);
-      sessionStorage.setItem('orderdetail', data);
-      navigate('/order-detail/?id=' + id);
+    if (type === 'order') {
+      let response = await getDataById(type, userId);
+      setCurrentData(response);
+    }
   }
-    const handleDeleteData = async (id) => {
-        let response = await deleteData(id);
-        if(response.message === 'Deleted') {
-            let newData = [];
-            currentData.forEach(element => {
-                if(element.id !== id) {
-                  newData.push(element);
-                }
-            });
-            setCurrentData(newData);
-            sessionStorage.setItem('address', 'updated');
+  useEffect(() => {
+    handleData();
+  }, [])
+  useEffect(() => {
+    const range = calculateRange(currentData, rowsPerPage);
+    setTableRange([...range]);
+    const slice = sliceData(currentData, page, rowsPerPage);
+    setSlice([...slice]);
+  }, [setTableRange, page, setSlice, currentData]);
+  const getCaps = (head, field) => {
+    if (head) return head.toUpperCase();
+    return field.toUpperCase();
+  };
+  const handleOrderId = async (id) => {
+    let response = await getOrderDetailByOrderId(id);
+    let data = JSON.stringify(response);
+    sessionStorage.setItem('orderdetail', data);
+    navigate('/order-detail/?id=' + id);
+  }
+  const handleDeleteData = async (id) => {
+    let response = await deleteData(id);
+    if (response.message === 'Deleted') {
+      let newData = [];
+      currentData.forEach(element => {
+        if (element.id !== id) {
+          newData.push(element);
         }
-        else {
-            console.log("Error");
-        }
+      });
+      setCurrentData(newData);
+      sessionStorage.setItem('address', 'updated');
     }
+    else {
+      console.log("Error");
+    }
+  }
   return (
     <div>
       <table>
@@ -138,33 +138,33 @@ const Table = ({
         <tbody>
           {slice &&
             slice.map((row) => (
-                <tr className={`${hover && "hover"} ${striped && "striped"}`}>
+              <tr className={`${hover && "hover"} ${striped && "striped"}`}>
                 {columns.map((col) => (
-                <td>{row[col.field]}</td>
+                  <td>{row[col.field]}</td>
                 ))}
                 {type === 'order' && (
                   <td>
-                    <Button                             
-                    type="submit"
-                    variant="contained"
-                    size="small"
-                    onClick= {(e)=> handleOrderId(row.id)}>
-                    Chi tiết
-                    </Button>
-                </td>
-                )}
-                {type === 'address' && (
-                  <td>
-                    <Button                             
-                    type="submit"
-                    variant="contained"
-                    size="small"
-                    onClick= {(e)=> handleDeleteData(row.id)}>
-                    Xóa
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      size="small"
+                      onClick={(e) => handleOrderId(row.id)}>
+                      Chi tiết
                     </Button>
                   </td>
                 )}
-                </tr>
+                {type === 'address' && (
+                  <td>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      size="small"
+                      onClick={(e) => handleDeleteData(row.id)}>
+                      Xóa
+                    </Button>
+                  </td>
+                )}
+              </tr>
             ))}
         </tbody>
       </table>

@@ -37,13 +37,13 @@ function Copyright(props) {
 
 async function registerUser(credentials) {
     return fetch(`${process.env.REACT_APP_SV_HOST}/register`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(credentials)
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(credentials)
     })
-    .then (data => data.json())
+        .then(data => data.json())
 }
 
 const theme = createTheme();
@@ -86,117 +86,117 @@ export default function SignUp() {
         <Box sx={{ flexGrow: 1 }}>
             <Box width="100%">{Header()}</Box>
             <Box width="100%">
-            <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="xs">
-                <CssBaseline />
-                <Box
-                    sx={{
-                        marginTop: 2,
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                    }}
-                >
-                    <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                        <LockOutlinedIcon />
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Đăng ký
-                    </Typography>
-                    <Box
-                        component="form"
-                        noValidate
-                        onSubmit={handleSubmit}
-                        sx={{ mt: 3 }}
-                    >
-                        <Grid container spacing={2}>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    autoComplete="given-name"
-                                    name="firstname"
-                                    required
-                                    fullWidth
-                                    id="firstname"
-                                    label="First Name"
-                                    autoFocus
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    id="lastname"
-                                    label="Last Name"
-                                    name="lastname"
-                                    autoComplete="family-name"
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    id="username"
-                                    label="Username"
-                                    name="username"
-                                    autoComplete="username"
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    name="password"
-                                    label="Password"
-                                    type="password"
-                                    id="password"
-                                    autoComplete="new-password"
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    name="email"
-                                    label="Email"
-                                    type="email"
-                                    id="email"
-                                    autoComplete="email"
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    name="phone"
-                                    label="Phone"
-                                    type="phone"
-                                    id="phone"
-                                    autoComplete="phone"
-                                />
-                            </Grid>
-                        </Grid>
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 3}}
+                <ThemeProvider theme={theme}>
+                    <Container component="main" maxWidth="xs">
+                        <CssBaseline />
+                        <Box
+                            sx={{
+                                marginTop: 2,
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                            }}
                         >
-                            Đăng ký
-                        </Button>
-                        {message === 'null-value' && (
-                            <Alert severity="warning" sx={{ mt: 3}}>Vui lòng nhập tài khoản và mật khẩu</Alert>
-                        )}
-                        {message === 'error-register' && (
-                            <Alert severity="warning" sx={{ mt: 3}}>Tài khoản đã tồn tại</Alert>
-                        )}
-                        {message === 'success-register' && (
-                            <Alert severity="success" sx={{ mt: 3}}>Đăng ký thành công</Alert>
-                        )}
-                    </Box>
-                </Box>
-                <Copyright sx={{ mt: 5 }} />
-            </Container>
-        </ThemeProvider>
+                            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                                <LockOutlinedIcon />
+                            </Avatar>
+                            <Typography component="h1" variant="h5">
+                                Đăng ký
+                            </Typography>
+                            <Box
+                                component="form"
+                                noValidate
+                                onSubmit={handleSubmit}
+                                sx={{ mt: 3 }}
+                            >
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField
+                                            autoComplete="given-name"
+                                            name="firstname"
+                                            required
+                                            fullWidth
+                                            id="firstname"
+                                            label="First Name"
+                                            autoFocus
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField
+                                            required
+                                            fullWidth
+                                            id="lastname"
+                                            label="Last Name"
+                                            name="lastname"
+                                            autoComplete="family-name"
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            required
+                                            fullWidth
+                                            id="username"
+                                            label="Username"
+                                            name="username"
+                                            autoComplete="username"
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            required
+                                            fullWidth
+                                            name="password"
+                                            label="Password"
+                                            type="password"
+                                            id="password"
+                                            autoComplete="new-password"
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            required
+                                            fullWidth
+                                            name="email"
+                                            label="Email"
+                                            type="email"
+                                            id="email"
+                                            autoComplete="email"
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            required
+                                            fullWidth
+                                            name="phone"
+                                            label="Phone"
+                                            type="phone"
+                                            id="phone"
+                                            autoComplete="phone"
+                                        />
+                                    </Grid>
+                                </Grid>
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    sx={{ mt: 3 }}
+                                >
+                                    Đăng ký
+                                </Button>
+                                {message === 'null-value' && (
+                                    <Alert severity="warning" sx={{ mt: 3 }}>Vui lòng nhập tài khoản và mật khẩu</Alert>
+                                )}
+                                {message === 'error-register' && (
+                                    <Alert severity="warning" sx={{ mt: 3 }}>Tài khoản đã tồn tại</Alert>
+                                )}
+                                {message === 'success-register' && (
+                                    <Alert severity="success" sx={{ mt: 3 }}>Đăng ký thành công</Alert>
+                                )}
+                            </Box>
+                        </Box>
+                        <Copyright sx={{ mt: 5 }} />
+                    </Container>
+                </ThemeProvider>
             </Box>
         </Box>
     );

@@ -57,7 +57,7 @@ export default function SignIn() {
             password: data.get("password"),
         });
         console.log(response.message);
-        if(response.message !== "Error") {
+        if (response.message !== "Error") {
             sessionStorage.setItem('userId', response.userId);
             if (response.roleId === 1) {
                 sessionStorage.setItem('admin', 'true');
@@ -75,76 +75,76 @@ export default function SignIn() {
     return (
         <Box sx={{ flexGrow: 1 }}>
             <Box width="100%">{Header()}</Box>
-            <Box width="100%">
+            <Box width="100%" height= "100%">
                 <ThemeProvider theme={theme}>
-                <Container component="main" maxWidth="xs">
-                    <CssBaseline />
-                    <Box
-                        sx={{
-                            marginTop: 3,
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "center",
-                        }}
-                    >
-                        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                            <LockOutlinedIcon />
-                        </Avatar>
-                        <Typography component="h1" variant="h5">
-                            Đăng nhập
-                        </Typography>
+                    <Container component="main" maxWidth="xs">
+                        <CssBaseline />
                         <Box
-                            component="form"
-                            onSubmit={handleSubmit}
-                            noValidate
-                            sx={{ mt: 1 }}
+                            sx={{
+                                marginTop: 3,
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                            }}
                         >
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                id="username"
-                                label="Username"
-                                name="username"
-                                autoComplete="username"
-                                autoFocus
-                            />
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="password"
-                                label="Password"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
-                            />
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                sx={{ mt: 2, mb: 2 }}
-                            >
+                            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                                <LockOutlinedIcon />
+                            </Avatar>
+                            <Typography component="h1" variant="h5">
                                 Đăng nhập
-                            </Button>
-                            <Grid container>
-                                <Grid item>
-                                    <Link href="/sign-up" variant="body2">
-                                        {"Đăng ký tài khoản"}
-                                    </Link>
+                            </Typography>
+                            <Box
+                                component="form"
+                                onSubmit={handleSubmit}
+                                noValidate
+                                sx={{ mt: 1 }}
+                            >
+                                <TextField
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    id="username"
+                                    label="Username"
+                                    name="username"
+                                    autoComplete="username"
+                                    autoFocus
+                                />
+                                <TextField
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    name="password"
+                                    label="Password"
+                                    type="password"
+                                    id="password"
+                                    autoComplete="current-password"
+                                />
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    sx={{ mt: 2, mb: 2 }}
+                                >
+                                    Đăng nhập
+                                </Button>
+                                <Grid container>
+                                    <Grid item>
+                                        <Link href="/sign-up" variant="body2">
+                                            {"Đăng ký tài khoản"}
+                                        </Link>
+                                    </Grid>
                                 </Grid>
-                            </Grid>
+                            </Box>
+                            {message === 'error-login' && (
+                                <Alert severity="warning" sx={{ mt: 3 }}>Tài khoản hoặc mật khẩu không chính xác</Alert>
+                            )}
+                            {message === 'success-login' && (
+                                <Alert severity="success" sx={{ mt: 3 }}>Đăng nhập thành công</Alert>
+                            )}
                         </Box>
-                        {message === 'error-login' && (
-                            <Alert severity="warning" sx={{ mt: 3}}>Tài khoản hoặc mật khẩu không chính xác</Alert>
-                        )}
-                        {message === 'success-login' && (
-                            <Alert severity="success" sx={{ mt: 3}}>Đăng nhập thành công</Alert>
-                        )}
-                    </Box>
-                    <Copyright sx={{ mt: 15, mb: 4 }} />
-                </Container>
-            </ThemeProvider>
+                        <Copyright sx={{ mt: 15, mb: 4 }} />
+                    </Container>
+                </ThemeProvider>
             </Box>
         </Box>
     );
