@@ -5,6 +5,10 @@ import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
 import "./ProductTab.css";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -17,30 +21,24 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export default function ProductTab(productSetName, productInfo) {
     let navigate = useNavigate();
+    const [open, setOpen] = React.useState(false);
+    const handleClose = () => {
+        setOpen(false);
+    };
     const productTabShow = productInfo.map((data) => (
         <Box className="box">
             <Box
                 className="box product-tab box-product-detail"
                 onClick={() => navigate(`/product/?id=${data.id}`)}
             >
-                <Box
-                    className="box"
-                    sx={{
-                        height: "70%",
-                    }}
-                >
+                <Box className="box product-tab box-product-image">
                     <img
                         className="image"
                         src={data.image}
                         alt={data.productName}
                     />
                 </Box>
-                <Box
-                    className="box"
-                    sx={{
-                        height: "30%",
-                    }}
-                >
+                <Box className="box product-tab box-product-detail-text">
                     <Box className="box product-tab box-product-name">
                         {data.productName}
                     </Box>
@@ -69,6 +67,7 @@ export default function ProductTab(productSetName, productInfo) {
                     };
                     newInfo = JSON.stringify(newInfo);
                     localStorage.setItem(userId * 1000 + data.id, newInfo);
+                    setOpen(true);
                 }}
             >
                 THÊM VÀO GIỎ
@@ -108,6 +107,14 @@ export default function ProductTab(productSetName, productInfo) {
                     Xem thêm
                 </Button>
             </Box>
+            <Dialog open={open} onClose={handleClose}>
+                <DialogContent>
+                    <DialogContentText>ĐÃ THÊM VÀO GIỎ HÀNG</DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>ĐỒNG Ý</Button>
+                </DialogActions>
+            </Dialog>
         </Item>
     );
 }
