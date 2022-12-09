@@ -2,12 +2,12 @@
     width: 96%;
     height: 450px;
     margin: 2%;
-    background-color: var(--item-background-color) !important;
+    background-color: var(--item-background-color);
 }
 
 .box.product-tab.box-product-set-name {
-    height: 10% !important;
-    float: left !important;
+    height: 10%;
+    float: left;
 }
 
 .box.product-tab.text-product-set-name {
@@ -16,21 +16,20 @@
     align-items: center;
     text-align: center;
     padding-left: 20px;
-    color: var(--main-color) !important;
-    font-size: 18px !important;
+    color: var(--main-color);
+    font-size: 18px;
     font-weight: bold;
 }
 
 .box.product-tab.box-product-set-info {
-    height: 80% !important;
+    height: 75%;
     display: flex;
 }
 
 .box.product-tab.box-product-info {
     width: 18%;
-    height: 95%;
-    display: inline-block !important;
-    margin: 0 auto;
+    display: inline-block;
+    margin: 0 1%;
     position: relative;
     top: 0;
     transition: top ease 0.1s;
@@ -46,26 +45,34 @@
     cursor: pointer;
 }
 
+.box.product-tab.box-product-image {
+    height: 65%;
+}
+
+.box.product-tab.box-product-detail-text {
+    height: 35%;
+}
+
 .box.product-tab.box-product-name {
-    width: fit-content !important;
-    height: fit-content !important;
+    width: fit-content;
+    height: fit-content;
     margin: auto;
     color: #000000;
-    font-size: 14px !important;
+    font-size: 14px;
     font-weight: bold;
 }
 
 .box.product-tab.box-product-price {
-    width: fit-content !important;
-    height: fit-content !important;
+    width: fit-content;
+    height: fit-content;
     margin: auto;
-    font-size: 16px !important;
+    font-size: 16px;
     font-weight: bold;
-    color: var(--main-color) !important;
+    color: var(--main-color);
 }
 
 .box.product-tab.box-product-sold {
-    height: fit-content !important;
+    height: fit-content;
     background-color: #eda6a6;
     border: 2px solid #eda6a6;
     border-radius: 10px;
@@ -94,9 +101,11 @@
 
 .box.product-tab.box-button-watch-more {
     height: 10%;
+    margin-top: 1%;
     display: flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
 }
 
 .box.product-tab.button-watch-more {

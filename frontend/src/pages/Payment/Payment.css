@@ -155,3 +155,45 @@
     font-weight: bold;
     color: #000000;
 }
+
+.box.payment.box-order-detail {
+    height: 150px;
+    display: flex;
+    position: -webkit-sticky;
+    position: sticky;
+    bottom: 0%;
+}
+
+.box.payment.box-order-cost {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.box.payment.text-order-cost {
+    width: fit-content;
+    height: fit-content;
+    margin-left: 2%;
+    font-size: 18px;
+    font-weight: bold;
+    color: #000000;
+}
+
+.box.payment.box-order-confirm {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.box.payment.button-order-confirm {
+    width: fit-content;
+    height: fit-content;
+    margin-right: 2%;
+    font-size: 18px;
+    color: var(--item-background-color);
+    background-color: var(--main-color);
+}

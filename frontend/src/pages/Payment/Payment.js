@@ -10,6 +10,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header/Header";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
 import "./Payment.css";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -47,9 +51,22 @@ function GetAllStorage(userId) {
     return storage;
 }
 
+function PostOrder() {
+    let url =
+        `${process.env.REACT_APP_SV_HOST}/models/address/by-user/` + userId;
+    let data = fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    }).then((data) => data.json());
+    return data;
+}
+
 export default function Payment() {
     let userId = sessionStorage.getItem("userId");
     let [addressInfo, setAddressInfo] = useState([]);
+    const [open, setOpen] = React.useState(false);
     useEffect(() => {
         handleData();
     }, []);
@@ -162,6 +179,9 @@ export default function Payment() {
                 </Box>
             </Item>
         ));
+    const handleClose = () => {
+        setOpen(false);
+    };
     return (
         <Box className="box">
             <Box className="box">{Header()}</Box>
@@ -178,6 +198,34 @@ export default function Payment() {
                     <Box className="box payment text-order-title">ĐƠN HÀNG</Box>
                 </Box>
                 {cartShow}
+            </Item>
+            <Item className="box payment box-order-detail">
+                <Box className="box payment box-order-cost">
+                    <Box className="box payment text-order-cost">
+                        TỔNG SỐ TIỀN: {totalPayment}
+                    </Box>
+                </Box>
+                <Box className="box payment box-order-confirm">
+                    <Button
+                        className="box payment button-order-confirm"
+                        onClick={() => {
+                            // PostOrder();
+                            setOpen(true);
+                        }}
+                    >
+                        XÁC NHẬN THANH TOÁN
+                    </Button>
+                </Box>
+                <Dialog open={open} onClose={handleClose}>
+                    <DialogContent>
+                        <DialogContentText>
+                            ĐẶT HÀNG THÀNH CÔNG
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose}>Đồng ý</Button>
+                    </DialogActions>
+                </Dialog>
             </Item>
         </Box>
     );
