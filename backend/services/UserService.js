@@ -23,7 +23,7 @@ let getUserInfo = async (userId) => {
         }
         return result; 
     } catch (e) {
-        return "Error";
+        throw e;
     }
 } 
 
@@ -37,7 +37,7 @@ let getUserById = async (userId) => {
         return result;
     } catch (e) {
         console.log("Can't find user");
-        return "Error";
+        throw e;
     }
 }
 
@@ -51,7 +51,7 @@ let getUserByUsernameAndPassword = async (data) => {
         });
         return result;
     } catch (e) {
-        return "Error";
+        throw e;
     }
 }
 
@@ -63,7 +63,7 @@ let getUserByUsername = async() => {
         return result;
     }
     catch (e) {
-        return "Error";
+        throw e;
     }
 }
 
@@ -76,7 +76,7 @@ let getAllUser = async () => {
         let result = await User.findAll();
         return result;
     } catch (e) {
-        return "Error";
+        throw e;
     }
 }
 
@@ -95,7 +95,7 @@ let addUser = async (data) => {
         return user;
     }
     catch (e){ 
-        return "Error";
+        throw e;
     }
 }
 
@@ -120,9 +120,7 @@ let updateUser = async (data) => {
         return user;
     }
     catch (e) {
-        return data = {
-            message: "Error",
-        }
+        throw e;
     }
 }
 
@@ -139,9 +137,7 @@ let deleteUser = async (userId) => {
         }
     }
     catch (e) {
-        return data = {
-            message: "Error",
-        }
+        throw e;
     }
 }
 

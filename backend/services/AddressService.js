@@ -12,7 +12,7 @@ let getAddressById = async (addressId) => {
         return result;
     } catch (e) {
         console.log("Can't find address");
-        return "Error";
+        throw e;
     }
 }
 
@@ -26,7 +26,7 @@ let getAddressByUserId = async(userId) => {
         });
         return searchResult;
     } catch (e) {
-        return "Error";
+        throw e;
     }
 }
 let getAllAddress = async () => {
@@ -34,7 +34,7 @@ let getAllAddress = async () => {
         let result = await Address.findAll();
         return result;
     } catch (e) {
-        return "Error";
+        throw e;
     }
 }
 
@@ -51,7 +51,7 @@ let addAddress = async (data) => {
         return result;
     }
     catch (e) {
-        return "Error";
+        throw e;
     }
 }
 
@@ -72,9 +72,7 @@ let updateAddress = async (data) => {
         return address;
     }
     catch (e) {
-        data = {
-            message: "Error",
-        }
+        throw e;
     }
 }
 
@@ -91,9 +89,7 @@ let deleteAddress = async (addressId) => {
         }
     }
     catch (e) {
-        return data = {
-            message: "Error",
-        }
+        throw e;
     }
 }
 

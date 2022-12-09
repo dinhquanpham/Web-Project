@@ -12,7 +12,7 @@ let getProviderById = async (providerId) => {
         return result;
     } catch (e) {
         console.log("Can't find provider");
-        return "Error";
+        throw e;
     }
 }
 
@@ -21,7 +21,7 @@ let getAllProvider = async () => {
         let result = await Provider.findAll();
         return result;
     } catch (e) {
-        return "Error";
+        throw e;
     }
 }
 
@@ -34,7 +34,7 @@ let addProvider = async (data) => {
         return provider;
     }
     catch (e){ 
-        return "Error";
+        throw e;
     }
 }
 
@@ -53,7 +53,7 @@ let updateProvider = async (data) => {
         return provider;
     }
     catch (e) {
-        return "Error";
+        throw e;
     }
 }
 
@@ -70,9 +70,7 @@ let deleteProvider = async (providerId) => {
         }
     }
     catch (e) {
-        return data = {
-            message: "Error",
-        }
+        throw e;
     }
 }
 

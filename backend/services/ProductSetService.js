@@ -14,7 +14,7 @@ let getProductSetById = async (productSetId) => {
         return result;
     } catch (e) {
         console.log("Can't find productSet");
-        return "Error";
+        throw e;
     }
 }
 
@@ -28,7 +28,7 @@ let getAllProductSet = async () => {
         );
         return result;
     } catch (e) {
-        return "Error";
+        throw e;
     }
 }
 
@@ -43,7 +43,7 @@ let getProductSetByProvider = async (providerId) => {
             });
         return searchResult;
     } catch (e) {
-        return "Error";
+        throw e;
     }
 }
 
@@ -83,7 +83,7 @@ let getProducSetInfo = async () => {
             providers: providerList,
         };
     } catch (e) {
-        return "Error";
+        throw e;
     }
 }
 
@@ -101,7 +101,7 @@ let addProductSet = async (data) => {
         return result;
     }
     catch (e) {
-        return "Error";
+        throw e;
     }
 }
 
@@ -134,7 +134,7 @@ let addProductSetByAdmin = async(data) => {
 
         return result;
     } catch(e) {
-        return "Error";
+        throw e;
     }
 }
 let updateProductSet = async (data) => {
@@ -156,7 +156,7 @@ let updateProductSet = async (data) => {
         return productSet;
     }
     catch (e) {
-        return "Error";
+        throw e;
     }
 }
 
@@ -173,9 +173,7 @@ let deleteProductSet = async (productSetId) => {
         }
     }
     catch (e) {
-        return data = {
-            message: "Error",
-        }
+        throw e;
     }
 }
 

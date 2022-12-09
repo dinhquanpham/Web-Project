@@ -12,7 +12,7 @@ let getCategoryById = async (categoryId) => {
         return result;
     } catch (e) {
         console.log("Can't find category");
-        return "Error";
+        throw e;
     }
 }
 
@@ -21,7 +21,7 @@ let getAllCategory = async () => {
         let result = await Category.findAll();
         return result;
     } catch (e) {
-        return "Error";
+        throw e;
     }
 }
 
@@ -35,7 +35,7 @@ let addCategory = async (data) => {
         return category;
     }
     catch (e){ 
-        return "Error";
+        throw e;
     }
 }
 
@@ -55,7 +55,7 @@ let updateCategory = async (data) => {
         return category;
     }
     catch (e) {
-        return "Error";
+        throw e;
     }
 }
 
@@ -72,9 +72,7 @@ let deleteCategory = async (categoryId) => {
         }
     }
     catch (e) {
-        return data = {
-            message: "Error",
-        }
+        throw e;
     }
 }
 
