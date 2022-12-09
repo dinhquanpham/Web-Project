@@ -60,7 +60,7 @@ let addOrder = async (data) => {
         return result;
     }
     catch (e) {
-        return "Error";
+        throw e;
     }
 }
 

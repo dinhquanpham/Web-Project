@@ -26,7 +26,9 @@ const addOrder = async (req, res) => {
     let productData = data;
 
     const order = await orderService.addOrder(orderData);
+    console.log(order);
     data[0] = order;
+
     const product = await orderDetailService.addOrderDetail(productData);
 
     if (data[0].paymentId == 2) {
@@ -36,7 +38,7 @@ const addOrder = async (req, res) => {
         let amount = data[0].paidAmount;
         let url = process.env.PAYMENT_QR_URL + amount + '&accountName=' + process.env.PAYMENT_QR_ACCOUNTNAME;
         console.log(url);
-        res.redirect(url);
+        res.send(url);
     }
     
 }
