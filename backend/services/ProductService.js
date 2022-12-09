@@ -29,7 +29,10 @@ let getProductById = async (productId) => {
         };
     } catch (e) {
         console.log("Can't find product");
-        throw e;
+        return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 }
 
@@ -48,7 +51,10 @@ let getAllProductByCreatedTime = async function (page, size) {
         }
         return result;
     } catch (e) {
-        throw e;
+        return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 }
 
@@ -72,7 +78,10 @@ let getProductByCategory = async function (categoryId, page, size) {
 
         return result;
     } catch (e) {
-        throw e;
+        return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 }
 
@@ -95,7 +104,10 @@ let getProductByAuthor = async (authorId, page, size) => {
 
         return result;
     } catch (e) {
-        throw e;
+        return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 }
 
@@ -116,7 +128,10 @@ let getProductByProductSet = async (productSetId, page, size) => {
         }
         return result;
     } catch (e) {
-        throw e;
+        return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 }
 
@@ -135,7 +150,10 @@ let getProductBySoldNumber = async (page, size) => {
         }
         return result;
     } catch (e) {
-        throw e;
+        return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 }
 
@@ -150,7 +168,10 @@ let getAllProduct = async (page, size) => {
         }
         return result;
     } catch (e) {
-        throw e;
+        return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 }
 
@@ -217,7 +238,10 @@ let getProductInfo = async () => {
             categories: categoryList
         };
     } catch (e) {
-        throw e;
+        return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 }
 
@@ -272,12 +296,10 @@ let addProductAdmin = async (data) => {
         if (categoryData != null) {
             for (let i = 0; i < categoryIdList.length; i++) {
                 let catId = categoryIdList[i];
-                let prodId = productId;
                 let res;
-                console.log("I " + data.id);
                 let proCat = await ProductCategories.findOne({
                     where: {
-                        productId: prodId,
+                        productId: productId,
                         categoryId: catId
                     }
                 });
@@ -292,10 +314,16 @@ let addProductAdmin = async (data) => {
                 list.push(res);
             }
         }
-        return product;
-    }
-    catch (e) {
-        throw e;
+
+        return result = {
+            product: product,
+            categories: list
+        }
+    } catch(e) {
+        return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 }
 
@@ -319,7 +347,10 @@ let addProduct = async (data) => {
         return product;
     }
     catch (e) {
-        throw e;
+        return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 }
 
@@ -386,7 +417,10 @@ let updateProduct = async (data) => {
             return product;
         }
     } catch (e) {
-        throw e;
+        return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 }
 
@@ -403,7 +437,10 @@ let deleteProduct = async (productId) => {
         }
     }
     catch (e) {
-        throw e;
+        return temp = {
+            error:e.name,
+            message: e.errors[0].message
+        };
     }
 }
 
