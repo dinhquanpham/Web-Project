@@ -286,8 +286,7 @@ let addProductAdmin = async(data) => {
         }
 
         return result = {
-            product: product,
-            categories: list
+            product: product
         }
     } catch {
 
@@ -314,9 +313,7 @@ let addProduct = async (data) => {
         return product;
     }
     catch (e) {
-        return data = {
-            message: "Error",
-        }
+        throw e;
     }
 }
 
