@@ -26,20 +26,19 @@ export default function Search() {
     if (searchName === null) searchName = "";
     let page = parseInt(params.get("page") || "1", 10);
     let pageSize = parseInt(params.get("size") || "10", 10);
-    let [productInfo, setProductInfo] = useState([]);
+    let [searchInfo, setSearchInfo] = useState([]);
     useEffect(() => {
         handleData();
     }, [searchName, page, pageSize]);
     let handleData = async () => {
         let response = await SearchProductByName(searchName, page, pageSize);
-        setProductInfo(response);
+        setSearchInfo(response);
     };
-
     return (
         <Box className="box">
             <Box className="box">{Header()}</Box>
             <Box className="box">
-                {ProductGrid("KẾT QUẢ TÌM KIẾM", productInfo, pageSize)}
+                {ProductGrid("KẾT QUẢ TÌM KIẾM", searchInfo, pageSize)}
             </Box>
             <Box className="box search box-pagination">
                 <Pagination
@@ -54,8 +53,8 @@ export default function Search() {
                             {...item}
                         />
                     )}
-                    siblingCount={0}
-                    boundaryCount={0}
+                    siblingCount={1}
+                    boundaryCount={1}
                 />
             </Box>
         </Box>

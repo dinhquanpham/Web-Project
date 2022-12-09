@@ -1,5 +1,6 @@
 .box.product-grid.box-product-grid {
     width: 96%;
+    height: fit-content;
     margin: 2%;
     background-color: var(--item-background-color);
 }
@@ -21,8 +22,8 @@
 }
 
 .box.product-grid.box-product-grid-info {
-    height: calc(0.9 * 400px);
-    margin: calc(0.05 * 400px) 0;
+    height: 350px;
+    margin: 2% 0;
     display: flex;
 }
 

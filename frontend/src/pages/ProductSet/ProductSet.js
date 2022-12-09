@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
 import Header from "../../components/Header/Header";
 import ProductGrid from "../../components/ProductGrid/ProductGrid";
+import "./ProductSet.css";
 
 async function GetProductSetById(productSetId) {
     let url =
@@ -37,17 +38,11 @@ export default function ProductSet() {
         setProductSetInfo(response);
     };
 
+    console.log(productSetInfo);
     return (
-        <Box sx={{ flexGrow: 1, width: "100%", height: "100%" }}>
-            <Box width="100%">{Header()}</Box>
-            <Box
-                sx={{
-                    width: "100%",
-                    height: 300,
-                    marginTop: "2%",
-                    boxSizing: "border-box",
-                }}
-            >
+        <Box className="box">
+            <Box className="box">{Header()}</Box>
+            <Box className="box">
                 {ProductGrid(productSetInfo.name, productSetInfo, 10)}
             </Box>
         </Box>
