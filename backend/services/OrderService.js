@@ -104,6 +104,7 @@ let updateOrderStatus = async (orderId) => {
             }
         });
         order.set({
+            detail: "Đơn hàng đã được thanh toán",
             paidAt: localDate(),
             paidStatus: 1
         })
@@ -112,7 +113,28 @@ let updateOrderStatus = async (orderId) => {
     } catch (e) {
         return temp = {
             error: e.name,
-            message: "Error"
+            message: "Order Error"
+        };
+    }
+}
+
+let QRPaymentConfirm = async(orderId) => {
+    try {
+        let result = await Order.findOne({
+            where: {
+                id: orderId
+            }
+        })
+        result.set({
+            detail: "Thông tin thanh toán đang chờ được xác nhận"
+        });
+        result.save();
+        return result;
+    }
+    catch(e) {
+        return temp = {
+            error: e.name,
+            message: "QR Payment Error!"
         };
     }
 }
@@ -141,6 +163,7 @@ module.exports = {
     getOrderById: getOrderById,
     getAllOrder: getAllOrder,
     getOrderByUser: getOrderByUser,
+    QRPaymentConfirm: QRPaymentConfirm,
     addOrder: addOrder,
     updateOrderStatus: updateOrderStatus,
     deleteOrder: deleteOrder,
