@@ -3,12 +3,18 @@ const sequelize = require('../database/connect');
 const Order = require('../models/Orders');
 
 let format = function(a) {
-    let b = 'FAHASA' + a;
+    let b = 'FAHASA_' + a;
     return b;
 }
 
-let localDate = function(date) {
-    return date + 10000;
+let localDate = function() {
+    let data = Date.now() + 25200000;
+    return new Date(data)
+}
+
+let shipDate = function() {
+    let data = Date.now() + 259200000;
+    return new Date(data);
 }
 
 let getOrderById = async (orderId) => {
@@ -65,14 +71,13 @@ let getOrderByUser = async (userId) => {
 
 let addOrder = async (data) => {
     try {
-        date = localDate(Date.now());
+        orderDate = localDate();
+        shippedDate = shipDate();
         let result = await Order.create({
             id: data.id,
-            orderDate: date,
-            shippedDate: data.shippedDate,
+            orderDate: orderDate,
+            shippedDate: shippedDate,
             paidAmount: data.paidAmount,
-            paidStatus: data.paidStatus,
-            paidAt: data.paidAt,
             userId: data.userId,
             paymentId: data.paymentId
         })
@@ -91,10 +96,19 @@ let addOrder = async (data) => {
     }
 }
 
-let updateOrder = async (data) => {
+let updateOrderStatus = async (orderId) => {
     try {
-        // we don't need update
-        return null;
+        let order = await Order.findOne({
+            where: {
+                id: orderId
+            }
+        });
+        order.set({
+            paidAt: localDate(),
+            paidStatus: 1
+        })
+        order.save();
+        return order;
     } catch (e) {
         return temp = {
             error: e.name,
@@ -128,6 +142,6 @@ module.exports = {
     getAllOrder: getAllOrder,
     getOrderByUser: getOrderByUser,
     addOrder: addOrder,
-    updateOrder: updateOrder,
+    updateOrderStatus: updateOrderStatus,
     deleteOrder: deleteOrder,
 }

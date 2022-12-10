@@ -49,9 +49,9 @@ const addOrder = async (req, res) => {
     
 }
 
-const updateOrder = async (req, res) => {
-    let data = req.body;
-    const result = await orderService.updateOrder(data);
+const updateOrderStatus = async (req, res) => {
+    let orderId = req.params.orderId;
+    const result = await orderService.updateOrderStatus(orderId);
     res.send(result);
 }
 
@@ -66,6 +66,6 @@ module.exports = {
     getOrderByUser, getOrderByUser,
     getOrderById: getOrderById,
     addOrder: addOrder,
-    updateOrder: updateOrder,
+    updateOrderStatus: updateOrderStatus,
     deleteOrder: deleteOrder,
 }
