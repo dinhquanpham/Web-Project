@@ -57,8 +57,8 @@ let getUserByUsernameAndPassword = async (data) => {
         if(result) return result;
         else {
             return temp = {
-                error: e.name,
-                message: "Error"
+                error: "Lỗi đăng nhập",
+                message: "Tài khoản hoặc mật khẩu không chính xác"
             };
         }
     } catch (e) {

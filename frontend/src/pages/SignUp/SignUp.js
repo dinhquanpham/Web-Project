@@ -66,7 +66,7 @@ export default function SignUp() {
                 email: data.get("email"),
                 phone: data.get("phone")
             });
-            if (response.message !== "Error") {
+            if (!response.error) {
                 sessionStorage.setItem('userId', response.userId);
                 if (response.roleId === 1) {
                     sessionStorage.setItem('admin', 'true');

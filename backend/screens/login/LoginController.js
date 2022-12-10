@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const checkUserLogin = async (req, res, next) => {
     let user = req.body;
     let result = await userService.getUserByUsernameAndPassword(user);
-    if (result.message !== "Error") {
+    if (!result.error) {
             req.checkUserLogin = {
                 userId: result.id,
                 roleId: result.roleId
@@ -14,7 +14,7 @@ const checkUserLogin = async (req, res, next) => {
     }
     else {
         res.status(401).send(data = {
-            message: "Error"
+            error: "Tài khoản hoặc mật khẩu không chính xác "
         });
     }
 }

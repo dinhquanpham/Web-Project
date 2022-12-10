@@ -134,7 +134,7 @@ export default function UserInfo() {
       phone: data.get('phone'),
       email: data.get('email'),
     })
-    if (response.message !== "Error") {
+    if (!response.error) {
       setMessage("update-info");
       setTimeout(() => window.location.reload(), 1500);
     }
@@ -183,7 +183,7 @@ export default function UserInfo() {
       province: data.get('province'),
       userId: sessionStorage.getItem('userId')
     })
-    if (response.message !== "Error") {
+    if (!response.error) {
       setMessage("update-address");
       setTimeout(() => window.location.reload(), 1500);
     }
@@ -455,7 +455,7 @@ export default function UserInfo() {
             {message === 'update-address' && (
               <Alert severity="success">Đã cập nhật địa chỉ giao hàng mới</Alert>
             )}
-            {message === 'update-address' && (
+            {message === 'error-update-address' && (
               <Alert severity="warning">Lỗi khi thêm địa chỉ giao hàng mới</Alert>
             )}
           </Box>

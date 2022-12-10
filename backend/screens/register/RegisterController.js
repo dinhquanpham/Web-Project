@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const checkRegister = async (req, res, next) => {
     let data = req.body;
     let result = await userService.addUser(data);
-    if (result.message !== "Error" && result != null) {
+    if (!result.error && result != null) {
         req.checkRegister = {
             userId: result.id,
             roleId: result.roleId
@@ -13,7 +13,7 @@ const checkRegister = async (req, res, next) => {
     }
     else {
         res.status(400).send(data = {
-            message: "Error"
+            error: "Tài khoản đã tồn tại"
         });
     }
 }

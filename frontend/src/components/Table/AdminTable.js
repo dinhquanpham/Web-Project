@@ -17,10 +17,9 @@ import { Button } from '@mui/material';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { DataArray } from "@mui/icons-material";
 import { useTheme } from '@mui/material/styles';
-import { Grid } from "@mui/material";
+import Alert from '@mui/material/Alert';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from "react-router-dom";
-import Alert from '@mui/material/Alert';
 
 const calculateRange = (data, rowsPerPage) => {
   const range = [];
@@ -41,7 +40,6 @@ async function getData(type) {
   else {
     url = url + type;
   }
-  console.log(url);
   let data = await fetch(url, {
     method: "GET",
     headers: {
@@ -89,6 +87,18 @@ async function addData(credentials, type) {
   return data;
 }
 
+async function updateOrderStatus(id) {
+  let url = `${process.env.REACT_APP_SV_HOST}/models/order/update/` + id;
+  console.log(url);
+  let data = await fetch(url, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((data) => data.json());
+  return data;
+}
+
 async function deleteData(type, id) {
   let url = `${process.env.REACT_APP_SV_HOST}/models/${type}/delete/${id}`;
   return fetch(url, {
@@ -120,7 +130,6 @@ const Table = ({
   const [page, setPage] = useState(1);
   const theme = useTheme();
   let [currentData, setCurrentData] = useState([]);
-  let [currentProduct, setCurrentProduct] = useState([]);
   let [message, setMessage] = useState("");
   let [soldStatus, setSoldStatus] = useState("");
   let [productSet, setProductSet] = useState([]);
@@ -199,7 +208,6 @@ const Table = ({
       }
       else {
         console.log("Update");
-        response.message = "Error";
       }
     }
     if (type === 'product-set') {
@@ -228,7 +236,7 @@ const Table = ({
         name: data.get('name'),
       }, type)
     }
-    if (response.message !== "Error") {
+    if (!response.error) {
       let newData = [];
       currentData.forEach(element => {
         newData.push(element);
@@ -257,9 +265,10 @@ const Table = ({
         }
       });
       setCurrentData(newData);
+      setMessage("deleted-data");
     }
     else {
-      console.log("Error");
+      setMessage("error-deleted-data");
     }
   }
 
@@ -278,7 +287,15 @@ const Table = ({
   }
 
   const handlePaymentOrder = async (id) => {
-    console.log("OK");
+    console.log(id);
+    let response = await updateOrderStatus(id);
+    if (!response.error) {
+      setMessage("update-payment");
+      setTimeout(() => window.location.reload(), 1500);
+    }
+    else {
+      setMessage("error-update-payment");
+    }
   }
   const handleSoldStatusChange = (event) => {
     setSoldStatus(event.target.value);
@@ -739,6 +756,18 @@ const Table = ({
       )}
       {message === 'error-update-data' && (
         <Alert severity="warning">Lỗi khi thêm dữ liệu mới</Alert>
+      )}
+      {message === 'update-payment' && (
+        <Alert severity="success">Đã xác nhận thanh toán cho đơn hàng</Alert>
+      )}
+      {message === 'error-update-payment' && (
+        <Alert severity="warning">Lỗi khi xác nhận thanh toán cho đơn hàng</Alert>
+      )}
+      {message === 'deleted-data' && (
+        <Alert severity="success">Đã xóa dữ liệu thành công</Alert>
+      )}
+      {message === 'error-deleted-data' && (
+        <Alert severity="warning">Lỗi khi xóa dữ liệu</Alert>
       )}
     </div>
   );

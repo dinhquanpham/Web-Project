@@ -36,7 +36,7 @@ let getOrderById = async (orderId) => {
 let getAllOrder = async () => {
     try {
         let result = await sequelize.query(
-            'select o.*, u.id, u.username from orders o join users u on u.id = o.userId;',
+            'select o.*, u.username from orders o join users u on u.id = o.userId;',
             {
                 raw: true,
                 type: QueryTypes.SELECT
@@ -113,7 +113,7 @@ let updateOrderStatus = async (orderId) => {
     } catch (e) {
         return temp = {
             error: e.name,
-            message: "Order Error"
+            message: "Error"
         };
     }
 }
@@ -134,7 +134,7 @@ let QRPaymentConfirm = async(orderId) => {
     catch(e) {
         return temp = {
             error: e.name,
-            message: "QR Payment Error!"
+            message: "Error"
         };
     }
 }
