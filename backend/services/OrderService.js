@@ -2,6 +2,15 @@ const { QueryTypes, Model } = require('sequelize');
 const sequelize = require('../database/connect');
 const Order = require('../models/Orders');
 
+let format = function(a) {
+    let b = 'FAHASA' + a;
+    return b;
+}
+
+let localDate = function(date) {
+    return date + 10000;
+}
+
 let getOrderById = async (orderId) => {
     try {
         let result = await Order.findOne({
@@ -11,9 +20,9 @@ let getOrderById = async (orderId) => {
         });
         return result;
     } catch (e) {
-                return temp = {
+        return errorCause = {
             error:e.name,
-            message: e.errors[0].message
+            
         };
     }
 }
@@ -21,7 +30,7 @@ let getOrderById = async (orderId) => {
 let getAllOrder = async () => {
     try {
         let result = await sequelize.query(
-            'select o.*, u.username from orders o join users u on u.id = o.userId;',
+            'select o.*, u.id, u.username from orders o join users u on u.id = o.userId;',
             {
                 raw : true,
                 type : QueryTypes.SELECT
@@ -29,9 +38,9 @@ let getAllOrder = async () => {
         );
         return result;
     } catch (e) {
-                return temp = {
+        return errorCause = {
             error:e.name,
-            message: e.errors[0].message
+            
         };
     }
 }
@@ -47,18 +56,19 @@ let getOrderByUser = async(userId) => {
         )
         return result;
     } catch(e) {
-                return temp = {
+        return errorCause = {
             error:e.name,
-            message: e.errors[0].message
+            
         };
     }
 }
 
 let addOrder = async (data) => {
     try {
+        date = localDate(Date.now());
         let result = await Order.create({
             id: data.id,
-            orderDate: data.orderDate,
+            orderDate: date,
             shippedDate: data.shippedDate,
             paidAmount: data.paidAmount,
             paidStatus: data.paidStatus,
@@ -66,13 +76,15 @@ let addOrder = async (data) => {
             userId: data.userId,
             paymentId: data.paymentId
         })
+        const orderCode = format(result.id);
+        result.set({
+            orderCode: orderCode
+        });
+        result.save();
         return result;
     }
     catch (e) {
-                return temp = {
-            error:e.name,
-            message: e.errors[0].message
-        };
+        throw e;
     }
 }
 
@@ -81,9 +93,9 @@ let updateOrder = async (data) => {
         // we don't need update
         return null;
     } catch(e) {
-                return temp = {
+                return errorCause = {
             error:e.name,
-            message: e.errors[0].message
+            
         }
     }
 }
@@ -101,9 +113,9 @@ let deleteOrder = async (orderId) => {
         }
     }
     catch (e) {
-                return temp = {
+        return errorCause = {
             error:e.name,
-            message: e.errors[0].message
+            
         };
     }
 }

@@ -12,9 +12,8 @@ let getRoleById = async (roleId) => {
         return result;
     } catch (e) {
         console.log("Can't find role");
-                return temp = {
+        return errorCause = {
             error:e.name,
-            message: e.errors[0].message
         };
     }
 }
@@ -24,9 +23,8 @@ let getAllRole = async () => {
         let result = await Role.findAll();
         return result;
     } catch (e) {
-                return temp = {
+        return errorCause = {
             error:e.name,
-            message: e.errors[0].message
         };
     }
 }
@@ -41,9 +39,8 @@ let addRole = async (data) => {
         return result;
     }
     catch (e) {
-                return temp = {
+        return errorCause = {
             error:e.name,
-            message: e.errors[0].message
         };
     }
 }
@@ -64,9 +61,8 @@ let updateRole = async (data) => {
         return role;
     }
     catch (e) {
-                return temp = {
+        return errorCause = {
             error:e.name,
-            message: e.errors[0].message
         };
     }
 }
@@ -84,9 +80,8 @@ let deleteRole = async (roleId) => {
         }
     }
     catch (e) {
-                return temp = {
+        return errorCause = {
             error:e.name,
-            message: e.errors[0].message
         };
     }
 }

@@ -12,9 +12,8 @@ let getAddressById = async (addressId) => {
         return result;
     } catch (e) {
         console.log("Can't find address");
-                return temp = {
-            error:e.name,
-            message: e.errors[0].message
+        return errorCause = {
+             error:e.name,
         };
     }
 }
@@ -29,9 +28,8 @@ let getAddressByUserId = async(userId) => {
         });
         return searchResult;
     } catch (e) {
-                return temp = {
-            error:e.name,
-            message: e.errors[0].message
+        return errorCause = {
+             error:e.name,
         };
     }
 }
@@ -40,9 +38,8 @@ let getAllAddress = async () => {
         let result = await Address.findAll();
         return result;
     } catch (e) {
-                return temp = {
-            error:e.name,
-            message: e.errors[0].message
+        return errorCause = {
+             error:e.name,
         };
     }
 }
@@ -60,9 +57,8 @@ let addAddress = async (data) => {
         return result;
     }
     catch (e) {
-                return temp = {
-            error:e.name,
-            message: e.errors[0].message
+        return errorCause = {
+             error:e.name,
         };
     }
 }
@@ -84,9 +80,8 @@ let updateAddress = async (data) => {
         return address;
     }
     catch (e) {
-                return temp = {
-            error:e.name,
-            message: e.errors[0].message
+        return errorCause = {
+             error:e.name,
         };
     }
 }
@@ -104,9 +99,8 @@ let deleteAddress = async (addressId) => {
         }
     }
     catch (e) {
-                return temp = {
-            error:e.name,
-            message: e.errors[0].message
+        return errorCause = {
+             error:e.name,
         };
     }
 }

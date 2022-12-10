@@ -14,9 +14,8 @@ let getProductSetById = async (productSetId) => {
         return result;
     } catch (e) {
         console.log("Can't find productSet");
-        return temp = {
+        return errorCause = {
             error:e.name,
-            message: e.errors[0].message
         };
     }
 }
@@ -31,9 +30,8 @@ let getAllProductSet = async () => {
         );
         return result;
     } catch (e) {
-        return temp = {
+        return errorCause = {
             error:e.name,
-            message: e.errors[0].message
         };
     }
 }
@@ -49,9 +47,8 @@ let getProductSetByProvider = async (providerId) => {
             });
         return searchResult;
     } catch (e) {
-        return temp = {
+        return errorCause = {
             error:e.name,
-            message: e.errors[0].message
         };
     }
 }
@@ -92,9 +89,8 @@ let getProducSetInfo = async () => {
             providers: providerList,
         };
     } catch (e) {
-        return temp = {
+        return errorCause = {
             error:e.name,
-            message: e.errors[0].message
         };
     }
 }
@@ -113,9 +109,8 @@ let addProductSet = async (data) => {
         return result;
     }
     catch (e) {
-        return temp = {
+        return errorCause = {
             error:e.name,
-            message: e.errors[0].message
         };
     }
 }
@@ -149,9 +144,8 @@ let addProductSetByAdmin = async(data) => {
 
         return result;
     } catch(e) {
-        return temp = {
+        return errorCause = {
             error:e.name,
-            message: e.errors[0].message
         };
     }
 }
@@ -174,9 +168,8 @@ let updateProductSet = async (data) => {
         return productSet;
     }
     catch (e) {
-        return temp = {
+        return errorCause = {
             error:e.name,
-            message: e.errors[0].message
         };
     }
 }
@@ -194,9 +187,8 @@ let deleteProductSet = async (productSetId) => {
         }
     }
     catch (e) {
-        return temp = {
+        return errorCause = {
             error:e.name,
-            message: e.errors[0].message
         };
     }
 }

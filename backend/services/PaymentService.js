@@ -12,9 +12,8 @@ let getPaymentById = async (paymentId) => {
         return result;
     } catch (e) {
         console.log("Can't find payment");
-                return temp = {
+        return errorCause = {
             error:e.name,
-            message: e.errors[0].message
         };
     }
 }
@@ -24,9 +23,8 @@ let getAllPayment = async () => {
         let result = await Payment.findAll();
         return result;
     } catch (e) {
-                return temp = {
+        return errorCause = {
             error:e.name,
-            message: e.errors[0].message
         };
     }
 }
@@ -40,9 +38,8 @@ let addPayment = async (data) => {
         return result;
     }
     catch (e) {
-                return temp = {
+        return errorCause = {
             error:e.name,
-            message: e.errors[0].message
         };
     }
 }
@@ -62,9 +59,8 @@ let updatePayment = async (data) => {
         return payment;
     }
     catch (e) {
-                return temp = {
+        return errorCause = {
             error:e.name,
-            message: e.errors[0].message
         };
     }
 }
@@ -82,9 +78,8 @@ let deletePayment = async (paymentId) => {
         }
     }
     catch (e) {
-                return temp = {
+        return errorCause = {
             error:e.name,
-            message: e.errors[0].message
         };
     }
 }

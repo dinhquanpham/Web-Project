@@ -1,5 +1,6 @@
 const orderService = require('../services/OrderService');
-const orderDetailService = require('../services/OrderDetailService')
+const orderDetailService = require('../services/OrderDetailService');
+const UserService = require('../services/UserService');
 
 const getAllOrder = async (req, res) => {
     const result = await orderService.getAllOrder();
@@ -25,8 +26,10 @@ const addOrder = async (req, res) => {
     let orderData = data[0];
     let productData = data;
 
+    //Create Order
     const order = await orderService.addOrder(orderData);
-    console.log(order);
+    
+    //update data[0] or addOrderDetail
     data[0] = order;
 
     const product = await orderDetailService.addOrderDetail(productData);
@@ -35,10 +38,13 @@ const addOrder = async (req, res) => {
         res.send("Đơn hàng của bạn đã được tiếp nhận")
     }
     else {
+        //QR check
         let amount = data[0].paidAmount;
-        let url = process.env.PAYMENT_QR_URL + amount + '&accountName=' + process.env.PAYMENT_QR_ACCOUNTNAME;
-        console.log(url);
-        res.send(url);
+        let description = 'Thanh toán đơn hàng ' + order.orderCode;
+        let url = process.env.PAYMENT_QR_URL + amount + '&accountName=' + process.env.PAYMENT_QR_ACCOUNTNAME
+        + '&addInfo=' + description;
+        //goi API xac nhan thanh toan
+        res.redirect(url);
     }
     
 }

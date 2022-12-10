@@ -11,6 +11,11 @@ const Orders = sequelize.define("orders", {
         primaryKey: true,
     },
 
+    orderCode: {
+        type: Sequelize.STRING,
+        allowNull: true
+    },
+
     orderDate: {
         type: Sequelize.DATE,
         allowNull: false,
