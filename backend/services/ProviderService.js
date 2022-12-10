@@ -6,13 +6,15 @@ let getProviderById = async (providerId) => {
     try {
         let result = await Provider.findOne({
             where: {
-                id : providerId,
+                id: providerId,
             }
         });
         return result;
     } catch (e) {
-        console.log("Can't find provider");
-        return e.name;
+        return temp = {
+            error: e.name,
+            message: "Error"
+        };
     }
 }
 
@@ -21,7 +23,10 @@ let getAllProvider = async () => {
         let result = await Provider.findAll();
         return result;
     } catch (e) {
-        return e.name;
+        return temp = {
+            error: e.name,
+            message: "Error"
+        };
     }
 }
 
@@ -33,18 +38,21 @@ let addProvider = async (data) => {
         })
         return provider;
     }
-    catch (e){ 
-        return e.name;
+    catch (e) {
+        return temp = {
+            error: e.name,
+            message: "Error"
+        };
     }
 }
 
 let updateProvider = async (data) => {
     try {
         let provider = await Provider.findOne({
-            where: 
-            {id : data.id}
+            where:
+                { id: data.id }
         });
-        
+
         provider.set({
             id: data.id,
             name: data.name
@@ -53,7 +61,10 @@ let updateProvider = async (data) => {
         return provider;
     }
     catch (e) {
-        return e.name;
+        return temp = {
+            error: e.name,
+            message: "Error"
+        };
     }
 }
 
@@ -70,7 +81,10 @@ let deleteProvider = async (providerId) => {
         }
     }
     catch (e) {
-        return e.name;
+        return temp = {
+            error: e.name,
+            message: "Error"
+        };
     }
 }
 
@@ -79,5 +93,5 @@ module.exports = {
     getAllProvider: getAllProvider,
     addProvider: addProvider,
     updateProvider: updateProvider,
-    deleteProvider : deleteProvider,
+    deleteProvider: deleteProvider,
 }

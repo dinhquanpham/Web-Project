@@ -23,7 +23,10 @@ let getSearchResult = async(data, page, size) => {
         }
         return result;
     } catch (e) {
-        return e.name;
+        return temp = {
+            error: e.name,
+            message: "Error"
+        };
     }
 }
 

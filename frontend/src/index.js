@@ -47,7 +47,6 @@ export default function App() {
                     path="/order-detail"
                     element={<PrivateRoute type={"order-detail"} />}
                 />
-
                 <Route path="/search" element={<Search />}>
                     <Route path="?name=" element={<Search />} />
                 </Route>

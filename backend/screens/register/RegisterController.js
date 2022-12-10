@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const checkRegister = async (req, res, next) => {
     let data = req.body;
     let result = await userService.addUser(data);
-    if (result !== "Error" && result != null) {
+    if (result.message !== "Error" && result != null) {
         req.checkRegister = {
             userId: result.id,
             roleId: result.roleId

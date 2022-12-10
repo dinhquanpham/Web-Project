@@ -6,14 +6,14 @@ let getCategoryById = async (categoryId) => {
     try {
         let result = await Category.findOne({
             where: {
-                id : categoryId,
+                id: categoryId,
             }
         });
         return result;
     } catch (e) {
-        console.log("Can't find category");
-        return errorCause = {
-            error:e.name,
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
@@ -23,8 +23,9 @@ let getAllCategory = async () => {
         let result = await Category.findAll();
         return result;
     } catch (e) {
-        return errorCause = {
-            error:e.name,
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
@@ -38,9 +39,10 @@ let addCategory = async (data) => {
         })
         return category;
     }
-    catch (e){ 
-        return errorCause = {
-            error:e.name,
+    catch (e) {
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
@@ -48,10 +50,10 @@ let addCategory = async (data) => {
 let updateCategory = async (data) => {
     try {
         let category = await Category.findOne({
-            where: 
-            {id : data.id}
+            where:
+                { id: data.id }
         });
-        
+
         category.set({
             id: data.id,
             name: data.name,
@@ -61,8 +63,9 @@ let updateCategory = async (data) => {
         return category;
     }
     catch (e) {
-        return errorCause = {
-            error:e.name,
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
@@ -80,8 +83,9 @@ let deleteCategory = async (categoryId) => {
         }
     }
     catch (e) {
-        return errorCause = {
-            error:e.name,
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
@@ -91,5 +95,5 @@ module.exports = {
     getAllCategory: getAllCategory,
     addCategory: addCategory,
     updateCategory: updateCategory,
-    deleteCategory : deleteCategory,
+    deleteCategory: deleteCategory,
 }

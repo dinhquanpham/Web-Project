@@ -28,9 +28,9 @@ let getProductById = async (productId) => {
             categories: categories
         };
     } catch (e) {
-        console.log("Can't find product");
-        return errorCause = {
-            error:e.name,
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
@@ -50,8 +50,9 @@ let getAllProductByCreatedTime = async function (page, size) {
         }
         return result;
     } catch (e) {
-        return errorCause = {
-            error:e.name,
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
@@ -76,8 +77,9 @@ let getProductByCategory = async function (categoryId, page, size) {
 
         return result;
     } catch (e) {
-        return errorCause = {
-            error:e.name,
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
@@ -101,8 +103,9 @@ let getProductByAuthor = async (authorId, page, size) => {
 
         return result;
     } catch (e) {
-        return errorCause = {
-            error:e.name,
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
@@ -124,8 +127,9 @@ let getProductByProductSet = async (productSetId, page, size) => {
         }
         return result;
     } catch (e) {
-        return errorCause = {
-            error:e.name,
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
@@ -145,8 +149,9 @@ let getProductBySoldNumber = async (page, size) => {
         }
         return result;
     } catch (e) {
-        return errorCause = {
-            error:e.name,
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
@@ -162,8 +167,9 @@ let getAllProduct = async (page, size) => {
         }
         return result;
     } catch (e) {
-        return errorCause = {
-            error:e.name,
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
@@ -231,8 +237,9 @@ let getProductInfo = async () => {
             categories: categoryList
         };
     } catch (e) {
-        return errorCause = {
-            error:e.name,
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
@@ -288,10 +295,11 @@ let addProductAdmin = async (data) => {
         if (categoryData != null) {
             for (let i = 0; i < categoryIdList.length; i++) {
                 let catId = categoryIdList[i];
+                let prodId = productId;
                 let res;
                 let proCat = await ProductCategories.findOne({
                     where: {
-                        productId: productId,
+                        productId: prodId,
                         categoryId: catId
                     }
                 });
@@ -306,14 +314,12 @@ let addProductAdmin = async (data) => {
                 list.push(res);
             }
         }
-
-        return result = {
-            product: product,
-            categories: list
-        }
-    } catch(e) {
-        return errorCause = {
-            error:e.name,
+        return product;
+    }
+    catch (e) {
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
@@ -338,8 +344,9 @@ let addProduct = async (data) => {
         return product;
     }
     catch (e) {
-        return errorCause = {
-            error:e.name,
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
@@ -407,8 +414,9 @@ let updateProduct = async (data) => {
             return product;
         }
     } catch (e) {
-        return errorCause = {
-            error:e.name,
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
@@ -426,8 +434,9 @@ let deleteProduct = async (productId) => {
         }
     }
     catch (e) {
-        return errorCause = {
-            error:e.name,
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }

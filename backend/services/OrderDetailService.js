@@ -7,14 +7,14 @@ let getOrderDetailById = async (orderDetailId) => {
     try {
         let result = await OrderDetail.findOne({
             where: {
-                id : orderDetailId,
+                id: orderDetailId,
             }
         });
         return result;
     } catch (e) {
-        console.log("Can't find orderDetail");
-        return errorCause = {
-            error:e.name,
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
@@ -24,8 +24,9 @@ let getAllOrderDetail = async () => {
         let result = await OrderDetail.findAll();
         return result;
     } catch (e) {
-        return errorCause = {
-            error:e.name,
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
@@ -52,22 +53,23 @@ let addOrderDetail = async (data) => {
             if (amount < 0) {
                 amount = 0;
             }
-            
+
             product.set({
                 quantityInStock: amount,
                 soldStatus: !(amount == 0),
                 soldNumber: soldNumber
             })
-            
+
             product.save();
             list.push(result)
         }
 
         return list;
     }
-    catch (e){ 
-        return errorCause = {
-            error:e.name,
+    catch (e) {
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
@@ -76,19 +78,20 @@ let getOrderDetailByOrderId = async (orderId) => {
     try {
         let orderDetail = await sequelize.query(
             'select od.id as orderId, p.id as productId, p.productName, od.orderNumber, od.price'
-            + ' from orderdetails od' 
+            + ' from orderdetails od'
             + ' join orders o on o.id = od.orderId'
             + ' join products p on p.id = od.productId'
             + ' where o.id = ?'
             + ' order by od.id desc ;', {
-                raw: true,
-                replacements: [orderId],
-                type: QueryTypes.SELECT
-            });
-            return orderDetail;
+            raw: true,
+            replacements: [orderId],
+            type: QueryTypes.SELECT
+        });
+        return orderDetail;
     } catch (e) {
-        return errorCause = {
-            error:e.name,
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
@@ -106,8 +109,9 @@ let deleteOrderDetail = async (orderDetailId) => {
         }
     }
     catch (e) {
-        return errorCause = {
-            error:e.name,
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
@@ -117,5 +121,5 @@ module.exports = {
     getAllOrderDetail: getAllOrderDetail,
     addOrderDetail: addOrderDetail,
     getOrderDetailByOrderId: getOrderDetailByOrderId,
-    deleteOrderDetail : deleteOrderDetail,
+    deleteOrderDetail: deleteOrderDetail,
 }

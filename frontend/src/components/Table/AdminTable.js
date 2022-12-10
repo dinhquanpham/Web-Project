@@ -5,6 +5,11 @@ import TableFooter from "./TableFooter";
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
+import EditIcon from "@mui/icons-material/Edit";
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import InfoIcon from '@mui/icons-material/Info';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import TextField from '@mui/material/TextField';
@@ -48,6 +53,17 @@ async function getData(type) {
 
 async function getOrderDetailByOrderId(id) {
   let url = `${process.env.REACT_APP_SV_HOST}/models/order-detail/by-order/${id}`;
+  let data = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((data) => data.json());
+  return data;
+}
+
+async function getProductDetail(id) {
+  let url = `${process.env.REACT_APP_SV_HOST}/models/product/by-id/${id}`;
   let data = await fetch(url, {
     method: "GET",
     headers: {
@@ -104,6 +120,7 @@ const Table = ({
   const [page, setPage] = useState(1);
   const theme = useTheme();
   let [currentData, setCurrentData] = useState([]);
+  let [currentProduct, setCurrentProduct] = useState([]);
   let [message, setMessage] = useState("");
   let [soldStatus, setSoldStatus] = useState("");
   let [productSet, setProductSet] = useState([]);
@@ -114,6 +131,16 @@ const Table = ({
   let [currentProductSet, setCurrentProductSet] = useState("");
   let [currentAuthor, setCurrentAuthor] = useState("");
   let [currentProvider, setCurrentProvider] = useState("");
+  let [productName, setProductName] = useState("");
+  let [productPrice, setProductPrice] = useState("");
+  let [productQuantityInStock, setProductQuantityInStock] = useState("");
+  let [productDescription, setProductDescription] = useState("");
+  let [productPublishYear, setProductPublishYear] = useState("");
+  let [productSize, setProductSize] = useState("");
+  let [productPageNumber, setProductPageNumber] = useState("");
+  let [productSoldNumber, setProductSoldNumber] = useState("");
+  let [productImage, setProductImage] = useState("");
+
   let [tableRange, setTableRange] = useState([]);
   let [slice, setSlice] = useState([]);
   useEffect(() => {
@@ -152,22 +179,28 @@ const Table = ({
     const data = new FormData(e.currentTarget);
     let response = "";
     if (type === 'product') {
-      response = await addData({
-        productName: data.get('productName'),
-        price: data.get('price'),
-        quantityInStock: data.get('quantityInStock'),
-        description: data.get('description'),
-        publishedYear: data.get('publishedYear'),
-        productSize: data.get('productSize'),
-        pageNumber: data.get('pageNumber'),
-        soldNumber: data.get('soldNumber'),
-        image: data.get('data'),
-        soldStatus: data.get('soldStatus'),
-        authorName: currentAuthor,
-        setName: currentProductSet,
-        providerName: currentProvider,
-        categories: currentCategory,
-      }, type);
+      if (!productName) {
+        response = await addData({
+          productName: data.get('productName'),
+          price: data.get('price'),
+          quantityInStock: data.get('quantityInStock'),
+          description: data.get('description'),
+          publishedYear: data.get('publishedYear'),
+          productSize: data.get('productSize'),
+          pageNumber: data.get('pageNumber'),
+          soldNumber: data.get('soldNumber'),
+          image: data.get('data'),
+          soldStatus: data.get('soldStatus'),
+          authorName: currentAuthor,
+          setName: currentProductSet,
+          providerName: currentProvider,
+          categories: currentCategory,
+        }, type);
+      }
+      else {
+        console.log("Update");
+        response.message = "Error";
+      }
     }
     if (type === 'product-set') {
       response = await addData({
@@ -230,6 +263,23 @@ const Table = ({
     }
   }
 
+  const handleEditProduct = async (id) => {
+    let response = await getProductDetail(id);
+    let currentProduct = response.product[0];
+    setProductName(currentProduct.productName);
+    setProductPrice(currentProduct.price);
+    setProductQuantityInStock(currentProduct.quantityInStock);
+    setProductDescription(currentProduct.description);
+    setProductPublishYear(currentProduct.publishedYear);
+    setProductSize(currentProduct.productSize);
+    setProductPageNumber(currentProduct.pageNumber);
+    setProductImage(currentProduct.image);
+    setProductSoldNumber(currentProduct.soldNumber);
+  }
+
+  const handlePaymentOrder = async (id) => {
+    console.log("OK");
+  }
   const handleSoldStatusChange = (event) => {
     setSoldStatus(event.target.value);
   };
@@ -268,26 +318,52 @@ const Table = ({
                 {columns.map((col) => (
                   <td>{row[col.field]}</td>
                 ))}
+                {type === 'product' && (
+                  <td>
+                    <Box className="box payment box-address-delete">
+                      <IconButton
+                        className="box payment button-address-delete"
+                        onClick={(e) => handleEditProduct(row.id)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </Box>
+                  </td>
+                )}
                 {type === 'order' && (
                   <td>
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      size="small"
-                      onClick={(e) => handleOrderId(row.id)}>
-                      Chi tiết
-                    </Button>
+                    <Box className="box payment box-address-delete">
+                      <IconButton
+                        className="box payment button-address-delete"
+                        onClick={(e) => handlePaymentOrder(row.id)}
+                      >
+                        <AttachMoneyIcon />
+                      </IconButton>
+                    </Box>
+                  </td>
+                )}
+                {type === 'order' && (
+                  <td>
+                    <Box className="box payment box-address-delete">
+                      <IconButton
+                        className="box payment button-address-delete"
+                        onClick={(e) => handleOrderId(row.id)}
+                      >
+                        <InfoIcon />
+                      </IconButton>
+                    </Box>
                   </td>
                 )}
                 {row.roleId !== 1 && type !== 'order' && (
                   <td>
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      size="small"
-                      onClick={(e) => handleDeleteData(row.id)}>
-                      Xóa
-                    </Button>
+                    <Box className="box payment box-address-delete">
+                      <IconButton
+                        className="box payment button-address-delete"
+                        onClick={(e) => handleDeleteData(row.id)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Box>
                   </td>
                 )}
               </tr>
@@ -295,8 +371,11 @@ const Table = ({
         </tbody>
       </table>
       <TableFooter range={tableRange} slice={slice} setPage={setPage} page={page} />
-      {type !== 'user' && type !== 'order' && (
+      {type !== 'user' && type !== 'order' && !productName && (
         <Typography sx={{ fontWeight: 'bold', mt: 5 }}>Thêm dữ liệu mới</Typography>
+      )}
+      {type !== 'user' && type !== 'order' && productName && (
+        <Typography sx={{ fontWeight: 'bold', mt: 5 }}>Chỉnh sửa thông tin sản phẩm</Typography>
       )}
       {slice ? null : <p>No row to show</p>}
       {type === 'product' && (
@@ -310,6 +389,8 @@ const Table = ({
             id="productName"
             label="Tên sản phẩm"
             name="productName"
+            value={productName ? productName : ""}
+            onChange={(e) => { setProductName(e.target.value) }}
             sx={{ mr: 1, width: 220 }}
           />
           <TextField
@@ -318,12 +399,16 @@ const Table = ({
             label="Giá"
             id="price"
             sx={{ mr: 1, width: 220 }}
+            value={productPrice ? productPrice : ""}
+            onChange={(e) => { setProductPrice(e.target.value) }}
           />
           <TextField
             margin="normal"
             name="description"
             label="Mô tả"
             id="description"
+            value={productDescription ? productDescription : ""}
+            onChange={(e) => { setProductDescription(e.target.value) }}
             sx={{ mr: 1, width: 220 }}
           />
           <TextField
@@ -331,6 +416,8 @@ const Table = ({
             name="image"
             label="Ảnh"
             id="image"
+            value={productImage ? productImage : ""}
+            onChange={(e) => { setProductImage(e.target.value) }}
             sx={{ mr: 1, width: 220 }}
           />
           <TextField
@@ -338,6 +425,8 @@ const Table = ({
             name="publishedYear"
             label="Năm phát hành"
             id="publishedYear"
+            value={productPublishYear ? productPublishYear : ""}
+            onChange={(e) => { setProductPublishYear(e.target.value) }}
             sx={{ mr: 1, width: 220 }}
           />
           <TextField
@@ -345,6 +434,8 @@ const Table = ({
             name="productSize"
             label="Kích thước"
             id="productSize"
+            value={productSize ? productSize : ""}
+            onChange={(e) => { setProductSize(e.target.value) }}
             sx={{ mr: 1, width: 220 }}
           />
           <TextField
@@ -352,6 +443,8 @@ const Table = ({
             name="pageNumber"
             label="Số trang"
             id="pageNumber"
+            value={productPageNumber ? productPageNumber : ""}
+            onChange={(e) => { setProductPageNumber(e.target.value) }}
             sx={{ mr: 1, width: 220 }}
           />
           <TextField
@@ -359,6 +452,8 @@ const Table = ({
             name="quantityInStock"
             label="Số lượng trong kho"
             id="quantityInStock"
+            value={productQuantityInStock ? productQuantityInStock : ""}
+            onChange={(e) => { setProductQuantityInStock(e.target.value) }}
             sx={{ mr: 1, width: 220 }}
           />
           <TextField
@@ -366,6 +461,8 @@ const Table = ({
             name="soldNumber"
             label="Số lượng đã bán"
             id="soldNumber"
+            value={productSoldNumber ? productSoldNumber : ""}
+            onChange={(e) => { setProductSoldNumber(e.target.value) }}
             sx={{ mr: 1, width: 220 }}
           />
           <FormControl>
@@ -464,13 +561,24 @@ const Table = ({
                 )}
             </Select>
           </FormControl>
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{ mt: 3, mb: 2, display: "block" }}
-          >
-            Thêm
-          </Button>
+          {!productName && (
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{ mt: 3, mb: 2, display: "block" }}
+            >
+              Thêm
+            </Button>
+          )}
+          {productName && (
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{ mt: 3, mb: 2, display: "block" }}
+            >
+              Sửa
+            </Button>
+          )}
         </Box>
       )}
       {type === 'product-set' && (
