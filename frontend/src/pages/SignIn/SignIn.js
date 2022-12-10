@@ -56,8 +56,7 @@ export default function SignIn() {
             username: data.get("username"),
             password: data.get("password"),
         });
-        console.log(response.message);
-        if (response.message !== "Error") {
+        if (!response.error) {
             sessionStorage.setItem('userId', response.userId);
             if (response.roleId === 1) {
                 sessionStorage.setItem('admin', 'true');

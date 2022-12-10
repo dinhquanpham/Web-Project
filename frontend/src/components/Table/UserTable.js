@@ -4,6 +4,10 @@ import { useState, useEffect } from "react";
 import TableFooter from "./TableFooter";
 import { Button } from '@mui/material';
 import { useNavigate } from "react-router-dom";
+import IconButton from "@mui/material/IconButton";
+import Box from '@mui/material/Box';
+import InfoIcon from '@mui/icons-material/Info';
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const calculateRange = (data, rowsPerPage) => {
   const range = [];
@@ -23,7 +27,6 @@ async function getDataById(type, id) {
   if (type === 'order') {
     url = url + type + "/by-user/" + id;
   }
-  console.log(url);
   let data = await fetch(url, {
     method: "GET",
     headers: {
@@ -144,24 +147,40 @@ const Table = ({
                 ))}
                 {type === 'order' && (
                   <td>
-                    <Button
+                    {/* <Button
                       type="submit"
                       variant="contained"
                       size="small"
                       onClick={(e) => handleOrderId(row.id)}>
                       Chi tiết
-                    </Button>
+                    </Button> */}
+                    <Box className="box payment box-address-delete">
+                      <IconButton
+                        className="box payment button-address-delete"
+                        onClick={(e) => handleOrderId(row.id)}
+                      >
+                        <InfoIcon />
+                      </IconButton>
+                    </Box>
                   </td>
                 )}
                 {type === 'address' && (
                   <td>
-                    <Button
+                    {/* <Button
                       type="submit"
                       variant="contained"
                       size="small"
                       onClick={(e) => handleDeleteData(row.id)}>
                       Xóa
-                    </Button>
+                    </Button> */}
+                    <Box className="box payment box-address-delete">
+                      <IconButton
+                        className="box payment button-address-delete"
+                        onClick={(e) => handleDeleteData(row.id)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Box>
                   </td>
                 )}
               </tr>

@@ -92,7 +92,7 @@ let getProducSetInfo = async () => {
         };
     } catch (e) {
         return temp = {
-            error: e.errors[0].message,
+            error: e.name,
             message: "Error"
         };
     }
