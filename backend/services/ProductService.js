@@ -29,9 +29,8 @@ let getProductById = async (productId) => {
         };
     } catch (e) {
         console.log("Can't find product");
-        return temp = {
+        return errorCause = {
             error:e.name,
-            message: e.errors[0].message
         };
     }
 }
@@ -51,9 +50,8 @@ let getAllProductByCreatedTime = async function (page, size) {
         }
         return result;
     } catch (e) {
-        return temp = {
+        return errorCause = {
             error:e.name,
-            message: e.errors[0].message
         };
     }
 }
@@ -78,9 +76,8 @@ let getProductByCategory = async function (categoryId, page, size) {
 
         return result;
     } catch (e) {
-        return temp = {
+        return errorCause = {
             error:e.name,
-            message: e.errors[0].message
         };
     }
 }
@@ -104,9 +101,8 @@ let getProductByAuthor = async (authorId, page, size) => {
 
         return result;
     } catch (e) {
-        return temp = {
+        return errorCause = {
             error:e.name,
-            message: e.errors[0].message
         };
     }
 }
@@ -128,9 +124,8 @@ let getProductByProductSet = async (productSetId, page, size) => {
         }
         return result;
     } catch (e) {
-        return temp = {
+        return errorCause = {
             error:e.name,
-            message: e.errors[0].message
         };
     }
 }
@@ -150,9 +145,8 @@ let getProductBySoldNumber = async (page, size) => {
         }
         return result;
     } catch (e) {
-        return temp = {
+        return errorCause = {
             error:e.name,
-            message: e.errors[0].message
         };
     }
 }
@@ -168,9 +162,8 @@ let getAllProduct = async (page, size) => {
         }
         return result;
     } catch (e) {
-        return temp = {
+        return errorCause = {
             error:e.name,
-            message: e.errors[0].message
         };
     }
 }
@@ -238,9 +231,8 @@ let getProductInfo = async () => {
             categories: categoryList
         };
     } catch (e) {
-        return temp = {
+        return errorCause = {
             error:e.name,
-            message: e.errors[0].message
         };
     }
 }
@@ -320,9 +312,8 @@ let addProductAdmin = async (data) => {
             categories: list
         }
     } catch(e) {
-        return temp = {
+        return errorCause = {
             error:e.name,
-            message: e.errors[0].message
         };
     }
 }
@@ -347,9 +338,8 @@ let addProduct = async (data) => {
         return product;
     }
     catch (e) {
-        return temp = {
+        return errorCause = {
             error:e.name,
-            message: e.errors[0].message
         };
     }
 }
@@ -417,9 +407,8 @@ let updateProduct = async (data) => {
             return product;
         }
     } catch (e) {
-        return temp = {
+        return errorCause = {
             error:e.name,
-            message: e.errors[0].message
         };
     }
 }
@@ -437,9 +426,8 @@ let deleteProduct = async (productId) => {
         }
     }
     catch (e) {
-        return temp = {
+        return errorCause = {
             error:e.name,
-            message: e.errors[0].message
         };
     }
 }

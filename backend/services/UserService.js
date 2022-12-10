@@ -23,10 +23,7 @@ let getUserInfo = async (userId) => {
         }
         return result; 
     } catch (e) {
-                return temp = {
-            error:e.name,
-            message: e.errors[0].message
-        };
+        return e.name;
     }
 } 
 
@@ -40,10 +37,7 @@ let getUserById = async (userId) => {
         return result;
     } catch (e) {
         console.log("Can't find user");
-                return temp = {
-            error:e.name,
-            message: e.errors[0].message
-        };
+        return e.name;
     }
 }
 
@@ -57,10 +51,7 @@ let getUserByUsernameAndPassword = async (data) => {
         });
         return result;
     } catch (e) {
-                return temp = {
-            error:e.name,
-            message: e.errors[0].message
-        };
+        return e.name;
     }
 }
 
@@ -72,10 +63,7 @@ let getUserByUsername = async() => {
         return result;
     }
     catch (e) {
-                return temp = {
-            error:e.name,
-            message: e.errors[0].message
-        };
+        return e.name;
     }
 }
 
@@ -88,10 +76,7 @@ let getAllUser = async () => {
         let result = await User.findAll();
         return result;
     } catch (e) {
-                return temp = {
-            error:e.name,
-            message: e.errors[0].message
-        };
+        return e.name;
     }
 }
 
@@ -110,10 +95,7 @@ let addUser = async (data) => {
         return user;
     }
     catch (e){ 
-                return temp = {
-            error:e.name,
-            message: e.errors[0].message
-        };
+        return e.name;
     }
 }
 
@@ -138,10 +120,7 @@ let updateUser = async (data) => {
         return user;
     }
     catch (e) {
-                return temp = {
-            error:e.name,
-            message: e.errors[0].message
-        };
+        return e.name;
     }
 }
 
@@ -158,10 +137,7 @@ let deleteUser = async (userId) => {
         }
     }
     catch (e) {
-                return temp = {
-            error:e.name,
-            message: e.errors[0].message
-        };
+        return e.name;
     }
 }
 
