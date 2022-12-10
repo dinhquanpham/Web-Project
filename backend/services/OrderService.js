@@ -15,14 +15,14 @@ let getOrderById = async (orderId) => {
     try {
         let result = await Order.findOne({
             where: {
-                id : orderId
+                id: orderId
             }
         });
         return result;
     } catch (e) {
-        return errorCause = {
-            error:e.name,
-            
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
@@ -32,33 +32,33 @@ let getAllOrder = async () => {
         let result = await sequelize.query(
             'select o.*, u.id, u.username from orders o join users u on u.id = o.userId;',
             {
-                raw : true,
-                type : QueryTypes.SELECT
+                raw: true,
+                type: QueryTypes.SELECT
             }
         );
         return result;
     } catch (e) {
-        return errorCause = {
-            error:e.name,
-            
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
 
-let getOrderByUser = async(userId) => {
+let getOrderByUser = async (userId) => {
     try {
         let result = await sequelize.query(
             'select * from orders where userId = ?', {
-                raw: true,
-                replacements: [userId],
-                type: QueryTypes.SELECT
-            }
+            raw: true,
+            replacements: [userId],
+            type: QueryTypes.SELECT
+        }
         )
         return result;
-    } catch(e) {
-        return errorCause = {
-            error:e.name,
-            
+    } catch (e) {
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
@@ -84,7 +84,10 @@ let addOrder = async (data) => {
         return result;
     }
     catch (e) {
-        throw e;
+        return temp = {
+            error: e.name,
+            message: "Error"
+        };
     }
 }
 
@@ -92,11 +95,11 @@ let updateOrder = async (data) => {
     try {
         // we don't need update
         return null;
-    } catch(e) {
-                return errorCause = {
-            error:e.name,
-            
-        }
+    } catch (e) {
+        return temp = {
+            error: e.name,
+            message: "Error"
+        };
     }
 }
 
@@ -113,9 +116,9 @@ let deleteOrder = async (orderId) => {
         }
     }
     catch (e) {
-        return errorCause = {
-            error:e.name,
-            
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
@@ -126,5 +129,5 @@ module.exports = {
     getOrderByUser: getOrderByUser,
     addOrder: addOrder,
     updateOrder: updateOrder,
-    deleteOrder : deleteOrder,
+    deleteOrder: deleteOrder,
 }

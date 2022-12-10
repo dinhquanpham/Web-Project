@@ -32,7 +32,7 @@ const signOut = async (req, res) => {
 const updatePassword = async (req, res) => {
     let data = req.body;
     let result = await userService.updateUser(data);
-    if (result != "Error") {
+    if (result.message != "Error") {
         res.send(data = {
             message: "Updated"
         });

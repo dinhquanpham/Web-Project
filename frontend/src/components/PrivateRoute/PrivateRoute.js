@@ -22,7 +22,7 @@ export default function PrivateRoute({ type = null }) {
             return <OrderDetail />;
         } else return <Navigate to="/sign-in" />;
     }
-
+    
     if (type === "cart") {
         const auth = sessionStorage.getItem("userId");
         if (auth) {

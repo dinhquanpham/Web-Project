@@ -7,37 +7,42 @@ let getUserInfo = async (userId) => {
     try {
         let user = await User.findOne({
             where: {
-                id : userId,
+                id: userId,
             }
         });
         let address = await sequelize.query(
             "select sa.id, sa.province, sa.district, sa.street, sa.homeAddress from ship_address sa where userId = ?", {
             raw: true,
             replacements: [userId],
-            type: QueryTypes.SELECT 
-            }
+            type: QueryTypes.SELECT
+        }
         )
         let result = {
             user: user,
             address: address
         }
-        return result; 
+        return result;
     } catch (e) {
-        return e.name;
+        return temp = {
+            error: e.name,
+            message: "Error"
+        };
     }
-} 
+}
 
 let getUserById = async (userId) => {
     try {
         let result = await User.findOne({
             where: {
-                id : userId,
+                id: userId,
             }
         });
         return result;
     } catch (e) {
-        console.log("Can't find user");
-        return e.name;
+        return temp = {
+            error: e.name,
+            message: "Error"
+        };
     }
 }
 
@@ -49,13 +54,22 @@ let getUserByUsernameAndPassword = async (data) => {
                 password: data.password
             }
         });
-        return result;
+        if(result) return result;
+        else {
+            return temp = {
+                error: e.name,
+                message: "Error"
+            };
+        }
     } catch (e) {
-        return e.name;
+        return temp = {
+            error: e.name,
+            message: "Error"
+        };
     }
 }
 
-let getUserByUsername = async() => {
+let getUserByUsername = async () => {
     try {
         let result = await sequelize.query(
             "select * from users where id = 1"
@@ -63,11 +77,14 @@ let getUserByUsername = async() => {
         return result;
     }
     catch (e) {
-        return e.name;
+        return temp = {
+            error: e.name,
+            message: "Error"
+        };
     }
 }
 
-let getUserByRole = function(roleId) {
+let getUserByRole = function (roleId) {
     return null;
 }
 
@@ -76,7 +93,10 @@ let getAllUser = async () => {
         let result = await User.findAll();
         return result;
     } catch (e) {
-        return e.name;
+        return temp = {
+            error: e.name,
+            message: "Error"
+        };
     }
 }
 
@@ -94,18 +114,21 @@ let addUser = async (data) => {
         })
         return user;
     }
-    catch (e){ 
-        return e.name;
+    catch (e) {
+        return temp = {
+            error: e.name,
+            message: "Error"
+        };
     }
 }
 
 let updateUser = async (data) => {
     try {
         let user = await User.findOne({
-            where: 
-            {id : data.id}
+            where:
+                { id: data.id }
         });
-        
+
         user.set({
             id: data.id,
             username: data.username,
@@ -120,7 +143,10 @@ let updateUser = async (data) => {
         return user;
     }
     catch (e) {
-        return e.name;
+        return temp = {
+            error: e.name,
+            message: "Error"
+        };
     }
 }
 
@@ -137,17 +163,20 @@ let deleteUser = async (userId) => {
         }
     }
     catch (e) {
-        return e.name;
+        return temp = {
+            error: e.name,
+            message: "Error"
+        };
     }
 }
 
 module.exports = {
     getUserInfo: getUserInfo,
     getUserById: getUserById,
-    getUserByUsernameAndPassword : getUserByUsernameAndPassword,
+    getUserByUsernameAndPassword: getUserByUsernameAndPassword,
     getAllUser: getAllUser,
     addUser: addUser,
     updateUser: updateUser,
-    deleteUser : deleteUser,
+    deleteUser: deleteUser,
     getUserByUsername: getUserByUsername,
 }

@@ -5,17 +5,17 @@ const ProductSet = require('../models/ProductSets');
 let getProductSetById = async (productSetId) => {
     try {
         let result = await sequelize.query(
-            'select ps.id, ps.name, ps.newestChap, ps.image, a.name as authorName, p.name as providerName from product_set ps join authors a on ps.authorId = a.id join providers p on ps.providerId = p.id where ps.id = ?',{
-                raw: true,
-                replacements: [productSetId],
-                type: QueryTypes.SELECT
-            }
+            'select ps.id, ps.name, ps.newestChap, ps.image, a.name as authorName, p.name as providerName from product_set ps join authors a on ps.authorId = a.id join providers p on ps.providerId = p.id where ps.id = ?', {
+            raw: true,
+            replacements: [productSetId],
+            type: QueryTypes.SELECT
+        }
         );
         return result;
     } catch (e) {
-        console.log("Can't find productSet");
-        return errorCause = {
-            error:e.name,
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
@@ -23,15 +23,16 @@ let getProductSetById = async (productSetId) => {
 let getAllProductSet = async () => {
     try {
         let result = await sequelize.query(
-            'select ps.id, ps.name, ps.newestChap, ps.image, a.name as authorName, p.name as providerName from product_set ps join authors a on ps.authorId = a.id join providers p on ps.providerId = p.id',{
-                raw: true,
-                type: QueryTypes.SELECT
-            }
+            'select ps.id, ps.name, ps.newestChap, ps.image, a.name as authorName, p.name as providerName from product_set ps join authors a on ps.authorId = a.id join providers p on ps.providerId = p.id', {
+            raw: true,
+            type: QueryTypes.SELECT
+        }
         );
         return result;
     } catch (e) {
-        return errorCause = {
-            error:e.name,
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
@@ -41,14 +42,15 @@ let getProductSetByProvider = async (providerId) => {
         let id = providerId;
         let searchResult = await sequelize.query(
             'SELECT * FROM product_set p WHERE p.providerId LIKE ?', {
-                raw: true,
-                replacements: [id],
-                type: QueryTypes.SELECT
-            });
+            raw: true,
+            replacements: [id],
+            type: QueryTypes.SELECT
+        });
         return searchResult;
     } catch (e) {
-        return errorCause = {
-            error:e.name,
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
@@ -56,12 +58,12 @@ let getProductSetByProvider = async (providerId) => {
 let getProducSetInfo = async () => {
     try {
         let productSet = await sequelize.query(
-            'select ps.id, ps.name, ps.newestChap, ps.description, ps.image, a.name as authorName, p.name as providerName from product_set ps join authors a on ps.authorId = a.id join providers p on ps.providerId = p.id',{
-                raw: true,
-                type: QueryTypes.SELECT
-            }
+            'select ps.id, ps.name, ps.newestChap, ps.description, ps.image, a.name as authorName, p.name as providerName from product_set ps join authors a on ps.authorId = a.id join providers p on ps.providerId = p.id', {
+            raw: true,
+            type: QueryTypes.SELECT
+        }
         );
-         let authors = await sequelize.query(
+        let authors = await sequelize.query(
             'select name from authors', {
             raw: true,
             type: QueryTypes.SELECT
@@ -71,7 +73,7 @@ let getProducSetInfo = async () => {
             'select name from providers', {
             raw: true,
             type: QueryTypes.SELECT
-        }); 
+        });
 
         let authorList = [];
         for (let i = 0; i < authors.length; i++) {
@@ -89,8 +91,9 @@ let getProducSetInfo = async () => {
             providers: providerList,
         };
     } catch (e) {
-        return errorCause = {
-            error:e.name,
+        return temp = {
+            error: e.errors[0].message,
+            message: "Error"
         };
     }
 }
@@ -109,13 +112,14 @@ let addProductSet = async (data) => {
         return result;
     }
     catch (e) {
-        return errorCause = {
-            error:e.name,
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
 
-let addProductSetByAdmin = async(data) => {
+let addProductSetByAdmin = async (data) => {
     try {
 
         let id = await sequelize.query(
@@ -143,9 +147,10 @@ let addProductSetByAdmin = async(data) => {
         })
 
         return result;
-    } catch(e) {
-        return errorCause = {
-            error:e.name,
+    } catch (e) {
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
@@ -168,8 +173,9 @@ let updateProductSet = async (data) => {
         return productSet;
     }
     catch (e) {
-        return errorCause = {
-            error:e.name,
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
@@ -187,8 +193,9 @@ let deleteProductSet = async (productSetId) => {
         }
     }
     catch (e) {
-        return errorCause = {
-            error:e.name,
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }

@@ -98,6 +98,8 @@ export default function UserInfo() {
   const navigate = useNavigate();
   const [value, setValue] = React.useState(0);
   let [userInfo, setUserInfo] = useState([]);
+  let [editUserInfo, setEditUserInfo] = useState(false);
+  let [editPassword, setEditPassword] = useState(false);
   let [changed, setChanged] = useState(0);
   let [message, setMessage] = useState("");
   let [addressInfo, setAddressInfo] = useState([]);
@@ -115,7 +117,10 @@ export default function UserInfo() {
     setUserInfo(response.user);
     setAddressInfo(response.address);
   };
-  const handleChange = (event, newValue) => {
+  const handleTabChange = (event, newValue) => {
+    setEditUserInfo(false);
+    setEditPassword(false);
+    setMessage("");
     setValue(newValue);
   };
 
@@ -128,7 +133,6 @@ export default function UserInfo() {
       lastname: data.get('lastname'),
       phone: data.get('phone'),
       email: data.get('email'),
-      address: data.get('address'),
     })
     if (response.message !== "Error") {
       setMessage("update-info");
@@ -188,6 +192,12 @@ export default function UserInfo() {
     }
   }
 
+  const openEditUserInfo = (e) => {
+    setEditUserInfo(true);
+  }
+  const openEditPassword = (e) => {
+    setEditPassword(true);
+  }
   const addressColumns = [
     { field: "id", header: "ID" },
     { field: "homeAddress", header: "Số nhà" },
@@ -205,163 +215,188 @@ export default function UserInfo() {
   const userInfoShow = (() => (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} onChange={handleChange} aria-label="user tabs">
+        <Tabs value={value} onChange={handleTabChange} aria-label="user tabs">
           <Tab label="Thông tin tài khoản" {...a11yProps(0)} />
-          <Tab label="Chỉnh sửa thông tin cá nhân" {...a11yProps(1)} />
-          <Tab label="Đổi mật khẩu" {...a11yProps(2)} />
-          <Tab label="Địa chỉ giao hàng" {...a11yProps(3)} />
-          <Tab label="Lịch sử mua hàng" {...a11yProps(4)} />
+          <Tab label="Địa chỉ giao hàng" {...a11yProps(1)} />
+          <Tab label="Lịch sử mua hàng" {...a11yProps(2)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        {userInfo && (
-          <div>
+        {userInfo && !editUserInfo && !editPassword && (
+          <div className='user-info-text'>
+            <div className='text'>
             <Box>
-              Tên tài khoản: {userInfo.username}
+              Tên tài khoản: 
             </Box>
+            </div>
+            <div className='text'>{userInfo.username}</div>
+            <div className='text'>
             <Box>
-              Họ tên: {userInfo.lastname} {userInfo.firstname}
+              Mật khẩu: 
             </Box>
+            </div>
+            <div className='text'>*******</div>
+            <div className='text'>
             <Box>
-              Số điện thoại: {userInfo.phone}
+              Họ tên:
             </Box>
+            </div>
+            <div className='text'>
             <Box>
-              Email: {userInfo.email}
+              {userInfo.lastname} {userInfo.firstname}
+            </Box>
+            </div>
+            <div className='text'>
+            <Box>
+              Số điện thoại:
+            </Box>
+            </div>
+            <div className='text'>
+            <Box>
+              {userInfo.phone}
+            </Box>
+            </div>
+            <div className='text'>
+            <Box>
+              Email:
+            </Box>
+            </div>
+            <div className='text'>
+            <Box>
+              {userInfo.email}
+            </Box>
+            </div>
+            <div className='user-button'>
+            <Button variant="contained" onClick={openEditUserInfo}>Chỉnh sửa</Button>
+            </div>
+            <div className='user-button'>
+            <Button variant="contained" onClick={openEditPassword}>Đổi mật khẩu</Button>
+            </div>
+          </div>
+        )}
+        {userInfo && editUserInfo && !editPassword && (
+          <Box
+            component="form"
+            sx={{
+              '& .MuiTextField-root': { m: 1, width: '25ch' },
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+            noValidate
+            autoComplete="off"
+            onSubmit={handleUpdateInfo}
+          >
+            <TextField
+              id="lastname"
+              name="lastname"
+              label="Họ"
+              defaultValue="Empty"
+              value={userLastname ? userLastname : userInfo.lastname}
+              onChange={(e) => { setUserLastname(e.target.value) }}
+            />
+            <TextField
+              id="firstname"
+              name="firstname"
+              label="Tên"
+              defaultValue="Empty"
+              value={userFirstname ? userFirstname : userInfo.firstname}
+              onChange={(e) => { setUserFirstname(e.target.value) }}
+            />
+            <TextField
+              id="phone"
+              name="phone"
+              label="Số điện thoại"
+              defaultValue="Empty"
+              value={userPhone ? userPhone : userInfo.phone}
+              onChange={(e) => { setUserPhone(e.target.value) }}
+            />
+            <TextField
+              id="email"
+              name="email"
+              label="Email"
+              defaultValue="Empty"
+              value={userEmail ? userEmail : userInfo.email}
+              onChange={(e) => { setUserEmail(e.target.value) }}
+            />
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{ mt: 1, mb: 1 }}
+            >
+              Cập nhật
+            </Button>
+            {message === 'error-update-info' && (
+              <Alert severity="warning">Không cập nhật được thông tin</Alert>
+            )}
+            {message === 'update-info' && (
+              <Alert severity="success">Cập nhật thông tin thành công</Alert>
+            )}
+          </Box>
+        )}
+        {userInfo && !editUserInfo && editPassword && (
+          <div style={{ maxWidth: "100%" }}>
+            <Box
+              component="form"
+              onSubmit={handlePasswordSubmit}
+              noValidate
+              sx={{
+                marginTop: 8,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <div className="line">
+                <TextField
+                  id="currentPassword"
+                  label="Mật khẩu hiện tại"
+                  name="currentPassword"
+                  type="password"
+                  required
+                  sx={{ mb: 2 }}
+                />
+              </div>
+              <div className="line">
+                <TextField
+                  id="newPassword"
+                  label="Mật khẩu mới"
+                  type="password"
+                  name="newPassword"
+                  required
+                  sx={{ mb: 2 }}
+                />
+              </div>
+              <div className="line">
+                <TextField
+                  id="reNewPassword"
+                  label="Nhập lại mật khẩu mới"
+                  type="password"
+                  name="reNewPassword"
+                  required
+                  sx={{ mb: 2 }}
+                />
+              </div>
+              <Button
+                type="submit"
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}>
+                Đổi mật khẩu
+              </Button>
+              {message === 'wrong-current-password' && (
+                <Alert severity="warning">Mật khẩu hiện tại không chính xác</Alert>
+              )}
+              {message === 'wrong-renew-password' && (
+                <Alert severity="warning">Mật khẩu nhập lại không chính xác</Alert>
+              )}
+              {message === 'update-password' && (
+                <Alert severity="success">Đã cập nhật mật khẩu mới</Alert>
+              )}
             </Box>
           </div>
         )}
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <Box
-          component="form"
-          sx={{
-            '& .MuiTextField-root': { m: 1, width: '25ch' },
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-          noValidate
-          autoComplete="off"
-          onSubmit={handleUpdateInfo}
-        >
-          <TextField
-            id="lastname"
-            name="lastname"
-            label="Họ"
-            defaultValue="Empty"
-            value={userLastname ? userLastname : userInfo.lastname}
-            onChange={(e) => { setUserLastname(e.target.value) }}
-          />
-          <TextField
-            id="firstname"
-            name="firstname"
-            label="Tên"
-            defaultValue="Empty"
-            value={userFirstname ? userFirstname : userInfo.firstname}
-            onChange={(e) => { setUserFirstname(e.target.value) }}
-          />
-          <TextField
-            id="phone"
-            name="phone"
-            label="Số điện thoại"
-            defaultValue="Empty"
-            value={userPhone ? userPhone : userInfo.phone}
-            onChange={(e) => { setUserPhone(e.target.value) }}
-          />
-          <TextField
-            id="email"
-            name="email"
-            label="Email"
-            defaultValue="Empty"
-            value={userEmail ? userEmail : userInfo.email}
-            onChange={(e) => { setUserEmail(e.target.value) }}
-          />
-          <TextField
-            id="address"
-            name="address"
-            label="Địa chỉ"
-            defaultValue="Empty"
-            value={userAddress ? userAddress : userInfo.address}
-            onChange={(e) => { setUserAddress(e.target.value) }}
-          />
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{ mt: 1, mb: 1 }}
-          >
-            Cập nhật
-          </Button>
-          {message === 'error-update-info' && (
-            <Alert severity="warning">Không cập nhật được thông tin</Alert>
-          )}
-          {message === 'update-info' && (
-            <Alert severity="success">Cập nhật thông tin thành công</Alert>
-          )}
-        </Box>
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        <div style={{ maxWidth: "100%" }}>
-          <Box
-            component="form"
-            onSubmit={handlePasswordSubmit}
-            noValidate
-            sx={{
-              marginTop: 8,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <div className="line">
-              <TextField
-                id="currentPassword"
-                label="Mật khẩu hiện tại"
-                name="currentPassword"
-                type="password"
-                required
-                sx={{ mb: 2 }}
-              />
-            </div>
-            <div className="line">
-              <TextField
-                id="newPassword"
-                label="Mật khẩu mới"
-                type="password"
-                name="newPassword"
-                required
-                sx={{ mb: 2 }}
-              />
-            </div>
-            <div className="line">
-              <TextField
-                id="reNewPassword"
-                label="Nhập lại mật khẩu mới"
-                type="password"
-                name="reNewPassword"
-                required
-                sx={{ mb: 2 }}
-              />
-            </div>
-            <Button
-              type="submit"
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}>
-              Đổi mật khẩu
-            </Button>
-            {message === 'wrong-current-password' && (
-              <Alert severity="warning">Mật khẩu hiện tại không chính xác</Alert>
-            )}
-            {message === 'wrong-renew-password' && (
-              <Alert severity="warning">Mật khẩu nhập lại không chính xác</Alert>
-            )}
-            {message === 'update-password' && (
-              <Alert severity="success">Đã cập nhật mật khẩu mới</Alert>
-            )}
-          </Box>
-        </div>
-
-      </TabPanel>
-      <TabPanel value={value} index={3}>
         <Box
           component="form"
           onSubmit={handleAddAddress}
@@ -431,7 +466,7 @@ export default function UserInfo() {
         </Box>
         <TableData columns={addressColumns} hover={true} striped={true} type="address" />
       </TabPanel>
-      <TabPanel value={value} index={4}>
+      <TabPanel value={value} index={2}>
         <TableData columns={orderColumns} hover={true} striped={true} type="order" />
       </TabPanel>
     </Box>

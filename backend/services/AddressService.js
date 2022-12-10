@@ -11,25 +11,26 @@ let getAddressById = async (addressId) => {
         });
         return result;
     } catch (e) {
-        console.log("Can't find address");
-        return errorCause = {
-             error:e.name,
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
 
-let getAddressByUserId = async(userId) => {
+let getAddressByUserId = async (userId) => {
     try {
         let searchResult = await sequelize.query(
             'SELECT * FROM ship_address sa WHERE sa.userId = ?', {
             raw: true,
             replacements: [userId],
-            type: QueryTypes.SELECT 
+            type: QueryTypes.SELECT
         });
         return searchResult;
     } catch (e) {
-        return errorCause = {
-             error:e.name,
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
@@ -38,8 +39,9 @@ let getAllAddress = async () => {
         let result = await Address.findAll();
         return result;
     } catch (e) {
-        return errorCause = {
-             error:e.name,
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
@@ -57,8 +59,9 @@ let addAddress = async (data) => {
         return result;
     }
     catch (e) {
-        return errorCause = {
-             error:e.name,
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
@@ -80,8 +83,9 @@ let updateAddress = async (data) => {
         return address;
     }
     catch (e) {
-        return errorCause = {
-             error:e.name,
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }
@@ -99,8 +103,9 @@ let deleteAddress = async (addressId) => {
         }
     }
     catch (e) {
-        return errorCause = {
-             error:e.name,
+        return temp = {
+            error: e.name,
+            message: "Error"
         };
     }
 }

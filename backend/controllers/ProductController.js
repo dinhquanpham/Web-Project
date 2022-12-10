@@ -64,6 +64,7 @@ const addProduct = async (req, res) => {
 const addProductAdmin = async (req, res) => {
     let data = req.body;
     const result = await productService.addProductAdmin(data);
+    console.log(result);
     res.send(result);
 }
 
