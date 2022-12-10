@@ -40,13 +40,18 @@ const addOrder = async (req, res) => {
     else {
         //QR check
         let amount = data[0].paidAmount;
-        let description = 'Thanh toán đơn hàng ' + order.orderCode;
+        let description = 'Paid_' + order.orderCode;
         let url = process.env.PAYMENT_QR_URL + amount + '&accountName=' + process.env.PAYMENT_QR_ACCOUNTNAME
         + '&addInfo=' + description;
-        //goi API xac nhan thanh toan
-        res.redirect(url);
+        res.send(url);
     }
     
+}
+
+const QRPaymentConfirm = async (req, res) => {
+    let orderId = req.params.orderId;
+    const result = await orderService.QRPaymentConfirm(orderId);
+    res.send(result);
 }
 
 const updateOrderStatus = async (req, res) => {
@@ -65,6 +70,7 @@ module.exports = {
     getAllOrder: getAllOrder,
     getOrderByUser, getOrderByUser,
     getOrderById: getOrderById,
+    QRPaymentConfirm: QRPaymentConfirm,
     addOrder: addOrder,
     updateOrderStatus: updateOrderStatus,
     deleteOrder: deleteOrder,
