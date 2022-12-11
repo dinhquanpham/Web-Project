@@ -38,7 +38,7 @@ export default function Search() {
         <Box className="box">
             <Box className="box">{Header()}</Box>
             <Box className="box">
-                {ProductGrid("KẾT QUẢ TÌM KIẾM", searchInfo, pageSize)}
+                {ProductGrid("KẾT QUẢ TÌM KIẾM", searchInfo)}
             </Box>
             <Box className="box search box-pagination">
                 <Pagination
