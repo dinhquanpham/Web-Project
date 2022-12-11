@@ -1,6 +1,7 @@
 const { QueryTypes, Model } = require('sequelize');
 const sequelize = require('../database/connect');
 const Order = require('../models/Orders');
+const Users = require('../models/Users');
 
 let format = function(a) {
     let b = 'FAHASA_' + a;
@@ -73,10 +74,19 @@ let addOrder = async (data) => {
     try {
         orderDate = localDate();
         shippedDate = shipDate();
+        
+        let user = await Users.findOne({
+            where: {
+                id: data.userId
+            }
+        });;
+        const phoneNumber = user.phone;
         let result = await Order.create({
             id: data.id,
             orderDate: orderDate,
             shippedDate: shippedDate,
+            userPhone: phoneNumber,
+            address: data.address,
             paidAmount: data.paidAmount,
             userId: data.userId,
             paymentId: data.paymentId
@@ -89,10 +99,7 @@ let addOrder = async (data) => {
         return result;
     }
     catch (e) {
-        return temp = {
-            error: e.name,
-            message: "Error"
-        };
+        throw e;
     }
 }
 
