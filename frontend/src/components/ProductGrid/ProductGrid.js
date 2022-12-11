@@ -17,7 +17,7 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
 }));
 
-export default function ProductGrid(name, productInfo, pageSize) {
+export default function ProductGrid(name, productInfo) {
     const navigate = useNavigate();
     const productShow = productInfo.map((data) => (
         <Box className="box">
@@ -70,26 +70,32 @@ export default function ProductGrid(name, productInfo, pageSize) {
     ));
 
     return (
-        <Item className="box product-grid box-product-grid">
-            <Box className="box product-grid box-product-grid-name">
-                <Typography className="box product-grid text-product-grid-name">
-                    {name}
-                </Typography>
-            </Box>
-            <Box className="box">
-                {Array.from(Array(pageSize / 5)).map((_, index1) => (
-                    <Box className="box product-grid box-product-grid-info">
-                        {Array.from(Array(5)).map((_, index2) => (
-                            <Item
-                                className="box product-grid box-product-info"
-                                key={index1 * 5 + index2}
-                            >
-                                {productShow[index1 * 5 + index2]}
-                            </Item>
-                        ))}
-                    </Box>
-                ))}
-            </Box>
-        </Item>
+        productInfo &&
+        (
+            <Item className="box product-grid box-product-grid">
+                <Box className="box product-grid box-product-grid-name">
+                    <Typography className="box product-grid text-product-grid-name">
+                        {name}
+                    </Typography>
+                </Box>
+                <Box className="box">
+                    {Array.from(Array(Math.ceil(productInfo.length / 5))).map((_, index1) => (
+                        <Box className="box product-grid box-product-grid-info">
+                            {Array.from(Array(5)).map((_, index2) => (
+                                productInfo.length >= index1 * 5 + index2 + 1 &&
+                                (
+                                    <Item
+                                        className="box product-grid box-product-info"
+                                        key={index1 * 5 + index2}
+                                    >
+                                        {productShow[index1 * 5 + index2]}
+                                    </Item>
+                                )
+                            ))}
+                        </Box>
+                    ))}
+                </Box>
+            </Item>
+        )
     );
 }
