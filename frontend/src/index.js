@@ -6,6 +6,7 @@ import SignIn from "./pages/SignIn/SignIn";
 import SignUp from "./pages/SignUp/SignUp";
 import Product from "./pages/Product/Product";
 import ProductSet from "./pages/ProductSet/ProductSet";
+import ProductCategory from "./pages/ProductCategory/ProductCategory";
 import Cart from "./pages/Cart/Cart";
 import Payment from "./pages/Payment/Payment";
 import UserInfo from "./pages/UserInfo/UserInfo";
@@ -36,6 +37,9 @@ export default function App() {
                 </Route>
                 <Route path="/product-set" element={<ProductSet />}>
                     <Route path="?id=" element={<ProductSet />} />
+                </Route>
+                <Route path="/product-category" element={<ProductCategory />}>
+                    <Route path="?id=" element={<ProductCategory />} />
                 </Route>
                 <Route path="/cart" element={<PrivateRoute type={"cart"} />} />
                 <Route

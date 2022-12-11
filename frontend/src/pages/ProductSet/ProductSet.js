@@ -38,7 +38,6 @@ export default function ProductSet() {
         setProductSetInfo(response);
     };
 
-    console.log(productSetInfo);
     return (
         <Box className="box">
             <Box className="box">{Header()}</Box>
