@@ -89,6 +89,7 @@ export default function Admin() {
     { field: "username", header: "Tài khoản" },
     { field: "userPhone", header: "Điện thoại" },
     { field: "address", header: "Địa chỉ" },
+    { field: "detail", header: "Thông tin" },
     { field: "orderDate", header: "Thời gian mua hàng" },
     { field: "paidAt", header: "Thời gian thanh toán" },
     { field: "paidAmount", header: "Tổng tiền" },
