@@ -97,11 +97,12 @@ export default function ProductTab(productSetName, productInfo) {
                     variant="outlined"
                     onClick={() => {
                         let productsetId = productInfo[0].productsetId;
+                        let url = `/product-set/?id=${productsetId}`;
                         if (productSetName == "TRUYỆN HOT")
-                            productsetId = "hot";
+                            url = `/product-category/?id=hot`;
                         if (productSetName == "TRUYỆN MỚI")
-                            productsetId = "new";
-                        navigate(`/product-set/?id=${productsetId}`);
+                            url = `/product-category/?id=new`;
+                        navigate(url);
                     }}
                 >
                     Xem thêm

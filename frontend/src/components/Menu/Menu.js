@@ -20,6 +20,26 @@ export default function Menu() {
         setAnchorEl(null);
     };
     const open = Boolean(anchorEl);
+    let list = ["hot", "new", 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+    let listName = [
+        "TRUYỆN HOT",
+        "TRUYỆN MỚI",
+        "VĂN HỌC",
+        "MANGA-COMIC",
+        "LIGHT NOVEL",
+        "NGÔN TÌNH",
+        "TRUYỆN NGẮN",
+        "TÂM LÝ",
+        "TIỂU THUYẾT",
+        "KINH TẾ",
+        "HÀNH ĐỘNG",
+        "VIỄN TƯỞNG",
+        "NGHỆ THUẬT - GIẢI TRÍ",
+        "HÀNH ĐỘNG",
+        "PHIÊU LƯU",
+        "TRINH THÁM",
+    ];
+    let array4 = [0, 1, 2, 3];
     return (
         <div>
             <IconButton
@@ -27,7 +47,6 @@ export default function Menu() {
                 size="large"
                 edge="start"
                 aria-label="menu"
-                sx={{ mr: 2 }}
                 aria-owns={open ? "menu" : undefined}
                 aria-haspopup={open ? "true" : "false"}
                 aria-controls={open ? "menu" : undefined}
@@ -50,105 +69,28 @@ export default function Menu() {
                     onClose={handleCloseMenu}
                     disableRestoreFocus
                 >
-                    <Grid
-                        container
-                        columns={3}
-                        sx={{ flexGrow: 1, width: 700, height: "100%" }}
-                    >
-                        <Grid item xs={1} className="box">
-                            <MenuItem
-                                onClick={
-                                    (handleCloseMenu,
-                                    () => navigate(`/product-set/?id=hot`))
-                                }
-                            >
-                                TRUYỆN HOT
-                            </MenuItem>
-                            <MenuItem
-                                onClick={
-                                    (handleCloseMenu,
-                                    () => navigate(`/product-set/?id=new`))
-                                }
-                            >
-                                TRUYỆN MỚI
-                            </MenuItem>
-                            <MenuItem
-                                onClick={
-                                    (handleCloseMenu,
-                                    () => navigate(`/product-set/?id=5`))
-                                }
-                            >
-                                NARUTO
-                            </MenuItem>
-                        </Grid>
-                        <Grid
-                            item
-                            xs={1}
-                            sx={{
-                                flexGrow: 1,
-                                width: "100%",
-                                height: "100%",
-                            }}
-                        >
-                            <MenuItem
-                                onClick={
-                                    (handleCloseMenu,
-                                    () => navigate(`/product-set/?id=6`))
-                                }
-                            >
-                                DRAGON BALL
-                            </MenuItem>
-                            <MenuItem
-                                onClick={
-                                    (handleCloseMenu,
-                                    () => navigate(`/product-set/?id=7`))
-                                }
-                            >
-                                ONE PIECE
-                            </MenuItem>
-                            <MenuItem
-                                onClick={
-                                    (handleCloseMenu,
-                                    () => navigate(`/product-set/?id=8`))
-                                }
-                            >
-                                BLEACH
-                            </MenuItem>
-                        </Grid>
-                        <Grid
-                            item
-                            xs={1}
-                            sx={{
-                                flexGrow: 1,
-                                width: "100%",
-                                height: "100%",
-                            }}
-                        >
-                            <MenuItem
-                                onClick={
-                                    (handleCloseMenu,
-                                    () => navigate(`/product-set/?id=9`))
-                                }
-                            >
-                                HARRY POTTER
-                            </MenuItem>
-                            <MenuItem
-                                onClick={
-                                    (handleCloseMenu,
-                                    () => navigate(`/product-set/?id=10`))
-                                }
-                            >
-                                IPM BOOK
-                            </MenuItem>
-                            <MenuItem
-                                onClick={
-                                    (handleCloseMenu,
-                                    () => navigate(`/product-set/?id=11`))
-                                }
-                            >
-                                SHERLOCK HOMLES
-                            </MenuItem>
-                        </Grid>
+                    <Grid container columns={4} className="box grid">
+                        {array4.map((index1) => (
+                            <Grid item xs={1} className="box">
+                                {array4.map((index2) => (
+                                    <MenuItem
+                                        className="box item"
+                                        onClick={
+                                            (handleCloseMenu,
+                                            () =>
+                                                navigate(
+                                                    `/product-category/?id=` +
+                                                        list[
+                                                            index1 * 4 + index2
+                                                        ]
+                                                ))
+                                        }
+                                    >
+                                        {listName[index1 * 4 + index2]}
+                                    </MenuItem>
+                                ))}
+                            </Grid>
+                        ))}
                     </Grid>
                 </MuiMenu>
             </IconButton>
