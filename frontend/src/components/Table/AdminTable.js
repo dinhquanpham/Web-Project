@@ -87,9 +87,24 @@ async function addData(credentials, type) {
   return data;
 }
 
+async function updateData(credentials, type) {
+  let url = `${process.env.REACT_APP_SV_HOST}/models/`;
+  if (type === 'product' || type === 'product-set') {
+    url = url + type + "/admin/update";
+  }
+  else url = url + type + "/update";
+  let data = await fetch(url, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(credentials)
+  }).then((data) => data.json());
+  return data;
+}
+
 async function updateOrderStatus(id) {
   let url = `${process.env.REACT_APP_SV_HOST}/models/order/update/` + id;
-  console.log(url);
   let data = await fetch(url, {
     method: "PUT",
     headers: {
@@ -140,6 +155,7 @@ const Table = ({
   let [currentProductSet, setCurrentProductSet] = useState("");
   let [currentAuthor, setCurrentAuthor] = useState("");
   let [currentProvider, setCurrentProvider] = useState("");
+  let [productId, setProductId] = useState("");
   let [productName, setProductName] = useState("");
   let [productPrice, setProductPrice] = useState("");
   let [productQuantityInStock, setProductQuantityInStock] = useState("");
@@ -149,7 +165,7 @@ const Table = ({
   let [productPageNumber, setProductPageNumber] = useState("");
   let [productSoldNumber, setProductSoldNumber] = useState("");
   let [productImage, setProductImage] = useState("");
-
+  let [edit, setEdit] = useState(false);
   let [tableRange, setTableRange] = useState([]);
   let [slice, setSlice] = useState([]);
   useEffect(() => {
@@ -188,7 +204,7 @@ const Table = ({
     const data = new FormData(e.currentTarget);
     let response = "";
     if (type === 'product') {
-      if (!productName) {
+      if (!edit) {
         response = await addData({
           productName: data.get('productName'),
           price: data.get('price'),
@@ -198,7 +214,7 @@ const Table = ({
           productSize: data.get('productSize'),
           pageNumber: data.get('pageNumber'),
           soldNumber: data.get('soldNumber'),
-          image: data.get('data'),
+          image: data.get('image'),
           soldStatus: data.get('soldStatus'),
           authorName: currentAuthor,
           setName: currentProductSet,
@@ -207,7 +223,22 @@ const Table = ({
         }, type);
       }
       else {
-        console.log("Update");
+        response = await updateData({
+          id: productId,
+          productName: data.get('productName'),
+          price: data.get('price'),
+          quantityInStock: data.get('quantityInStock'),
+          description: data.get('description'),
+          publishedYear: data.get('publishedYear'),
+          productSize: data.get('productSize'),
+          pageNumber: data.get('pageNumber'),
+          image: data.get('image'),
+          soldStatus: data.get('soldStatus'),
+          authorName: currentAuthor,
+          setName: currentProductSet,
+          providerName: currentProvider,
+          categories: currentCategory,
+        }, type);
       }
     }
     if (type === 'product-set') {
@@ -242,11 +273,15 @@ const Table = ({
         newData.push(element);
       });
       setCurrentData(newData);
-      setMessage('update-data');
+      if (!edit) setMessage('update-data');
+      else
+        setMessage('change-data')
       setTimeout(() => window.location.reload(), 1500);
     }
     else {
-      setMessage('error-update-data');
+      if (!edit) setMessage('error-update-data');
+      else
+        setMessage('error-change-data');
     }
   }
   const handleOrderId = async (id) => {
@@ -275,6 +310,8 @@ const Table = ({
   const handleEditProduct = async (id) => {
     let response = await getProductDetail(id);
     let currentProduct = response.product[0];
+    setEdit(true);
+    setProductId(id);
     setProductName(currentProduct.productName);
     setProductPrice(currentProduct.price);
     setProductQuantityInStock(currentProduct.quantityInStock);
@@ -287,11 +324,15 @@ const Table = ({
   }
 
   const handlePaymentOrder = async (id) => {
-    console.log(id);
     let response = await updateOrderStatus(id);
     if (!response.error) {
-      setMessage("update-payment");
-      setTimeout(() => window.location.reload(), 1500);
+      if (!response.message) {
+        setMessage("update-payment");
+        setTimeout(() => window.location.reload(), 1500);
+      }
+      else {
+        setMessage('paymented');
+      }
     }
     else {
       setMessage("error-update-payment");
@@ -481,12 +522,16 @@ const Table = ({
             value={productSoldNumber ? productSoldNumber : ""}
             onChange={(e) => { setProductSoldNumber(e.target.value) }}
             sx={{ mr: 1, width: 220 }}
+            InputProps={{
+              readOnly: (edit ? true : false),
+            }}
           />
           <FormControl>
             <InputLabel>Trạng thái</InputLabel>
             <Select
               labelId="soldStatus"
               id="soldStatus"
+              name="soldStatus"
               value={soldStatus}
               sx={{ mr: 1, mt: 2, width: 220 }}
               onChange={handleSoldStatusChange}
@@ -757,11 +802,20 @@ const Table = ({
       {message === 'error-update-data' && (
         <Alert severity="warning">Lỗi khi thêm dữ liệu mới</Alert>
       )}
+      {message === 'change-data' && (
+        <Alert severity="success">Đã sửa dữ liệu thành công</Alert>
+      )}
+      {message === 'error-change-data' && (
+        <Alert severity="warning">Lỗi khi sửa dữ liệu </Alert>
+      )}
       {message === 'update-payment' && (
         <Alert severity="success">Đã xác nhận thanh toán cho đơn hàng</Alert>
       )}
       {message === 'error-update-payment' && (
         <Alert severity="warning">Lỗi khi xác nhận thanh toán cho đơn hàng</Alert>
+      )}
+      {message === 'paymented' && (
+        <Alert severity="warning">Đơn hàng đã được xác nhận thanh toán trước đó</Alert>
       )}
       {message === 'deleted-data' && (
         <Alert severity="success">Đã xóa dữ liệu thành công</Alert>

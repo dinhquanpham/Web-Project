@@ -87,8 +87,9 @@ export default function Admin() {
   const orderColumns = [
     { field: "id", header: "ID" },
     { field: "username", header: "Tài khoản" },
+    { field: "userPhone", header: "Điện thoại" },
+    { field: "address", header: "Địa chỉ" },
     { field: "orderDate", header: "Thời gian mua hàng" },
-    { field: "shippedDate", header: "Thời gian nhận hàng" },
     { field: "paidAt", header: "Thời gian thanh toán" },
     { field: "paidAmount", header: "Tổng tiền" },
   ];

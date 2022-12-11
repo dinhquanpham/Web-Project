@@ -54,7 +54,8 @@ export default function SignUp() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        if (data.get("username") === '' || data.get("password") === '') {
+        if (data.get("username") === '' || data.get("password") === ''
+            || data.get("firstname") === '' || data.get("lastname") === '') {
             setMessage("null-value");
         }
         else {
@@ -112,23 +113,23 @@ export default function SignUp() {
                                 <Grid container spacing={2}>
                                     <Grid item xs={12} sm={6}>
                                         <TextField
+                                            required
+                                            fullWidth
+                                            id="lastname"
+                                            label="Họ"
+                                            name="lastname"
+                                            autoComplete="family-name"
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField
                                             autoComplete="given-name"
                                             name="firstname"
                                             required
                                             fullWidth
                                             id="firstname"
-                                            label="First Name"
+                                            label="Tên"
                                             autoFocus
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} sm={6}>
-                                        <TextField
-                                            required
-                                            fullWidth
-                                            id="lastname"
-                                            label="Last Name"
-                                            name="lastname"
-                                            autoComplete="family-name"
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
@@ -136,7 +137,7 @@ export default function SignUp() {
                                             required
                                             fullWidth
                                             id="username"
-                                            label="Username"
+                                            label="Tài khoản"
                                             name="username"
                                             autoComplete="username"
                                         />
@@ -146,7 +147,7 @@ export default function SignUp() {
                                             required
                                             fullWidth
                                             name="password"
-                                            label="Password"
+                                            label="Mật khẩu"
                                             type="password"
                                             id="password"
                                             autoComplete="new-password"
@@ -154,7 +155,6 @@ export default function SignUp() {
                                     </Grid>
                                     <Grid item xs={12}>
                                         <TextField
-                                            required
                                             fullWidth
                                             name="email"
                                             label="Email"
@@ -165,10 +165,9 @@ export default function SignUp() {
                                     </Grid>
                                     <Grid item xs={12}>
                                         <TextField
-                                            required
                                             fullWidth
                                             name="phone"
-                                            label="Phone"
+                                            label="Điện thoại"
                                             type="phone"
                                             id="phone"
                                             autoComplete="phone"
@@ -184,7 +183,7 @@ export default function SignUp() {
                                     Đăng ký
                                 </Button>
                                 {message === 'null-value' && (
-                                    <Alert severity="warning" sx={{ mt: 3 }}>Vui lòng nhập tài khoản và mật khẩu</Alert>
+                                    <Alert severity="warning" sx={{ mt: 3 }}>Vui lòng điền đủ các thông tin bắt buộc</Alert>
                                 )}
                                 {message === 'error-register' && (
                                     <Alert severity="warning" sx={{ mt: 3 }}>Tài khoản đã tồn tại</Alert>
