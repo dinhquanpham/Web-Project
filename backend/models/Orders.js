@@ -21,6 +21,16 @@ const Orders = sequelize.define("orders", {
         allowNull: true
     },
 
+    userPhone: {
+        type: Sequelize.STRING,
+        allowNull: true
+    },
+
+    address: {
+        type: Sequelize.STRING,
+        allowNull: true
+    },
+
     orderDate: {
         type: Sequelize.DATE,
         allowNull: false,
