@@ -64,7 +64,12 @@ const addProduct = async (req, res) => {
 const addProductAdmin = async (req, res) => {
     let data = req.body;
     const result = await productService.addProductAdmin(data);
-    console.log(result);
+    res.send(result);
+}
+
+const updateProductAdmin = async(req, res) => {
+    let data  = req.body;
+    const result = await productService.updateProductAdmin(data);
     res.send(result);
 }
 
@@ -91,6 +96,7 @@ module.exports = {
     getProductInfo: getProductInfo,
     addProduct: addProduct,
     addProductAdmin: addProductAdmin,
+    updateProductAdmin: updateProductAdmin,
     updateProduct: updateProduct,
     deleteProduct: deleteProduct,
 }

@@ -13,6 +13,7 @@ router.get("/get-by-sold/sort", productController.getProductBySoldNumber);
 router.get("/admin/info", productController.getProductInfo);
 router.post("/admin/add", productController.addProductAdmin);
 router.post("/add", productController.addProduct);
+router.put("/admin/update", productController.updateProductAdmin);
 router.put("/update", productController.updateProduct);
 router.delete("/delete/:productId", productController.deleteProduct);
 
