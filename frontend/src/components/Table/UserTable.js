@@ -8,6 +8,7 @@ import IconButton from "@mui/material/IconButton";
 import Box from '@mui/material/Box';
 import InfoIcon from '@mui/icons-material/Info';
 import DeleteIcon from "@mui/icons-material/Delete";
+import Alert from '@mui/material/Alert';
 
 const calculateRange = (data, rowsPerPage) => {
   const range = [];
@@ -78,6 +79,7 @@ const Table = ({
 }) => {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
+  let [message, setMessage] = useState("");
   let [currentData, setCurrentData] = useState([]);
   let [tableRange, setTableRange] = useState([]);
   let [slice, setSlice] = useState([]);
@@ -122,9 +124,10 @@ const Table = ({
       });
       setCurrentData(newData);
       sessionStorage.setItem('address', 'updated');
+      setMessage('deleted-address');
     }
     else {
-      console.log("Error");
+      setMessage('error-deleted-address');
     }
   }
   return (
@@ -166,13 +169,6 @@ const Table = ({
                 )}
                 {type === 'address' && (
                   <td>
-                    {/* <Button
-                      type="submit"
-                      variant="contained"
-                      size="small"
-                      onClick={(e) => handleDeleteData(row.id)}>
-                      Xóa
-                    </Button> */}
                     <Box className="box payment box-address-delete">
                       <IconButton
                         className="box payment button-address-delete"
@@ -189,6 +185,12 @@ const Table = ({
       </table>
       <TableFooter range={tableRange} slice={slice} setPage={setPage} page={page} />
       {slice ? null : <p>No row to show</p>}
+      {message === 'error-deleted-address' && (
+        <Alert severity="warning" sx={{ mt: 3 }}>Lỗi khi xóa địa chỉ giao hàng</Alert>
+      )}
+      {message === 'deleted-address' && (
+        <Alert severity="success" sx={{ mt: 3 }}>Đã xóa địa chỉ giao hàng</Alert>
+      )}
     </div>
   );
 };

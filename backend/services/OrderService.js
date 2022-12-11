@@ -3,17 +3,17 @@ const sequelize = require('../database/connect');
 const Order = require('../models/Orders');
 const Users = require('../models/Users');
 
-let format = function(a) {
+let format = function (a) {
     let b = 'FAHASA_' + a;
     return b;
 }
 
-let localDate = function() {
+let localDate = function () {
     let data = Date.now() + 25200000;
     return new Date(data)
 }
 
-let shipDate = function() {
+let shipDate = function () {
     let data = Date.now() + 259200000;
     return new Date(data);
 }
@@ -74,7 +74,7 @@ let addOrder = async (data) => {
     try {
         orderDate = localDate();
         shippedDate = shipDate();
-        
+
         let user = await Users.findOne({
             where: {
                 id: data.userId
@@ -110,6 +110,11 @@ let updateOrderStatus = async (orderId) => {
                 id: orderId
             }
         });
+        if (order.paidStatus == 1) {
+            return temp = {
+                message: "Đã xác nhận"
+            }
+        }
         order.set({
             detail: "Đơn hàng đã được thanh toán",
             paidAt: localDate(),
@@ -125,7 +130,7 @@ let updateOrderStatus = async (orderId) => {
     }
 }
 
-let QRPaymentConfirm = async(orderId) => {
+let QRPaymentConfirm = async (orderId) => {
     try {
         let result = await Order.findOne({
             where: {
@@ -138,7 +143,7 @@ let QRPaymentConfirm = async(orderId) => {
         result.save();
         return result;
     }
-    catch(e) {
+    catch (e) {
         return temp = {
             error: e.name,
             message: "Error"

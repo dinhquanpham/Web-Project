@@ -336,7 +336,6 @@ let addProductAdmin = async (data) => {
 
 let updateProductAdmin = async(data) => {
     try {
-
         let id = await sequelize.query(
             'select (select id from authors where name = :authorName) as authorId,'
             + ' (select id from providers where name = :providerName) as providerId,'
@@ -354,7 +353,6 @@ let updateProductAdmin = async(data) => {
         let authorId = id[0].authorId;
         let providerId = id[0].providerId;
         let setId = id[0].setId;
-
         let product = await Product.findOne(
             {
                 where: {
@@ -362,7 +360,6 @@ let updateProductAdmin = async(data) => {
                 }
             }
         );
-        
         product.set({
             productName: data.productName,
             price: data.price,
@@ -372,20 +369,16 @@ let updateProductAdmin = async(data) => {
             productSize: data.productSize,
             pageNumber: data.pageNumber,
             image: data.image,
-            soldStatus: data.soldStatus,
-            authorId: authorId,
-            productsetId: setId,
-            providerId: providerId
+            soldStatus: (data.soldStatus !== "" ? data.soldStatus : product.soldStatus),
+            authorId: (authorId ? authorId : product.authorId),
+            productsetId: (setId ? setId : product.productsetId),
+            providerId: (providerId ? providerId : product.providerId)
         });
-
         product.save();
-
         let productId = product.id;    
         let categoryData = data.categories;
-
         let list = [];
-        if (categoryData != null) {
-
+        if (categoryData.length !== 0) {
             let idList = await sequelize.query(
                 'select id from categories where name in (?)',
                 {
