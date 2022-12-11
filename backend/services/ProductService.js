@@ -306,15 +306,139 @@ let addProductAdmin = async (data) => {
                 if (proCat != null) {
                     res = proCat;
                 } else {
+                    await ProductCategories.create({
+                        productId: prodId,
+                        categoryId: catId
+                    });
+                }
+                res = await sequelize.query(
+                    'select name from categories where id = :catId', {
+                        raw: true,
+                        replacements: {catId: catId},
+                        type: QueryTypes.SELECT
+                    }
+                )
+                list.push(res[0].name);
+            }
+        }
+        return result = {
+            product: product,
+            categories: list
+        };
+    }
+    catch (e) {
+        return temp = {
+            error: e.name,
+            message: "Error"
+        };
+    }
+}
+
+let updateProductAdmin = async(data) => {
+    try {
+
+        let id = await sequelize.query(
+            'select (select id from authors where name = :authorName) as authorId,'
+            + ' (select id from providers where name = :providerName) as providerId,'
+            + ' (select id from product_set where name = :setName) as setId',
+            {
+                raw: true,
+                replacements: {
+                    authorName: data.authorName,
+                    providerName: data.providerName,
+                    setName: data.setName
+                },
+                type: QueryTypes.SELECT
+            });
+
+        let authorId = id[0].authorId;
+        let providerId = id[0].providerId;
+        let setId = id[0].setId;
+
+        let product = await Product.findOne(
+            {
+                where: {
+                    id: data.id
+                }
+            }
+        );
+        
+        product.set({
+            productName: data.productName,
+            price: data.price,
+            quantityInStock: data.quantityInStock,
+            description: data.description,
+            publishedYear: data.publishedYear,
+            productSize: data.productSize,
+            pageNumber: data.pageNumber,
+            image: data.image,
+            soldStatus: data.soldStatus,
+            authorId: authorId,
+            productsetId: setId,
+            providerId: providerId
+        });
+
+        product.save();
+
+        let productId = product.id;    
+        let categoryData = data.categories;
+
+        let list = [];
+        if (categoryData != null) {
+
+            let idList = await sequelize.query(
+                'select id from categories where name in (?)',
+                {
+                    raw: true,
+                    replacements: [categoryData],
+                    type: QueryTypes.SELECT
+                });
+            // danh sach category ID
+            let categoryIdList = [];
+            for (let i = 0; i < idList.length; i++) {
+                categoryIdList.push(idList[i].id);
+            }
+
+            // xoa du lieu cu trong data 
+            let tempProCat = await sequelize.query(
+                'delete from product_category where productId = ?', {
+                    raw: true,
+                    replacements: [productId],
+                    type: QueryTypes.DELETE
+                });
+            // them du lieu category vao Data
+            for (let i = 0; i < categoryIdList.length; i++) {
+                let catId = categoryIdList[i];
+                let prodId = productId;
+                let res;
+                let proCat = await ProductCategories.findOne({
+                    where: {
+                        productId: prodId,
+                        categoryId: catId
+                    }
+                });
+                if (proCat != null) {
+                    res = proCat;
+                } else {
                     res = await ProductCategories.create({
                         productId: prodId,
                         categoryId: catId
                     });
                 }
-                list.push(res);
+                res = await sequelize.query(
+                    'select name from categories where id = :catId', {
+                        raw: true,
+                        replacements: {catId: catId},
+                        type: QueryTypes.SELECT
+                    }
+                )
+                list.push(res[0].name);
             }
         }
-        return product;
+        return result = {
+            product: product,
+            categories: list
+        };
     }
     catch (e) {
         return temp = {
@@ -414,10 +538,11 @@ let updateProduct = async (data) => {
             return product;
         }
     } catch (e) {
-        return temp = {
-            error: e.name,
-            message: "Error"
-        };
+        // return temp = {
+        //     error: e.name,
+        //     message: "Error"
+        // };
+        throw e;
     }
 }
 
@@ -452,6 +577,7 @@ module.exports = {
     getProductInfo: getProductInfo,
     addProduct: addProduct,
     addProductAdmin: addProductAdmin,
+    updateProductAdmin: updateProductAdmin,
     updateProduct: updateProduct,
     deleteProduct: deleteProduct,
 }
