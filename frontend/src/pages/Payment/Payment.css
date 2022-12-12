@@ -29,7 +29,7 @@
     width: 5%;
 }
 
-.box.payment.address-radio-buttons {
+.box.payment.button-address-radio {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -71,6 +71,116 @@
     width: fit-content;
     height: fit-content;
     color: var(--main-color);
+}
+
+.box.payment.box-all-ship {
+    width: 70%;
+    margin: 1% auto;
+}
+
+.box.payment.box-ship-title {
+    height: 50;
+}
+
+.box.payment.text-ship-title {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    text-align: center;
+    vertical-align: middle;
+    padding-left: 10px;
+    color: #000000;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.box.payment.box-ship {
+    height: 70px;
+    display: flex;
+    margin-top: 1%;
+}
+
+.box.payment.box-checkbox {
+    width: 5%;
+}
+
+.box.payment.button-ship-radio {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    vertical-align: middle;
+    color: var(--main-color);
+}
+
+.box.payment.box-ship-info {
+    width: 85%;
+}
+
+.box.payment.text-ship-info {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    text-align: center;
+    vertical-align: middle;
+    padding-left: 5px;
+    color: #000000;
+    font-size: 16px;
+}
+
+.box.payment.box-all-payment {
+    width: 70%;
+    margin: 1% auto;
+}
+
+.box.payment.box-payment-title {
+    height: 50;
+}
+
+.box.payment.text-payment-title {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    text-align: center;
+    vertical-align: middle;
+    padding-left: 10px;
+    color: #000000;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.box.payment.box-payment {
+    height: 70px;
+    display: flex;
+    margin-top: 1%;
+}
+
+.box.payment.box-checkbox {
+    width: 5%;
+}
+
+.box.payment.button-payment-radio {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    vertical-align: middle;
+    color: var(--main-color);
+}
+
+.box.payment.box-payment-info {
+    width: 85%;
+}
+
+.box.payment.text-payment-info {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    text-align: center;
+    vertical-align: middle;
+    padding-left: 5px;
+    color: #000000;
+    font-size: 16px;
 }
 
 .box.payment.box-all-order {

@@ -8,7 +8,7 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -51,22 +51,30 @@ function GetAllStorage(userId) {
     return storage;
 }
 
-function PostOrder() {
-    let url =
-        `${process.env.REACT_APP_SV_HOST}/models/address/by-user/` + userId;
-    let data = fetch(url, {
+async function AddOrder(credentials) {
+    let url = `${process.env.REACT_APP_SV_HOST}/models/order/add`;
+    let data = await fetch(url, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
-    }).then((data) => data.json());
+        body: JSON.stringify(credentials),
+    }).then((body) => body.json());
+    return data;
+}
+
+async function ConfirmOrder(orderId) {
+    let url =
+        `${process.env.REACT_APP_SV_HOST}/models/order/confirm/` + orderId;
+    let data = await fetch(url, {
+        method: "PUT",
+    }).then((body) => body.text());
     return data;
 }
 
 export default function Payment() {
     let userId = sessionStorage.getItem("userId");
     let [addressInfo, setAddressInfo] = useState([]);
-    const [open, setOpen] = React.useState(false);
     useEffect(() => {
         handleData();
     }, []);
@@ -74,7 +82,6 @@ export default function Payment() {
         let response = await GetAddressByUserId(userId);
         setAddressInfo(response);
     };
-
     function deleteAddress(index) {
         if (Array.isArray(addressInfo)) {
             let nextAddressInfo = addressInfo.map((data, idx) => {
@@ -87,27 +94,30 @@ export default function Payment() {
             setAddressInfo(nextAddressInfo);
         }
     }
-    let [selectedValue, setSelectedValue] = useState(0);
+    let [selectedAddress, setSelectedAddress] = useState(0);
     let handleChange = (event) => {
-        setSelectedValue(event.target.value);
+        setSelectedAddress(event.target.value);
     };
+    addressInfo = addressInfo.map(
+        (data) =>
+            `${data.homeAddress}, ${data.street}, ${data.district}, ${data.province}`
+    );
     let addressShow =
         Array.isArray(addressInfo) &&
         addressInfo.map((data, index) => (
             <Item className="box payment box-address">
                 <Box className="box payment box-checkbox">
                     <Radio
-                        name="address-radio-buttons"
-                        className="box payment address-radio-buttons"
-                        checked={selectedValue == index}
+                        name="button-address-radio"
+                        className="box payment button-address-radio"
+                        checked={selectedAddress == index}
                         onChange={handleChange}
                         value={index}
                     />
                 </Box>
                 <Box className="box payment box-address-info">
                     <Box className="box payment text-address-info">
-                        Địa chỉ: {data.homeAddress}, {data.street},{" "}
-                        {data.district}, {data.province}
+                        Địa chỉ: {data}
                     </Box>
                 </Box>
                 <Box className="box payment box-address-change">
@@ -134,6 +144,63 @@ export default function Payment() {
                 </Box>
             </Item>
         ));
+    let shipCost = 15000;
+    let shipMethodShow = (
+        <Item className="box payment box-ship">
+            <Box className="box payment box-checkbox">
+                <Radio
+                    name="button-ship-radio"
+                    className="box payment button-ship-radio"
+                    checked={true}
+                />
+            </Box>
+            <Box className="box payment box-ship-info">
+                <Box className="box payment text-ship-info">
+                    Giao hàng tiêu chuẩn: {shipCost}
+                </Box>
+            </Box>
+        </Item>
+    );
+    let [selectedPayment, setSelectedPayment] = useState(1);
+    let handleChange2 = (event) => {
+        setSelectedPayment(event.target.value);
+    };
+    let paymentMethodShow = (
+        <Box className="box">
+            <Item className="box payment box-payment">
+                <Box className="box payment box-checkbox">
+                    <Radio
+                        name="button-payment-radio"
+                        className="box payment button-payment-radio"
+                        checked={selectedPayment == 1}
+                        onChange={handleChange2}
+                        value={1}
+                    />
+                </Box>
+                <Box className="box payment box-payment-info">
+                    <Box className="box payment text-payment-info">
+                        Thanh toán qua mã QR
+                    </Box>
+                </Box>
+            </Item>
+            <Item className="box payment box-payment">
+                <Box className="box payment box-checkbox">
+                    <Radio
+                        name="button-payment-radio"
+                        className="box payment button-payment-radio"
+                        checked={selectedPayment == 2}
+                        onChange={handleChange2}
+                        value={2}
+                    />
+                </Box>
+                <Box className="box payment box-payment-info">
+                    <Box className="box payment text-payment-info">
+                        Thanh toán khi nhận hàng
+                    </Box>
+                </Box>
+            </Item>
+        </Box>
+    );
     userId = parseInt(userId);
     let [cartInfo, setCartInfo] = useState([]);
     useEffect(() => {
@@ -143,13 +210,6 @@ export default function Payment() {
         let response = GetAllStorage(userId);
         setCartInfo(response);
     };
-    let totalPayment = 0;
-    if (Array.isArray(cartInfo)) {
-        for (let i in cartInfo) {
-            let product = cartInfo[i];
-            totalPayment += product.quantity * product.price;
-        }
-    }
     let cartShow =
         Array.isArray(cartInfo) &&
         cartInfo.map((data, index) => (
@@ -179,9 +239,57 @@ export default function Payment() {
                 </Box>
             </Item>
         ));
-    const handleClose = () => {
-        setOpen(false);
+
+    let totalPayment = 0;
+    if (Array.isArray(cartInfo)) {
+        for (let i in cartInfo) {
+            let product = cartInfo[i];
+            totalPayment += product.quantity * product.price;
+        }
+    }
+    totalPayment += shipCost;
+    cartInfo = cartInfo.map((data) => ({
+        orderNumber: data.quantity,
+        price: data.price,
+        productId: data.id % 1000,
+    }));
+    const [QRCode, setQRCode] = useState("");
+    const [orderId, setOrderId] = useState(0);
+    const [open1, setOpen1] = React.useState(false);
+    let navigate = useNavigate();
+    const handleClick1 = () => {
+        ConfirmOrder(orderId);
+        handleClose1();
+        navigate("/");
     };
+    const handleClose1 = () => {
+        setOpen1(false);
+    };
+    const [open2, setOpen2] = React.useState(false);
+    const handleClose2 = () => {
+        setOpen2(false);
+    };
+    async function CreateOrder() {
+        let paymentInfo = [
+            {
+                paidAmount: totalPayment,
+                address: addressInfo[selectedAddress],
+                paymentId: selectedPayment,
+                userId: userId,
+            },
+        ];
+        let data = paymentInfo.concat(cartInfo);
+        let response = await AddOrder(data);
+        if (selectedPayment == 1) {
+            console.log(response);
+            setQRCode(response.paymentUrl);
+            setOrderId(response.orderId);
+            setOpen1(true);
+        }
+        if (selectedPayment == 2) {
+            setOpen2(true);
+        }
+    }
     return (
         <Box className="box">
             <Box className="box">{Header()}</Box>
@@ -193,6 +301,22 @@ export default function Payment() {
                 </Box>
                 {addressShow}
             </Item>
+            <Item className="box payment box-all-ship">
+                <Box className="box payment box-ship-title">
+                    <Box className="box payment text-ship-title">
+                        PHƯƠNG THỨC VẬN CHUYỂN
+                    </Box>
+                </Box>
+                {shipMethodShow}
+            </Item>
+            <Item className="box payment box-all-payment">
+                <Box className="box payment box-payment-title">
+                    <Box className="box payment text-payment-title">
+                        PHƯƠNG THỨC THANH TOÁN
+                    </Box>
+                </Box>
+                {paymentMethodShow}
+            </Item>
             <Item className="box payment box-all-order">
                 <Box className="box payment box-order-title">
                     <Box className="box payment text-order-title">ĐƠN HÀNG</Box>
@@ -202,6 +326,8 @@ export default function Payment() {
             <Item className="box payment box-order-detail">
                 <Box className="box payment box-order-cost">
                     <Box className="box payment text-order-cost">
+                        PHÍ VẬN CHUYỂN: {shipCost}
+                        <br></br>
                         TỔNG SỐ TIỀN: {totalPayment}
                     </Box>
                 </Box>
@@ -209,21 +335,31 @@ export default function Payment() {
                     <Button
                         className="box payment button-order-confirm"
                         onClick={() => {
-                            // PostOrder();
-                            setOpen(true);
+                            CreateOrder();
                         }}
                     >
                         XÁC NHẬN THANH TOÁN
                     </Button>
                 </Box>
-                <Dialog open={open} onClose={handleClose}>
+                <Dialog open={open1} onClose={handleClose1}>
+                    <DialogContent>
+                        <img className="image" src={QRCode} alt="QRCode" />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClick1}>
+                            Xác nhận thanh toán
+                        </Button>
+                        <Button onClick={handleClose1}>Huỷ</Button>
+                    </DialogActions>
+                </Dialog>
+                <Dialog open={open2} onClose={handleClose2}>
                     <DialogContent>
                         <DialogContentText>
                             ĐẶT HÀNG THÀNH CÔNG
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleClose}>Đồng ý</Button>
+                        <Button onClick={handleClose2}>Đồng ý</Button>
                     </DialogActions>
                 </Dialog>
             </Item>
