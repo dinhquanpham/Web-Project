@@ -27,9 +27,8 @@ const init = async () => {
 
   app.use(express.static('../frontend/build'));
 
-
   //message
-  app.listen(port, (req, res) => {
+  app.listen(port, () => {
     console.log(`App is listening on port ${port}`)
   });
 }
