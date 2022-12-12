@@ -43,7 +43,11 @@ const addOrder = async (req, res) => {
         let description = 'Paid_' + order.orderCode;
         let url = process.env.PAYMENT_QR_URL + amount + '&accountName=' + process.env.PAYMENT_QR_ACCOUNTNAME
         + '&addInfo=' + description;
-        res.send(url);
+        result = {
+            orderId: order.id,
+            paymentUrl: url
+        }
+        res.send(result);
     }
     
 }
