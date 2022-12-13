@@ -72,6 +72,20 @@ async function ConfirmOrder(orderId) {
     return data;
 }
 
+async function DeleteCart(userId) {
+    var storage = [], // Notice change here
+        keys = Object.keys(localStorage),
+        i = keys.length;
+    while (i--) {
+        let id = parseInt(keys[i]);
+        let thisUserId = parseInt(id / 1000);
+        if (thisUserId == userId) {
+            localStorage.removeItem(keys[i]);
+        }
+    }
+    return storage;
+}
+
 export default function Payment() {
     let userId = sessionStorage.getItem("userId");
     let [addressInfo, setAddressInfo] = useState([]);
@@ -247,7 +261,6 @@ export default function Payment() {
             totalPayment += product.quantity * product.price;
         }
     }
-    totalPayment += shipCost;
     cartInfo = cartInfo.map((data) => ({
         orderNumber: data.quantity,
         price: data.price,
@@ -260,19 +273,25 @@ export default function Payment() {
     const handleClick1 = () => {
         ConfirmOrder(orderId);
         handleClose1();
+        DeleteCart(userId);
         navigate("/");
     };
     const handleClose1 = () => {
         setOpen1(false);
     };
     const [open2, setOpen2] = React.useState(false);
+    const handleClick2 = () => {
+        handleClose2();
+        DeleteCart(userId);
+        navigate("/");
+    };
     const handleClose2 = () => {
         setOpen2(false);
     };
     async function CreateOrder() {
         let paymentInfo = [
             {
-                paidAmount: totalPayment,
+                paidAmount: totalPayment + shipCost,
                 address: addressInfo[selectedAddress],
                 paymentId: selectedPayment,
                 userId: userId,
@@ -326,9 +345,11 @@ export default function Payment() {
             <Item className="box payment box-order-detail">
                 <Box className="box payment box-order-cost">
                     <Box className="box payment text-order-cost">
+                        TỔNG ĐƠN HÀNG: {totalPayment}
+                        <br></br>
                         PHÍ VẬN CHUYỂN: {shipCost}
                         <br></br>
-                        TỔNG SỐ TIỀN: {totalPayment}
+                        TỔNG SỐ TIỀN: {totalPayment + shipCost}
                     </Box>
                 </Box>
                 <Box className="box payment box-order-confirm">
@@ -338,7 +359,7 @@ export default function Payment() {
                             CreateOrder();
                         }}
                     >
-                        XÁC NHẬN THANH TOÁN
+                        THANH TOÁN
                     </Button>
                 </Box>
                 <Dialog open={open1} onClose={handleClose1}>
@@ -346,20 +367,33 @@ export default function Payment() {
                         <img className="image" src={QRCode} alt="QRCode" />
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleClick1}>
+                        <Button
+                            className="popup button-payment"
+                            onClick={handleClick1}
+                        >
                             Xác nhận thanh toán
                         </Button>
-                        <Button onClick={handleClose1}>Huỷ</Button>
+                        <Button
+                            className="popup button-payment"
+                            onClick={handleClose1}
+                        >
+                            Huỷ
+                        </Button>
                     </DialogActions>
                 </Dialog>
                 <Dialog open={open2} onClose={handleClose2}>
                     <DialogContent>
-                        <DialogContentText>
+                        <DialogContentText className="popup text">
                             ĐẶT HÀNG THÀNH CÔNG
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleClose2}>Đồng ý</Button>
+                        <Button
+                            className="popup button-payment"
+                            onClick={handleClick2}
+                        >
+                            Đồng ý
+                        </Button>
                     </DialogActions>
                 </Dialog>
             </Item>

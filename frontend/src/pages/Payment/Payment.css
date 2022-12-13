@@ -307,3 +307,12 @@
     color: var(--item-background-color);
     background-color: var(--main-color);
 }
+
+.popup.button-payment {
+    color: var(--main-color);
+}
+
+.popup.text {
+    color: #000000;
+    font-weight: bold;
+}
