@@ -139,3 +139,12 @@
 .box.product.category-show {
     display: inline;
 }
+
+.product.popup.text {
+    color: #000000;
+    font-weight: bold;
+}
+
+.product.popup.button-confirm {
+    color: var(--main-color);
+}

@@ -99,8 +99,8 @@ export default function Product() {
         setAmount((counter) => 1);
     };
     let [amount, setAmount] = useState(1);
-    function changeAmount(value) {
-        setAmount((counter) => Math.max(1, counter + value));
+    function changeAmount(value, limit) {
+        setAmount((counter) => Math.min(Math.max(1, counter + value), limit));
     }
     const handleClose = () => {
         setOpen(false);
@@ -131,14 +131,20 @@ export default function Product() {
                         Nhà xuất bản: {data.providerName}
                     </Box>
                     <Box className="box product box-product-price">
-                        Giá: {data.price}
+                        {data.price} đ
                     </Box>
+                </Box>
+                <Box
+                    className="box product box-out-of-stock"
+                    hidden={data.quantityInStock == 0 ? "false" : "true"}
+                >
+                    Sản phẩm đã hết hàng
                 </Box>
                 <Box className="box product box-quantity-control">
                     <Button
                         className="box product button-quantity-change"
                         onClick={() => {
-                            changeAmount(-1);
+                            changeAmount(-1, data.quantityInStock);
                         }}
                     >
                         -
@@ -147,7 +153,7 @@ export default function Product() {
                     <Button
                         className="box product button-quantity-change"
                         onClick={() => {
-                            changeAmount(1);
+                            changeAmount(1, data.quantityInStock);
                         }}
                     >
                         +
@@ -217,10 +223,17 @@ export default function Product() {
             </Box>
             <Dialog open={open} onClose={handleClose}>
                 <DialogContent>
-                    <DialogContentText>ĐÃ THÊM VÀO GIỎ HÀNG</DialogContentText>
+                    <DialogContentText className="product popup text">
+                        ĐÃ THÊM VÀO GIỎ HÀNG
+                    </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>ĐỒNG Ý</Button>
+                    <Button
+                        className="product popup button-confirm"
+                        onClick={handleClose}
+                    >
+                        ĐỒNG Ý
+                    </Button>
                 </DialogActions>
             </Dialog>
         </Box>

@@ -34,7 +34,7 @@ const addOrder = async (req, res) => {
     const product = await orderDetailService.addOrderDetail(productData);
 
     if (data[0].paymentId == 2) {
-        res.send("Đơn hàng của bạn đã được tiếp nhận");
+        res.send({ message: "Đơn hàng của bạn đã được tiếp nhận" });
     } else {
         //QR check
         let amount = data[0].paidAmount;
