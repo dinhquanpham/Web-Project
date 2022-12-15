@@ -89,7 +89,6 @@ export default function Home() {
             <Box className="box">{ProductTab(productSet5, productInSet5)}</Box>
             <Box className="box">{ProductTab(productSet6, productInSet6)}</Box>
             <Box className="box">{ProductTab(productSet7, productInSet7)}</Box>
-            <Box className="box">{ProductTab(productSet8, productInSet8)}</Box>
         </Box>
     );
 }

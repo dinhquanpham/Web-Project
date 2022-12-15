@@ -377,7 +377,7 @@ export default function Payment() {
                             className="popup button-payment"
                             onClick={handleClose1}
                         >
-                            Huỷ
+                            HUỶ
                         </Button>
                     </DialogActions>
                 </Dialog>

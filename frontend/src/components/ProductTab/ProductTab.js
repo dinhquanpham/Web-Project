@@ -21,10 +21,6 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export default function ProductTab(productSetName, productInfo) {
     let navigate = useNavigate();
-    const [open, setOpen] = React.useState(false);
-    const handleClose = () => {
-        setOpen(false);
-    };
     const productTabShow = productInfo.map((data) => (
         <Box className="box">
             <Box
@@ -54,26 +50,43 @@ export default function ProductTab(productSetName, productInfo) {
                 className="box product-tab button-add-to-cart"
                 variant="outlined"
                 onClick={() => {
-                    let userId = sessionStorage.getItem("userId");
-                    let info = localStorage.getItem(userId * 1000 + data.id);
-                    info = JSON.parse(info);
-                    let quantity = info == null ? 0 : info.quantity;
-                    quantity++;
-                    let newInfo = {
-                        productName: data.productName,
-                        image: data.image,
-                        price: data.price,
-                        quantity: quantity,
-                    };
-                    newInfo = JSON.stringify(newInfo);
-                    localStorage.setItem(userId * 1000 + data.id, newInfo);
-                    setOpen(true);
+                    if (data.soldStatus == 1) {
+                        let userId = sessionStorage.getItem("userId");
+                        let info = localStorage.getItem(
+                            userId * 1000 + data.id
+                        );
+                        info = JSON.parse(info);
+                        let quantity = info == null ? 0 : info.quantity;
+                        quantity++;
+                        let newInfo = {
+                            productName: data.productName,
+                            image: data.image,
+                            price: data.price,
+                            quantity: quantity,
+                        };
+                        newInfo = JSON.stringify(newInfo);
+                        localStorage.setItem(userId * 1000 + data.id, newInfo);
+                        setOpen1(true);
+                    } else {
+                        setOpen2(true);
+                    }
                 }}
             >
                 THÊM VÀO GIỎ
             </Button>
         </Box>
     ));
+    const [open1, setOpen1] = React.useState(false);
+    const handleClick1 = () => {
+        navigate("/cart");
+    };
+    const handleClose1 = () => {
+        setOpen1(false);
+    };
+    const [open2, setOpen2] = React.useState(false);
+    const handleClose2 = () => {
+        setOpen2(false);
+    };
     return (
         <Item className="box product-tab box-product-tab">
             <Box className="box product-tab box-product-set-name">
@@ -108,12 +121,38 @@ export default function ProductTab(productSetName, productInfo) {
                     Xem thêm
                 </Button>
             </Box>
-            <Dialog open={open} onClose={handleClose}>
+            <Dialog
+                className="product-tab popup box"
+                open={open1}
+                onClose={handleClose1}
+            >
                 <DialogContent>
-                    <DialogContentText>ĐÃ THÊM VÀO GIỎ HÀNG</DialogContentText>
+                    <DialogContentText className="product-tab popup text">
+                        ĐÃ THÊM VÀO GIỎ HÀNG
+                    </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>ĐỒNG Ý</Button>
+                    <Button
+                        className="product-tab popup button-text"
+                        onClick={handleClick1}
+                    >
+                        THANH TOÁN
+                    </Button>
+                    <Button onClick={handleClose1}>TIẾP TỤC MUA SẮM</Button>
+                </DialogActions>
+            </Dialog>
+            <Dialog
+                className="product-tab popup box"
+                open={open2}
+                onClose={handleClose2}
+            >
+                <DialogContent>
+                    <DialogContentText className="product-tab popup text">
+                        SẢN PHẨM ĐÃ HẾT HÀNG
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose2}>TIẾP TỤC MUA SẮM</Button>
                 </DialogActions>
             </Dialog>
         </Item>

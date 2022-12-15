@@ -9,6 +9,10 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import "./Cart.css";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -33,6 +37,18 @@ function GetAllStorage(userId) {
     return storage;
 }
 
+async function GetProductById(productId) {
+    let url =
+        `${process.env.REACT_APP_SV_HOST}/models/product/by-id/` + productId;
+    let data = await fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    }).then((data) => data.json());
+    return data;
+}
+
 export default function Cart() {
     let navigate = useNavigate();
     let userId = sessionStorage.getItem("userId");
@@ -44,6 +60,16 @@ export default function Cart() {
     let handleData = () => {
         let response = GetAllStorage(userId);
         setCartInfo(response);
+    };
+
+    let [productId, setProductId] = useState(0);
+    let [productInfo, setProductInfo] = useState([]);
+    useEffect(() => {
+        handleData2();
+    }, [productId]);
+    let handleData2 = async () => {
+        let response = await GetProductById(productId);
+        setProductInfo(response.product[0].quantityInStock);
     };
 
     let totalPayment = 0;
@@ -80,6 +106,7 @@ export default function Cart() {
             setCartInfo(nextCartInfo);
         }
     }
+
     let cartShow =
         Array.isArray(cartInfo) &&
         cartInfo.map((data, index) => (
@@ -129,20 +156,30 @@ export default function Cart() {
                             <Button
                                 className="box cart button-quantity-change"
                                 onClick={() => {
-                                    changeAmount(index, 1);
-                                    let info = localStorage.getItem(data.id);
-                                    info = JSON.parse(info);
-                                    let quantity =
-                                        info == null ? 0 : info.quantity;
-                                    quantity = quantity + 1;
-                                    let newInfo = {
-                                        productName: data.productName,
-                                        image: data.image,
-                                        price: data.price,
-                                        quantity: quantity,
-                                    };
-                                    newInfo = JSON.stringify(newInfo);
-                                    localStorage.setItem(data.id, newInfo);
+                                    setProductId(data.id % 1000);
+                                    // console.log(data.quantity);
+                                    // console.log(productInfo);
+                                    if (data.quantity < productInfo) {
+                                        changeAmount(index, 1);
+                                        let info = localStorage.getItem(
+                                            data.id
+                                        );
+                                        info = JSON.parse(info);
+                                        let quantity =
+                                            info == null ? 0 : info.quantity;
+                                        quantity = quantity + 1;
+                                        let newInfo = {
+                                            productName: data.productName,
+                                            image: data.image,
+                                            price: data.price,
+                                            quantity: quantity,
+                                        };
+                                        newInfo = JSON.stringify(newInfo);
+                                        localStorage.setItem(data.id, newInfo);
+                                    }
+                                    // if (data.quantity >= productInfo) {
+                                    //     setOpen(true);
+                                    // }
                                 }}
                             >
                                 +
@@ -166,6 +203,10 @@ export default function Cart() {
                 </Box>
             </Item>
         ));
+    const [open, setOpen] = React.useState(false);
+    const handleClose = () => {
+        setOpen(false);
+    };
     if (cartInfo.length == 0) {
         return (
             <Box className="box">
@@ -197,6 +238,21 @@ export default function Cart() {
                         </Button>
                     </Item>
                 </Box>
+                {/* <Dialog open={open} onClose={handleClose}>
+                    <DialogContent>
+                        <DialogContentText className="cart popup text">
+                            SỐ LƯỢNG YÊU CẦU KHÔNG KHẢ DỤNG
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button
+                            className="cart popup button-confirm"
+                            onClick={handleClose}
+                        >
+                            ĐỒNG Ý
+                        </Button>
+                    </DialogActions>
+                </Dialog> */}
             </Box>
         );
     }
