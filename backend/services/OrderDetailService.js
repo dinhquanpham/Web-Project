@@ -36,12 +36,18 @@ let getAllOrderDetail = async () => {
 let getOrderDetailByOrderCode = async (orderCode) => {
     try {
         let order = await OrderService.getOrderByOrderCode(orderCode);
-        let result = await OrderDetail.findOne({
-            where: {
-                id: order.id
-            }
-        })
-        return result;
+        let orderDetail = await sequelize.query(
+            'select od.id as orderId, p.id as productId, p.productName, od.orderNumber, od.price'
+            + ' from orderdetails od'
+            + ' join orders o on o.id = od.orderId'
+            + ' join products p on p.id = od.productId'
+            + ' where o.id = ?'
+            + ' order by od.id desc ;', {
+            raw: true,
+            replacements: [order.id],
+            type: QueryTypes.SELECT
+        });
+        return orderDetail;
     }
     catch (e) {
         return temp = {

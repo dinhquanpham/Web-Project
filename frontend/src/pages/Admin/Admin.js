@@ -85,11 +85,11 @@ export default function Admin() {
         { field: "name", header: "Tên" },
     ];
     const orderColumns = [
-        { field: "id", header: "ID" },
+        { field: "orderCode", header: "Mã đơn hàng" },
         { field: "username", header: "Tài khoản" },
         { field: "userPhone", header: "Điện thoại" },
         { field: "address", header: "Địa chỉ" },
-        { field: "detail", header: "Thông tin" },
+        { field: "detail", header: "Trạng thái" },
         { field: "orderDate", header: "Thời gian mua hàng" },
         { field: "paidAt", header: "Thời gian thanh toán" },
         { field: "paidAmount", header: "Tổng tiền" },

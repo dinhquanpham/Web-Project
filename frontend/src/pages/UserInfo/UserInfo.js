@@ -206,10 +206,13 @@ export default function UserInfo() {
     { field: "province", header: "Tỉnh/thành phố" },
   ];
   const orderColumns = [
-    { field: "id", header: "ID" },
+    { field: "orderCode", header: "Mã đơn hàng" },
+    { field: "userPhone", header: "Điện thoại" },
+    { field: "address", header: "Địa chỉ" },
     { field: "orderDate", header: "Thời gian mua hàng" },
     { field: "shippedDate", header: "Thời gian nhận hàng" },
     { field: "paidAt", header: "Thời gian thanh toán" },
+    { field: "detail", header: "Trạng thái" },
     { field: "paidAmount", header: "Tổng tiền" },
   ];
   const userInfoShow = (() => (

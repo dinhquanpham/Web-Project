@@ -12,7 +12,7 @@ const getOrderDetailById = async (req, res) => {
 }
 
 const getOrderDetailByOrderCode = async(req, res) => {
-    let orderCode = req.query.orderCode;
+    let orderCode = req.query.code;
     const result = await orderDetailService.getOrderDetailByOrderCode(orderCode);
     res.send(result);
 }

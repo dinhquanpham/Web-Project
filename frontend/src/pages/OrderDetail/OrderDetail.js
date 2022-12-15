@@ -72,10 +72,7 @@ function JsonDataDisplay() {
                                 </tr>
                             </thead>
                             <tbody>
-                            
-                                
                                 {DisplayData}
-                                
                             </tbody>
                         </table>
                     </div>

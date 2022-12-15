@@ -50,8 +50,9 @@ async function getData(type) {
     return data;
 }
 
-async function getOrderDetailByOrderId(id) {
-    let url = `${process.env.REACT_APP_SV_HOST}/models/order-detail/by-order/${id}`;
+async function getOrderDetailByOrderCode(orderCode) {
+    let url = `${process.env.REACT_APP_SV_HOST}/models/order-detail/by-code/?code=${orderCode}`;
+    console.log(url);
     let data = await fetch(url, {
         method: "GET",
         headers: {
@@ -295,11 +296,11 @@ const Table = ({
             else setMessage("error-change-data");
         }
     };
-    const handleOrderId = async (id) => {
-        let response = await getOrderDetailByOrderId(id);
+    const handleOrderCode = async (orderCode) => {
+        let response = await getOrderDetailByOrderCode(orderCode);
         let data = JSON.stringify(response);
         sessionStorage.setItem("orderdetail", data);
-        navigate("/order-detail/?id=" + id);
+        navigate("/order-detail/?code=" + orderCode);
     };
     const handleDeleteData = async (id) => {
         let response = await deleteData(type, id);
@@ -422,7 +423,7 @@ const Table = ({
                                             <IconButton
                                                 className="box payment button-address-delete"
                                                 onClick={(e) =>
-                                                    handleOrderId(row.id)
+                                                    handleOrderCode(row.orderCode)
                                                 }
                                             >
                                                 <InfoIcon />

@@ -71,7 +71,7 @@ let getAllOrder = async () => {
 let getOrderByUser = async (userId) => {
     try {
         let result = await sequelize.query(
-            'select * from orders where userId = ? order by id' , {
+            'select * from orders where userId = ? order by id DESC' , {
             raw: true,
             replacements: [userId],
             type: QueryTypes.SELECT

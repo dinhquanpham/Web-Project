@@ -27,7 +27,6 @@ const getOrderByUser = async (req, res) => {
 
 const addOrder = async (req, res) => {
     let data = req.body;
-
     let orderData = data[0];
     let productData = data;
 

@@ -37,8 +37,8 @@ async function getDataById(type, id) {
   return data;
 }
 
-async function getOrderDetailByOrderId(id) {
-  let url = `${process.env.REACT_APP_SV_HOST}/models/order-detail/by-order/${id}`;
+async function getOrderDetailByOrderCode(orderCode) {
+  let url = `${process.env.REACT_APP_SV_HOST}/models/order-detail/by-code/?code=${orderCode}`;
   let data = await fetch(url, {
     method: "GET",
     headers: {
@@ -107,11 +107,11 @@ const Table = ({
     if (head) return head.toUpperCase();
     return field.toUpperCase();
   };
-  const handleOrderId = async (id) => {
-    let response = await getOrderDetailByOrderId(id);
+  const handleOrderCode = async (orderCode) => {
+    let response = await getOrderDetailByOrderCode(orderCode);
     let data = JSON.stringify(response);
     sessionStorage.setItem('orderdetail', data);
-    navigate('/order-detail/?id=' + id);
+    navigate('/order-detail/?code=' + orderCode);
   }
   const handleDeleteData = async (id) => {
     let response = await deleteData(id);
@@ -150,17 +150,10 @@ const Table = ({
                 ))}
                 {type === 'order' && (
                   <td>
-                    {/* <Button
-                      type="submit"
-                      variant="contained"
-                      size="small"
-                      onClick={(e) => handleOrderId(row.id)}>
-                      Chi tiết
-                    </Button> */}
                     <Box className="box payment box-address-delete">
                       <IconButton
                         className="box payment button-address-delete"
-                        onClick={(e) => handleOrderId(row.id)}
+                        onClick={(e) => handleOrderCode(row.orderCode)}
                       >
                         <InfoIcon />
                       </IconButton>
