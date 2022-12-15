@@ -1,6 +1,4 @@
 const userService = require('../../services/UserService');
-const loginService = require('./LoginService');
-const jwt = require('jsonwebtoken');
 
 const checkUserLogin = async (req, res, next) => {
     let user = req.body;
