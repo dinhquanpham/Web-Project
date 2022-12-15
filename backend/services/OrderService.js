@@ -34,10 +34,26 @@ let getOrderById = async (orderId) => {
     }
 }
 
+let getOrderByOrderCode = async(orderCode) => {
+    try {
+        let result = await Order.findOne({
+            where: {
+                orderCode: orderCode
+            }
+        });
+        return result;
+    } catch (e) {
+        return temp = {
+            error: e.name,
+            message: "Error"
+        };
+    }
+}
+
 let getAllOrder = async () => {
     try {
         let result = await sequelize.query(
-            'select o.*, u.username from orders o join users u on u.id = o.userId;',
+            'select o.*, u.username from orders o join users u on u.id = o.userId order by o.id DESC;',
             {
                 raw: true,
                 type: QueryTypes.SELECT
@@ -55,7 +71,7 @@ let getAllOrder = async () => {
 let getOrderByUser = async (userId) => {
     try {
         let result = await sequelize.query(
-            'select * from orders where userId = ?', {
+            'select * from orders where userId = ? order by id' , {
             raw: true,
             replacements: [userId],
             type: QueryTypes.SELECT
@@ -173,6 +189,7 @@ let deleteOrder = async (orderId) => {
 
 module.exports = {
     getOrderById: getOrderById,
+    getOrderByOrderCode: getOrderByOrderCode,
     getAllOrder: getAllOrder,
     getOrderByUser: getOrderByUser,
     QRPaymentConfirm: QRPaymentConfirm,

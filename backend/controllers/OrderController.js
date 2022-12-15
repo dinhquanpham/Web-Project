@@ -13,6 +13,12 @@ const getOrderById = async (req, res) => {
     res.send(result);
 };
 
+const getOrderByOrderCode = async(req, res) => {
+    let orderCode = req.query.orderCode;
+    const result = await orderService.getOrderByOrderCode(orderCode);
+    res.send(result);
+}
+
 const getOrderByUser = async (req, res) => {
     let userId = req.params.userId;
     const result = await orderService.getOrderByUser(userId);
@@ -74,9 +80,9 @@ const deleteOrder = async (req, res) => {
 
 module.exports = {
     getAllOrder: getAllOrder,
-    getOrderByUser,
-    getOrderByUser,
+    getOrderByUser: getOrderByUser,
     getOrderById: getOrderById,
+    getOrderByOrderCode: getOrderByOrderCode,
     QRPaymentConfirm: QRPaymentConfirm,
     addOrder: addOrder,
     updateOrderStatus: updateOrderStatus,
