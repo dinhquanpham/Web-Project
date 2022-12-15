@@ -34,7 +34,7 @@
     padding-left: 1%;
     font-size: 16px !important;
     font-weight: bold;
-    color: var(--main-color) !important;
+    color: rgb(39, 168, 211);
     text-align: left;
     cursor: pointer;
 }
@@ -147,4 +147,8 @@
 
 .product.popup.button-confirm {
     color: var(--main-color);
+}
+
+.box.product.box-out-of-stock {
+    font-size: 18px;
 }

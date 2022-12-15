@@ -123,3 +123,13 @@
     border-color: var(--main-color);
     background-color: var(--main-color);
 }
+
+.product-tab.popup.text {
+    color: #000000;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.product-tab.popup.button-text {
+    color: var(--main-color);
+}

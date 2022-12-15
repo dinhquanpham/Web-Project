@@ -80,7 +80,7 @@ export default function Product() {
     let [productSetInfo, setProductSetInfo] = useState([]);
     let [productInSetInfo, setProductInSetInfo] = useState([]);
     let [categoryInfo, setCategoryInfo] = useState([]);
-    const [open, setOpen] = React.useState(false);
+
     let navigate = useNavigate();
     useEffect(() => {
         handleData();
@@ -96,15 +96,13 @@ export default function Product() {
         let response3 = await GetProductBySet(response.product[0].productsetId);
         setProductInSetInfo(response3);
         setCategoryInfo(response.categories);
-        setAmount((counter) => 1);
+        setAmount((counter) => 0);
     };
-    let [amount, setAmount] = useState(1);
+    let [amount, setAmount] = useState(0);
     function changeAmount(value, limit) {
-        setAmount((counter) => Math.min(Math.max(1, counter + value), limit));
+        setAmount((counter) => Math.min(Math.max(0, counter + value), limit));
     }
-    const handleClose = () => {
-        setOpen(false);
-    };
+
     let productShow = ((data = productInfo) => (
         <Item className="box product box-product-info">
             <Box className="box product box-product-image">
@@ -134,54 +132,66 @@ export default function Product() {
                         {data.price} đ
                     </Box>
                 </Box>
-                <Box
-                    className="box product box-out-of-stock"
-                    hidden={data.quantityInStock == 0 ? "false" : "true"}
-                >
-                    Sản phẩm đã hết hàng
-                </Box>
-                <Box className="box product box-quantity-control">
+                {data.quantityInStock == 0 && (
+                    <Box
+                        className="box product box-out-of-stock"
+                        hidden={data.quantityInStock == 0 ? 0 : 1}
+                    >
+                        Sản phẩm đã hết hàng
+                    </Box>
+                )}
+                {data.quantityInStock != 0 && (
+                    <Box className="box product box-quantity-control">
+                        <Button
+                            className="box product button-quantity-change"
+                            onClick={() => {
+                                changeAmount(-1, data.quantityInStock);
+                            }}
+                        >
+                            -
+                        </Button>
+                        <Box className="box product box-quantity-num">
+                            {amount}
+                        </Box>
+                        <Button
+                            className="box product button-quantity-change"
+                            onClick={() => {
+                                changeAmount(1, data.quantityInStock);
+                            }}
+                        >
+                            +
+                        </Button>
+                    </Box>
+                )}
+                {data.quantityInStock != 0 && (
                     <Button
-                        className="box product button-quantity-change"
+                        className="box product button-add-to-cart"
+                        hidden={data.quantityInStock == 0 ? 1 : 0}
+                        variant="outlined"
                         onClick={() => {
-                            changeAmount(-1, data.quantityInStock);
+                            let info = localStorage.getItem(
+                                userId * 1000 + data.id
+                            );
+                            info = JSON.parse(info);
+                            let quantity = info == null ? 0 : info.quantity;
+                            quantity += amount;
+                            let newInfo = {
+                                productName: data.productName,
+                                image: data.image,
+                                price: data.price,
+                                quantity: quantity,
+                            };
+                            newInfo = JSON.stringify(newInfo);
+                            localStorage.setItem(
+                                userId * 1000 + data.id,
+                                newInfo
+                            );
+                            setOpen(true);
                         }}
                     >
-                        -
+                        THÊM VÀO GIỎ
                     </Button>
-                    <Box className="box product box-quantity-num">{amount}</Box>
-                    <Button
-                        className="box product button-quantity-change"
-                        onClick={() => {
-                            changeAmount(1, data.quantityInStock);
-                        }}
-                    >
-                        +
-                    </Button>
-                </Box>
-                <Button
-                    className="box product button-add-to-cart"
-                    variant="outlined"
-                    onClick={() => {
-                        let info = localStorage.getItem(
-                            userId * 1000 + data.id
-                        );
-                        info = JSON.parse(info);
-                        let quantity = info == null ? 0 : info.quantity;
-                        quantity += amount;
-                        let newInfo = {
-                            productName: data.productName,
-                            image: data.image,
-                            price: data.price,
-                            quantity: quantity,
-                        };
-                        newInfo = JSON.stringify(newInfo);
-                        localStorage.setItem(userId * 1000 + data.id, newInfo);
-                        setOpen(true);
-                    }}
-                >
-                    THÊM VÀO GIỎ
-                </Button>
+                )}
             </Box>
         </Item>
     ))();
@@ -213,6 +223,10 @@ export default function Product() {
             </Box>
         </Item>
     ))();
+    const [open, setOpen] = React.useState(false);
+    const handleClose = () => {
+        setOpen(false);
+    };
     return (
         <Box className="box">
             <Box className="box">{Header()}</Box>
