@@ -1,7 +1,9 @@
 const { QueryTypes, Model } = require('sequelize');
 const sequelize = require('../database/connect');
 const OrderDetail = require('../models/OderDetails');
+const Orders = require('../models/Orders');
 const Products = require('../models/Products');
+const OrderService = require('./OrderService');
 
 let getOrderDetailById = async (orderDetailId) => {
     try {
@@ -24,6 +26,24 @@ let getAllOrderDetail = async () => {
         let result = await OrderDetail.findAll();
         return result;
     } catch (e) {
+        return temp = {
+            error: e.name,
+            message: "Error"
+        };
+    }
+}
+
+let getOrderDetailByOrderCode = async (orderCode) => {
+    try {
+        let order = await OrderService.getOrderByOrderCode(orderCode);
+        let result = await OrderDetail.findOne({
+            where: {
+                id: order.id
+            }
+        })
+        return result;
+    }
+    catch (e) {
         return temp = {
             error: e.name,
             message: "Error"
@@ -119,6 +139,7 @@ let deleteOrderDetail = async (orderDetailId) => {
 module.exports = {
     getOrderDetailById: getOrderDetailById,
     getAllOrderDetail: getAllOrderDetail,
+    getOrderDetailByOrderCode: getOrderDetailByOrderCode,
     addOrderDetail: addOrderDetail,
     getOrderDetailByOrderId: getOrderDetailByOrderId,
     deleteOrderDetail: deleteOrderDetail,
