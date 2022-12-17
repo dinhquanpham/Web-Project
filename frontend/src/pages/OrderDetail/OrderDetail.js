@@ -68,7 +68,7 @@ function JsonDataDisplay() {
                                 <tr>
                                 <th>Sản phẩm</th>
                                 <th>Số lượng</th>
-                                <th>Giá</th>
+                                <th>Giá / 1 quyển</th>
                                 </tr>
                             </thead>
                             <tbody>
