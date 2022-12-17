@@ -9,7 +9,7 @@ router.get('/by-provider/:providerId', productSetController.getProductSetByProvi
 router.get('/admin/info', productSetController.getProducSetInfo);
 router.post('/add', productSetController.addProductSet);
 router.post('/admin/add', productSetController.addProductSetByAdmin);
-router.post('/admin/update', productSetController.updateProductSetAdmin);
+router.put('/admin/update', productSetController.updateProductSetAdmin);
 router.put('/update', productSetController.updateProductSet);
 router.delete('/delete/:productSetId', productSetController.deleteProductSet);
 

@@ -41,7 +41,7 @@ const updateProductSet = async (req, res) => {
 }
 
 const updateProductSetAdmin = async(req, res) => {
-    let data.body;
+    let data = req.body;
     const result = await productSetService.updateProductSetAdmin(data);
     res.send(result);
 }

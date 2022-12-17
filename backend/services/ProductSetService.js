@@ -5,7 +5,7 @@ const ProductSet = require('../models/ProductSets');
 let getProductSetById = async (productSetId) => {
     try {
         let result = await sequelize.query(
-            'select ps.id, ps.name, ps.newestChap, ps.image, a.name as authorName, p.name as providerName from product_set ps join authors a on ps.authorId = a.id join providers p on ps.providerId = p.id where ps.id = ?', {
+            'select ps.id, ps.name, ps.description, ps.newestChap, ps.image, a.name as authorName, p.name as providerName from product_set ps join authors a on ps.authorId = a.id join providers p on ps.providerId = p.id where ps.id = ?', {
             raw: true,
             replacements: [productSetId],
             type: QueryTypes.SELECT
@@ -155,7 +155,7 @@ let addProductSetByAdmin = async (data) => {
     }
 }
 
-let updateProductSetAdmin = async(data) => {
+let updateProductSetAdmin = async (data) => {
     try {
 
         let id = await sequelize.query(
@@ -171,7 +171,6 @@ let updateProductSetAdmin = async(data) => {
 
         let authorId = id[0].authorId;
         let providerId = id[0].providerId;
-
         let productSet = await ProductSet.findOne(
             {
                 where: {
@@ -185,8 +184,8 @@ let updateProductSetAdmin = async(data) => {
             description: data.description,
             newestChap: data.newestChap,
             image: data.image,
-            providerId: (providerId ? providerId : product.providerId),
-            authorId: (authorId ? authorId : product.authorId)
+            providerId: (providerId ? providerId : productSet.providerId),
+            authorId: (authorId ? authorId : productSet.authorId)
         });
 
         productSet.save();

@@ -72,12 +72,24 @@ async function getProductDetail(id) {
     }).then((data) => data.json());
     return data;
 }
+async function getProductSetDetail(id) {
+    let url = `${process.env.REACT_APP_SV_HOST}/models/product-set/by-id/${id}`;
+    let data = await fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    }).then((data) => data.json());
+    return data;
+}
+
 
 async function addData(credentials, type) {
     let url = `${process.env.REACT_APP_SV_HOST}/models/`;
     if (type === "product" || type === "product-set") {
         url = url + type + "/admin/add";
     } else url = url + type + "/add";
+    console.log(credentials);
     let data = await fetch(url, {
         method: "POST",
         headers: {
@@ -93,6 +105,7 @@ async function updateData(credentials, type) {
     if (type === "product" || type === "product-set") {
         url = url + type + "/admin/update";
     } else url = url + type + "/update";
+
     let data = await fetch(url, {
         method: "PUT",
         headers: {
@@ -164,6 +177,11 @@ const Table = ({
     let [productPageNumber, setProductPageNumber] = useState("");
     let [productSoldNumber, setProductSoldNumber] = useState("");
     let [productImage, setProductImage] = useState("");
+    let [productSetId, setProductSetId] = useState("");
+    let [productSetName, setProductSetName] = useState("");
+    let [productSetDescription, setProductSetDescription] = useState("");
+    let [productSetNewestChap, setProductSetNewestChap] = useState("");
+    let [productSetImage, setProductSetImage] = useState("");
     let [edit, setEdit] = useState(false);
     let [tableRange, setTableRange] = useState([]);
     let [slice, setSlice] = useState([]);
@@ -245,17 +263,33 @@ const Table = ({
             }
         }
         if (type === "product-set") {
-            response = await addData(
-                {
-                    name: data.get("name"),
-                    description: data.get("description"),
-                    newestChap: data.get("newestChap"),
-                    image: data.get("image"),
-                    authorName: currentAuthor,
-                    providerName: currentProvider,
-                },
-                type
-            );
+            if (!edit) {
+                response = await addData(
+                    {
+                        name: data.get("name"),
+                        description: data.get("description"),
+                        newestChap: data.get("newestChap"),
+                        image: data.get("image"),
+                        authorName: currentAuthor,
+                        providerName: currentProvider,
+                    },
+                    type
+                );
+            }
+            else {
+                response = await updateData(
+                    {
+                        id: productSetId,
+                        name: data.get("name"),
+                        description: data.get("description"),
+                        newestChap: data.get("newestChap"),
+                        image: data.get("image"),
+                        authorName: currentAuthor,
+                        providerName: currentProvider,
+                    },
+                    type
+                );
+            }
         }
         if (type === "category") {
             response = await addData(
@@ -333,6 +367,16 @@ const Table = ({
         setProductImage(currentProduct.image);
         setProductSoldNumber(currentProduct.soldNumber);
     };
+    const handleEditProductSet = async (id) => {
+        let response = await getProductSetDetail(id);
+        let data = response[0];
+        setEdit(true);
+        setProductSetId(id);
+        setProductSetName(data.name);
+        setProductSetDescription(data.description);
+        setProductSetNewestChap(data.newestChap);
+        setProductSetImage(data.image);
+    };
 
     const handlePaymentOrder = async (id) => {
         let response = await updateOrderStatus(id);
@@ -382,9 +426,8 @@ const Table = ({
                     {slice &&
                         slice.map((row) => (
                             <tr
-                                className={`${hover && "hover"} ${
-                                    striped && "striped"
-                                }`}
+                                className={`${hover && "hover"} ${striped && "striped"
+                                    }`}
                             >
                                 {columns.map((col) => (
                                     <td>{row[col.field]}</td>
@@ -396,6 +439,20 @@ const Table = ({
                                                 className="box payment button-address-delete"
                                                 onClick={(e) =>
                                                     handleEditProduct(row.id)
+                                                }
+                                            >
+                                                <EditIcon />
+                                            </IconButton>
+                                        </Box>
+                                    </td>
+                                )}
+                                {type === "product-set" && (
+                                    <td>
+                                        <Box className="box payment box-address-delete">
+                                            <IconButton
+                                                className="box payment button-address-delete"
+                                                onClick={(e) =>
+                                                    handleEditProductSet(row.id)
                                                 }
                                             >
                                                 <EditIcon />
@@ -455,7 +512,7 @@ const Table = ({
                 setPage={setPage}
                 page={page}
             />
-            {type !== "user" && type !== "order" && !productName && (
+            {type !== "user" && type !== "order" && !productName && !productSetName && (
                 <Typography sx={{ fontWeight: "bold", mt: 5 }}>
                     Thêm dữ liệu mới
                 </Typography>
@@ -463,6 +520,11 @@ const Table = ({
             {type !== "user" && type !== "order" && productName && (
                 <Typography sx={{ fontWeight: "bold", mt: 5 }}>
                     Chỉnh sửa thông tin sản phẩm
+                </Typography>
+            )}
+            {type !== "user" && type !== "order" && productSetName && (
+                <Typography sx={{ fontWeight: "bold", mt: 5 }}>
+                    Chỉnh sửa thông tin bộ sản phẩm
                 </Typography>
             )}
             {slice ? null : <p>No row to show</p>}
@@ -710,6 +772,10 @@ const Table = ({
                         name="name"
                         label="Tên"
                         id="name"
+                        value={productSetName ? productSetName : ""}
+                        onChange={(e) => {
+                            setProductSetName(e.target.value);
+                        }}
                         sx={{ mr: 2, width: 350 }}
                     />
                     <TextField
@@ -717,6 +783,10 @@ const Table = ({
                         name="description"
                         label="Mô tả"
                         id="description"
+                        value={productSetDescription ? productSetDescription : ""}
+                        onChange={(e) => {
+                            setProductSetDescription(e.target.value);
+                        }}
                         sx={{ mr: 2, width: 350 }}
                     />
                     <TextField
@@ -724,6 +794,10 @@ const Table = ({
                         name="newestChap"
                         label="Tập mới nhất"
                         id="newestChap"
+                        value={productSetNewestChap ? productSetNewestChap : ""}
+                        onChange={(e) => {
+                            setProductSetNewestChap(e.target.value);
+                        }}
                         sx={{ mr: 2, width: 350 }}
                     />
                     <TextField
@@ -731,6 +805,10 @@ const Table = ({
                         name="image"
                         label="Ảnh"
                         id="image"
+                        value={productSetImage ? productSetImage : ""}
+                        onChange={(e) => {
+                            setProductSetImage(e.target.value);
+                        }}
                         sx={{ mr: 2, width: 350 }}
                     />
                     <FormControl sx={{ mt: 2, mr: 2, width: 350 }}>
@@ -769,13 +847,24 @@ const Table = ({
                                 })}
                         </Select>
                     </FormControl>
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        sx={{ mt: 3, mb: 2, display: "block" }}
-                    >
-                        Thêm
-                    </Button>
+                    {!productSetName && (
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2, display: "block" }}
+                        >
+                            Thêm
+                        </Button>
+                    )}
+                    {productSetName && (
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2, display: "block" }}
+                        >
+                            Sửa
+                        </Button>
+                    )}
                 </Box>
             )}
             {type === "category" && (
