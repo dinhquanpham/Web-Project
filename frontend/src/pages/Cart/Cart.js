@@ -62,14 +62,42 @@ export default function Cart() {
         setCartInfo(response);
     };
 
-    let [productId, setProductId] = useState(0);
-    let [productInfo, setProductInfo] = useState([]);
+    let [productId, setProductId] = useState(1);
+    let [productInCartInfo, setProductInCartInfo] = useState([]);
+    let [productIndex, setProductIndex] = useState(1);
+    let [change, setChange] = useState(false);
+    let productQuantityInStock = "";
+    let changeAmountControll = async () => {
+        let data = productInCartInfo;
+        if (data.length != 0 && productQuantityInStock != 0) {
+            if (data.quantity < productQuantityInStock) {
+                changeAmount(productIndex, 1);
+                let info = localStorage.getItem(data.id);
+                info = JSON.parse(info);
+                let quantity = info == null ? 0 : info.quantity;
+                quantity = quantity + 1;
+                let newInfo = {
+                    productName: data.productName,
+                    image: data.image,
+                    price: data.price,
+                    quantity: quantity,
+                };
+                newInfo = JSON.stringify(newInfo);
+                localStorage.setItem(data.id, newInfo);
+            } else {
+                setOpen(true);
+            }
+        }
+    };
     useEffect(() => {
         handleData2();
-    }, [productId]);
+        changeAmountControll();
+    }, [change]);
     let handleData2 = async () => {
         let response = await GetProductById(productId);
-        setProductInfo(response.product[0].quantityInStock);
+        productQuantityInStock = response.product[0].quantityInStock;
+        let response2 = await changeAmountControll();
+        response2;
     };
 
     let totalPayment = 0;
@@ -106,7 +134,6 @@ export default function Cart() {
             setCartInfo(nextCartInfo);
         }
     }
-
     let cartShow =
         Array.isArray(cartInfo) &&
         cartInfo.map((data, index) => (
@@ -157,29 +184,9 @@ export default function Cart() {
                                 className="box cart button-quantity-change"
                                 onClick={() => {
                                     setProductId(data.id % 1000);
-                                    // console.log(data.quantity);
-                                    // console.log(productInfo);
-                                    if (data.quantity < productInfo) {
-                                        changeAmount(index, 1);
-                                        let info = localStorage.getItem(
-                                            data.id
-                                        );
-                                        info = JSON.parse(info);
-                                        let quantity =
-                                            info == null ? 0 : info.quantity;
-                                        quantity = quantity + 1;
-                                        let newInfo = {
-                                            productName: data.productName,
-                                            image: data.image,
-                                            price: data.price,
-                                            quantity: quantity,
-                                        };
-                                        newInfo = JSON.stringify(newInfo);
-                                        localStorage.setItem(data.id, newInfo);
-                                    }
-                                    // if (data.quantity >= productInfo) {
-                                    //     setOpen(true);
-                                    // }
+                                    setProductInCartInfo(data);
+                                    setProductIndex(index);
+                                    setChange(!change);
                                 }}
                             >
                                 +
@@ -238,7 +245,7 @@ export default function Cart() {
                         </Button>
                     </Item>
                 </Box>
-                {/* <Dialog open={open} onClose={handleClose}>
+                <Dialog open={open} onClose={handleClose}>
                     <DialogContent>
                         <DialogContentText className="cart popup text">
                             SỐ LƯỢNG YÊU CẦU KHÔNG KHẢ DỤNG
@@ -252,7 +259,7 @@ export default function Cart() {
                             ĐỒNG Ý
                         </Button>
                     </DialogActions>
-                </Dialog> */}
+                </Dialog>
             </Box>
         );
     }
