@@ -415,7 +415,7 @@ export default function UserInfo() {
                   id="homeAddress"
                   label="Số nhà"
                   name="homeAddress"
-                  sx={{ mr: 1 }}
+                  sx={{ mr: 2, width: 250 }}
                   type='small'
                 />
               </Grid>
@@ -424,7 +424,7 @@ export default function UserInfo() {
                   id="street"
                   label="Đường"
                   name="street"
-                  sx={{ mr: 1 }}
+                  sx={{ mr: 2, width: 250 }}
                   type='small'
                 />
               </Grid>
@@ -433,7 +433,7 @@ export default function UserInfo() {
                   id="district"
                   label="Phường/quận"
                   name="district"
-                  sx={{ mr: 1 }}
+                  sx={{ mr: 2, width: 250 }}
                   type='small'
                 />
               </Grid>
@@ -442,7 +442,7 @@ export default function UserInfo() {
                   id="province"
                   label="Tỉnh/thành phố"
                   name="province"
-                  sx={{ mr: 1 }}
+                  sx={{ mr: 3, width: 250 }}
                   type='small'
                 />
               </Grid>
