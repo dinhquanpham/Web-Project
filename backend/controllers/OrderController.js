@@ -71,6 +71,13 @@ const updateOrderStatus = async (req, res) => {
     res.send(result);
 };
 
+const updateOrderAdmin = async(req, res) => {
+    let orderCode = req.params.orderCode;
+    let data = req.body;
+    const result = await orderService.updateOrderAdmin(orderCode, data);
+    res.send(result);
+}
+
 const deleteOrder = async (req, res) => {
     let orderId = req.params.orderId;
     const result = await orderService.deleteOrder(orderId);
@@ -85,5 +92,6 @@ module.exports = {
     QRPaymentConfirm: QRPaymentConfirm,
     addOrder: addOrder,
     updateOrderStatus: updateOrderStatus,
+    updateOrderAdmin: updateOrderAdmin,
     deleteOrder: deleteOrder,
 };
