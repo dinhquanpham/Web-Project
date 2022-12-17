@@ -32,11 +32,7 @@ let getSearchResult = async(data, page, size) => {
             let pageNumber = parseInt(page);
             let pageSize = parseInt(size);
             let start = (pageNumber - 1) * pageSize ;
-            countResult[0].total
-            return lastRes = {
-                totalPage: parseInt(countResult[0].total) % pageSize + 1,
-                result: result.slice(start, start + pageSize),
-            }
+            return result.slice(start, start + pageSize);
         }
         return result;
     } catch (e) {
