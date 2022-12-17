@@ -36,7 +36,6 @@ async function GetProductCategoryById(productCategoryId) {
             "Content-Type": "application/json",
         },
     }).then((data) => data.json());
-    console.log(data);
     return data;
 }
 
@@ -44,7 +43,7 @@ export default function ProductCategory() {
     let search = window.location.search;
     let params = new URLSearchParams(search);
     let productCategoryId = params.get("id");
-    let [productCategoryInfo, setProductCategoryInfo] = useState([]);
+    let [productCategoryInfo, setProductCategoryInfo] = useState("");
     let [productInCategoryInfo, setProductInCategoryInfo] = useState([]);
     useEffect(() => {
         handleData();
@@ -53,15 +52,23 @@ export default function ProductCategory() {
     let handleData = async () => {
         let response = await GetProductByCategory(productCategoryId);
         setProductInCategoryInfo(response);
-        let response2 = await GetProductCategoryById(productCategoryId);
-        setProductCategoryInfo(response2.name);
+        if (productCategoryId == "hot") {
+            setProductCategoryInfo("TRUYỆN HOT");
+        } else if (productCategoryId == "new") {
+            setProductCategoryInfo("TRUYỆN MỚI");
+        } else {
+            let response2 = await GetProductCategoryById(productCategoryId);
+            setProductCategoryInfo(response2.name);
+        }
     };
-
     return (
         <Box className="box">
             <Box className="box">{Header()}</Box>
             <Box className="box">
-                {ProductGrid(productCategoryInfo, productInCategoryInfo, 10)}
+                {ProductGrid(
+                    productCategoryInfo.toUpperCase(),
+                    productInCategoryInfo
+                )}
             </Box>
         </Box>
     );

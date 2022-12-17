@@ -96,11 +96,11 @@ export default function Product() {
         let response3 = await GetProductBySet(response.product[0].productsetId);
         setProductInSetInfo(response3);
         setCategoryInfo(response.categories);
-        setAmount((counter) => 0);
+        setAmount((counter) => 1);
     };
-    let [amount, setAmount] = useState(0);
+    let [amount, setAmount] = useState(1);
     function changeAmount(value, limit) {
-        setAmount((counter) => Math.min(Math.max(0, counter + value), limit));
+        setAmount((counter) => Math.min(Math.max(1, counter + value), limit));
     }
 
     let productShow = ((data = productInfo) => (
@@ -133,10 +133,7 @@ export default function Product() {
                     </Box>
                 </Box>
                 {data.quantityInStock == 0 && (
-                    <Box
-                        className="box product box-out-of-stock"
-                        hidden={data.quantityInStock == 0 ? 0 : 1}
-                    >
+                    <Box className="box product box-out-of-stock">
                         Sản phẩm đã hết hàng
                     </Box>
                 )}
@@ -156,7 +153,15 @@ export default function Product() {
                         <Button
                             className="box product button-quantity-change"
                             onClick={() => {
-                                changeAmount(1, data.quantityInStock);
+                                let info = localStorage.getItem(
+                                    userId * 1000 + data.id
+                                );
+                                info = JSON.parse(info);
+                                let quantity = info == null ? 0 : info.quantity;
+                                changeAmount(
+                                    1,
+                                    data.quantityInStock - quantity
+                                );
                             }}
                         >
                             +
@@ -233,7 +238,7 @@ export default function Product() {
             <Box className="box">{productShow}</Box>
             <Box className="box">{productInfoDetailShow}</Box>
             <Box className="box">
-                {ProductTab("TRUYỆN CÙNG THỂ LOẠI", productInSetInfo)}
+                {ProductTab("TRUYỆN CÙNG BỘ", productInSetInfo)}
             </Box>
             <Dialog open={open} onClose={handleClose}>
                 <DialogContent>

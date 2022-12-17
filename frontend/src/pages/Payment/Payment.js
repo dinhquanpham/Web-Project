@@ -273,8 +273,8 @@ export default function Payment() {
     const handleClick1 = () => {
         ConfirmOrder(orderId);
         handleClose1();
+        setOpen2(true);
         DeleteCart(userId);
-        navigate("/");
     };
     const handleClose1 = () => {
         setOpen1(false);
