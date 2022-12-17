@@ -96,11 +96,11 @@ export default function Product() {
         let response3 = await GetProductBySet(response.product[0].productsetId);
         setProductInSetInfo(response3);
         setCategoryInfo(response.categories);
-        setAmount((counter) => 1);
+        setAmount((counter) => 0);
     };
-    let [amount, setAmount] = useState(1);
+    let [amount, setAmount] = useState(0);
     function changeAmount(value, limit) {
-        setAmount((counter) => Math.min(Math.max(1, counter + value), limit));
+        setAmount((counter) => Math.min(Math.max(0, counter + value), limit));
     }
 
     let productShow = ((data = productInfo) => (
@@ -171,27 +171,33 @@ export default function Product() {
                 {data.quantityInStock != 0 && (
                     <Button
                         className="box product button-add-to-cart"
-                        hidden={data.quantityInStock == 0 ? 1 : 0}
                         variant="outlined"
                         onClick={() => {
-                            let info = localStorage.getItem(
-                                userId * 1000 + data.id
-                            );
-                            info = JSON.parse(info);
-                            let quantity = info == null ? 0 : info.quantity;
-                            quantity += amount;
-                            let newInfo = {
-                                productName: data.productName,
-                                image: data.image,
-                                price: data.price,
-                                quantity: quantity,
-                            };
-                            newInfo = JSON.stringify(newInfo);
-                            localStorage.setItem(
-                                userId * 1000 + data.id,
-                                newInfo
-                            );
-                            setOpen(true);
+                            if (amount > 0) {
+                                let info = localStorage.getItem(
+                                    userId * 1000 + data.id
+                                );
+                                info = JSON.parse(info);
+                                let quantity = info == null ? 0 : info.quantity;
+                                quantity += amount;
+                                let newInfo = {
+                                    productName: data.productName,
+                                    image: data.image,
+                                    price: data.price,
+                                    quantity: quantity,
+                                };
+                                newInfo = JSON.stringify(newInfo);
+                                localStorage.setItem(
+                                    userId * 1000 + data.id,
+                                    newInfo
+                                );
+                                setAmount((counter) =>
+                                    Math.min(1, data.quantityInStock - quantity)
+                                );
+                                setOpen(true);
+                            } else {
+                                setOpen2(true);
+                            }
                         }}
                     >
                         THÊM VÀO GIỎ
@@ -232,6 +238,10 @@ export default function Product() {
     const handleClose = () => {
         setOpen(false);
     };
+    const [open2, setOpen2] = React.useState(false);
+    const handleClose2 = () => {
+        setOpen2(false);
+    };
     return (
         <Box className="box">
             <Box className="box">{Header()}</Box>
@@ -250,6 +260,21 @@ export default function Product() {
                     <Button
                         className="product popup button-confirm"
                         onClick={handleClose}
+                    >
+                        ĐỒNG Ý
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            <Dialog open={open2} onClose={handleClose2}>
+                <DialogContent>
+                    <DialogContentText className="product popup text">
+                        SỐ LƯỢNG KHÔNG HỢP LỆ
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        className="product popup button-confirm"
+                        onClick={handleClose2}
                     >
                         ĐỒNG Ý
                     </Button>
