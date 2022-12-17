@@ -15,7 +15,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import { useState } from "react";
-import Alert from '@mui/material/Alert';
+import Alert from "@mui/material/Alert";
+import "./SignUp.css";
 
 function Copyright(props) {
     return (
@@ -25,7 +26,7 @@ function Copyright(props) {
             align="center"
             {...props}
         >
-            {"Copyright © "}
+            {"Bản quyền © "}
             <Link color="inherit" href="/">
                 FAKEHASA
             </Link>{" "}
@@ -37,13 +38,12 @@ function Copyright(props) {
 
 async function registerUser(credentials) {
     return fetch(`${process.env.REACT_APP_SV_HOST}/register`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
         },
-        body: JSON.stringify(credentials)
-    })
-        .then(data => data.json())
+        body: JSON.stringify(credentials),
+    }).then((data) => data.json());
 }
 
 const theme = createTheme();
@@ -54,31 +54,32 @@ export default function SignUp() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        if (data.get("username") === '' || data.get("password") === ''
-            || data.get("firstname") === '' || data.get("lastname") === '') {
+        if (
+            data.get("username") === "" ||
+            data.get("password") === "" ||
+            data.get("firstname") === "" ||
+            data.get("lastname") === ""
+        ) {
             setMessage("null-value");
-        }
-        else {
+        } else {
             const response = await registerUser({
                 username: data.get("username"),
                 password: data.get("password"),
                 firstname: data.get("firstname"),
                 lastname: data.get("lastname"),
                 email: data.get("email"),
-                phone: data.get("phone")
+                phone: data.get("phone"),
             });
             if (!response.error) {
-                sessionStorage.setItem('userId', response.userId);
+                sessionStorage.setItem("userId", response.userId);
                 if (response.roleId === 1) {
-                    sessionStorage.setItem('admin', 'true');
-                }
-                else {
-                    sessionStorage.setItem('admin', 'false');
+                    sessionStorage.setItem("admin", "true");
+                } else {
+                    sessionStorage.setItem("admin", "false");
                 }
                 setMessage("success-register");
-                setTimeout(() => navigate('/'), 1500);
-            }
-            else {
+                setTimeout(() => navigate("/"), 1500);
+            } else {
                 setMessage("error-register");
             }
         }
@@ -98,10 +99,17 @@ export default function SignUp() {
                                 alignItems: "center",
                             }}
                         >
-                            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                                <LockOutlinedIcon />
+                            <Avatar
+                                className="sign-up icon-locker"
+                                sx={{ m: 1, bgcolor: "secondary.main" }}
+                            >
+                                <LockOutlinedIcon className="sign-up icon-locker" />
                             </Avatar>
-                            <Typography component="h1" variant="h5">
+                            <Typography
+                                className="sign-up text-sign-up"
+                                component="h1"
+                                variant="h5"
+                            >
                                 Đăng ký
                             </Typography>
                             <Box
@@ -175,6 +183,7 @@ export default function SignUp() {
                                     </Grid>
                                 </Grid>
                                 <Button
+                                    className="sign-up button-sign-up"
                                     type="submit"
                                     fullWidth
                                     variant="contained"
@@ -182,14 +191,20 @@ export default function SignUp() {
                                 >
                                     Đăng ký
                                 </Button>
-                                {message === 'null-value' && (
-                                    <Alert severity="warning" sx={{ mt: 3 }}>Vui lòng điền đủ các thông tin bắt buộc</Alert>
+                                {message === "null-value" && (
+                                    <Alert severity="warning" sx={{ mt: 3 }}>
+                                        Vui lòng điền đủ các thông tin bắt buộc
+                                    </Alert>
                                 )}
-                                {message === 'error-register' && (
-                                    <Alert severity="warning" sx={{ mt: 3 }}>Tài khoản đã tồn tại</Alert>
+                                {message === "error-register" && (
+                                    <Alert severity="warning" sx={{ mt: 3 }}>
+                                        Tài khoản đã tồn tại
+                                    </Alert>
                                 )}
-                                {message === 'success-register' && (
-                                    <Alert severity="success" sx={{ mt: 3 }}>Đăng ký thành công</Alert>
+                                {message === "success-register" && (
+                                    <Alert severity="success" sx={{ mt: 3 }}>
+                                        Đăng ký thành công
+                                    </Alert>
                                 )}
                             </Box>
                         </Box>
