@@ -91,7 +91,7 @@ export default function Admin() {
         { field: "address", header: "Địa chỉ" },
         { field: "detail", header: "Trạng thái" },
         { field: "orderDate", header: "Thời gian mua hàng" },
-        { field: "paidAt", header: "Thời gian thanh toán" },
+        { field: "paidAt", header: "Thời gian xác nhận thanh toán" },
         { field: "paidAmount", header: "Tổng tiền" },
     ];
     const navigate = useNavigate();
