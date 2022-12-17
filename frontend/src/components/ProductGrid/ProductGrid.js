@@ -6,6 +6,10 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
 import "./ProductGrid.css";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -47,26 +51,44 @@ export default function ProductGrid(name, productInfo) {
                 className="box product-grid button-add-to-cart"
                 variant="outlined"
                 onClick={() => {
-                    let userId = sessionStorage.getItem("userId");
-                    let info = localStorage.getItem(userId * 1000 + data.id);
-                    info = JSON.parse(info);
-                    let quantity = info == null ? 0 : info.quantity;
-                    quantity++;
-                    let newInfo = {
-                        productName: data.productName,
-                        image: data.image,
-                        price: data.price,
-                        quantity: quantity,
-                    };
-                    newInfo = JSON.stringify(newInfo);
-                    localStorage.setItem(userId * 1000 + data.id, newInfo);
-                    setOpen(true);
+                    if (data.soldStatus == 1) {
+                        let userId = sessionStorage.getItem("userId");
+                        let info = localStorage.getItem(
+                            userId * 1000 + data.id
+                        );
+                        info = JSON.parse(info);
+                        let quantity = info == null ? 0 : info.quantity;
+                        quantity++;
+                        let newInfo = {
+                            productName: data.productName,
+                            image: data.image,
+                            price: data.price,
+                            quantity: quantity,
+                        };
+                        newInfo = JSON.stringify(newInfo);
+                        localStorage.setItem(userId * 1000 + data.id, newInfo);
+                        setOpen1(true);
+                    } else {
+                        setOpen2(true);
+                    }
                 }}
             >
                 THÊM VÀO GIỎ
             </Button>
         </Box>
     ));
+
+    const [open1, setOpen1] = React.useState(false);
+    const handleClick1 = () => {
+        navigate("/cart");
+    };
+    const handleClose1 = () => {
+        setOpen1(false);
+    };
+    const [open2, setOpen2] = React.useState(false);
+    const handleClose2 = () => {
+        setOpen2(false);
+    };
 
     return (
         productInfo && (
@@ -100,6 +122,40 @@ export default function ProductGrid(name, productInfo) {
                         )
                     )}
                 </Box>
+                <Dialog
+                    className="product-grid popup box"
+                    open={open1}
+                    onClose={handleClose1}
+                >
+                    <DialogContent>
+                        <DialogContentText className="product-grid popup text">
+                            ĐÃ THÊM VÀO GIỎ HÀNG
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button
+                            className="product-grid popup button-text"
+                            onClick={handleClick1}
+                        >
+                            THANH TOÁN
+                        </Button>
+                        <Button onClick={handleClose1}>TIẾP TỤC MUA SẮM</Button>
+                    </DialogActions>
+                </Dialog>
+                <Dialog
+                    className="product-grid popup box"
+                    open={open2}
+                    onClose={handleClose2}
+                >
+                    <DialogContent>
+                        <DialogContentText className="product-grid popup text">
+                            SẢN PHẨM ĐÃ HẾT HÀNG
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose2}>TIẾP TỤC MUA SẮM</Button>
+                    </DialogActions>
+                </Dialog>
             </Item>
         )
     );
