@@ -72,7 +72,7 @@ export default function Header() {
                                 className="button-signin"
                                 onClick={() => navigate("/sign-in")}
                             >
-                                SIGN IN
+                                ĐĂNG NHẬP
                             </Button>
                         </div>
                     )}
@@ -93,7 +93,7 @@ export default function Header() {
                                 className="button-signin"
                                 onClick={handleSignOut}
                             >
-                                Sign out
+                                ĐĂNG XUẤT
                             </Button>
                         </div>
                     )}

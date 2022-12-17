@@ -12,8 +12,9 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header/Header";
-import Alert from '@mui/material/Alert';
+import Alert from "@mui/material/Alert";
 import { useState } from "react";
+import "./SignIn.css";
 
 function Copyright(props) {
     return (
@@ -23,7 +24,7 @@ function Copyright(props) {
             align="center"
             {...props}
         >
-            {"Copyright © "}
+            {"Bản quyền © "}
             <Link color="inherit" href="/">
                 FAKEHASA
             </Link>{" "}
@@ -57,24 +58,22 @@ export default function SignIn() {
             password: data.get("password"),
         });
         if (!response.error) {
-            sessionStorage.setItem('userId', response.userId);
+            sessionStorage.setItem("userId", response.userId);
             if (response.roleId === 1) {
-                sessionStorage.setItem('admin', 'true');
-            }
-            else {
-                sessionStorage.setItem('admin', 'false');
+                sessionStorage.setItem("admin", "true");
+            } else {
+                sessionStorage.setItem("admin", "false");
             }
             setMessage("success-login");
-            setTimeout(() => navigate('/'), 1500);
-        }
-        else {
+            setTimeout(() => navigate("/"), 1500);
+        } else {
             setMessage("error-login");
         }
     };
     return (
-        <Box sx={{ flexGrow: 1 }}>
-            <Box width="100%">{Header()}</Box>
-            <Box width="100%" height= "100%">
+        <Box className="box">
+            <Box className="box">{Header()}</Box>
+            <Box className="box">
                 <ThemeProvider theme={theme}>
                     <Container component="main" maxWidth="xs">
                         <CssBaseline />
@@ -86,10 +85,17 @@ export default function SignIn() {
                                 alignItems: "center",
                             }}
                         >
-                            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                                <LockOutlinedIcon />
+                            <Avatar
+                                className="sign-in icon-locker"
+                                sx={{ m: 1, bgcolor: "secondary.main" }}
+                            >
+                                <LockOutlinedIcon className="sign-in icon-locker" />
                             </Avatar>
-                            <Typography component="h1" variant="h5">
+                            <Typography
+                                className="sign-in text-sign-in"
+                                component="h1"
+                                variant="h5"
+                            >
                                 Đăng nhập
                             </Typography>
                             <Box
@@ -103,7 +109,7 @@ export default function SignIn() {
                                     required
                                     fullWidth
                                     id="username"
-                                    label="Username"
+                                    label="Tài khoản"
                                     name="username"
                                     autoComplete="username"
                                     autoFocus
@@ -113,12 +119,13 @@ export default function SignIn() {
                                     required
                                     fullWidth
                                     name="password"
-                                    label="Password"
+                                    label="Mật khẩu"
                                     type="password"
                                     id="password"
                                     autoComplete="current-password"
                                 />
                                 <Button
+                                    className="sign-in button-sign-in"
                                     type="submit"
                                     fullWidth
                                     variant="contained"
@@ -127,18 +134,39 @@ export default function SignIn() {
                                     Đăng nhập
                                 </Button>
                                 <Grid container>
-                                    <Grid item>
-                                        <Link href="/sign-up" variant="body2">
+                                    <Grid item xs={6}>
+                                        <Link
+                                            className="sign-in text-sign-in"
+                                            href="/sign-up"
+                                            variant="body2"
+                                        >
                                             {"Đăng ký tài khoản"}
+                                        </Link>
+                                    </Grid>
+                                    <Grid
+                                        item
+                                        xs={6}
+                                        sx={{ textAlign: "right" }}
+                                    >
+                                        <Link
+                                            className="sign-in text-sign-in"
+                                            href="/"
+                                            variant="body2"
+                                        >
+                                            {"Quên mật khẩu?"}
                                         </Link>
                                     </Grid>
                                 </Grid>
                             </Box>
-                            {message === 'error-login' && (
-                                <Alert severity="warning" sx={{ mt: 3 }}>Tài khoản hoặc mật khẩu không chính xác</Alert>
+                            {message === "error-login" && (
+                                <Alert severity="warning" sx={{ mt: 3 }}>
+                                    Tài khoản hoặc mật khẩu không chính xác
+                                </Alert>
                             )}
-                            {message === 'success-login' && (
-                                <Alert severity="success" sx={{ mt: 3 }}>Đăng nhập thành công</Alert>
+                            {message === "success-login" && (
+                                <Alert severity="success" sx={{ mt: 3 }}>
+                                    Đăng nhập thành công
+                                </Alert>
                             )}
                         </Box>
                         <Copyright sx={{ mt: 15, mb: 4 }} />
