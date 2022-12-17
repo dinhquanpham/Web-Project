@@ -52,7 +52,6 @@ async function getData(type) {
 
 async function getOrderDetailByOrderCode(orderCode) {
     let url = `${process.env.REACT_APP_SV_HOST}/models/order-detail/by-code/?code=${orderCode}`;
-    console.log(url);
     let data = await fetch(url, {
         method: "GET",
         headers: {
@@ -89,7 +88,6 @@ async function addData(credentials, type) {
     if (type === "product" || type === "product-set") {
         url = url + type + "/admin/add";
     } else url = url + type + "/add";
-    console.log(credentials);
     let data = await fetch(url, {
         method: "POST",
         headers: {
@@ -123,6 +121,29 @@ async function updateOrderStatus(id) {
         headers: {
             "Content-Type": "application/json",
         },
+    }).then((data) => data.json());
+    return data;
+}
+
+async function getOrderByOrderCode(orderCode) {
+    let url = `${process.env.REACT_APP_SV_HOST}/models/order/by-code/?orderCode=` + orderCode;
+    let data = await fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    }).then((data) => data.json());
+    return data;
+}
+
+async function changeOrderStatus(credentials, orderCode) {
+    let url = `${process.env.REACT_APP_SV_HOST}/models/order/admin/update/` + orderCode;
+    let data = await fetch(url, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(credentials),
     }).then((data) => data.json());
     return data;
 }
@@ -182,6 +203,9 @@ const Table = ({
     let [productSetDescription, setProductSetDescription] = useState("");
     let [productSetNewestChap, setProductSetNewestChap] = useState("");
     let [productSetImage, setProductSetImage] = useState("");
+    let [orderMessage, setOrderMessage] = useState(false);
+    let [orderCode, setOrderCode] = useState("");
+    let [orderStatus, setOrderStatus] = useState("");
     let [edit, setEdit] = useState(false);
     let [tableRange, setTableRange] = useState([]);
     let [slice, setSlice] = useState([]);
@@ -316,6 +340,12 @@ const Table = ({
                 type
             );
         }
+        if (type === 'order') {
+            response = await changeOrderStatus({
+                orderCode: orderCode,
+                detail: orderStatus
+            }, orderCode);
+        }
         if (!response.error) {
             let newData = [];
             currentData.forEach((element) => {
@@ -324,6 +354,7 @@ const Table = ({
             setCurrentData(newData);
             if (!edit) setMessage("update-data");
             else setMessage("change-data");
+            if (orderMessage) setMessage("change-order");
             setTimeout(() => window.location.reload(), 1500);
         } else {
             if (!edit) setMessage("error-update-data");
@@ -377,6 +408,13 @@ const Table = ({
         setProductSetNewestChap(data.newestChap);
         setProductSetImage(data.image);
     };
+
+    const handleEditOrder = async (orderCode) => {
+        let response = await getOrderByOrderCode(orderCode);
+        setOrderMessage(true);
+        setOrderCode(orderCode);
+        setOrderStatus(response.detail);
+    }
 
     const handlePaymentOrder = async (id) => {
         let response = await updateOrderStatus(id);
@@ -466,6 +504,20 @@ const Table = ({
                                             <IconButton
                                                 className="box payment button-address-delete"
                                                 onClick={(e) =>
+                                                    handleEditOrder(row.orderCode)
+                                                }
+                                            >
+                                                <EditIcon />
+                                            </IconButton>
+                                        </Box>
+                                    </td>
+                                )}
+                                {type === "order" && (
+                                    <td>
+                                        <Box className="box payment box-address-delete">
+                                            <IconButton
+                                                className="box payment button-address-delete"
+                                                onClick={(e) =>
                                                     handlePaymentOrder(row.id)
                                                 }
                                             >
@@ -525,6 +577,11 @@ const Table = ({
             {type !== "user" && type !== "order" && productSetName && (
                 <Typography sx={{ fontWeight: "bold", mt: 5 }}>
                     Chỉnh sửa thông tin bộ sản phẩm
+                </Typography>
+            )}
+            {type === 'order' && orderMessage && (
+                <Typography sx={{ fontWeight: "bold", mt: 5 }}>
+                    Chỉnh sửa thông tin đơn hàng
                 </Typography>
             )}
             {slice ? null : <p>No row to show</p>}
@@ -930,17 +987,44 @@ const Table = ({
                     </Button>
                 </Box>
             )}
+            {type === 'order' && orderMessage && (
+                <Box component="form" onSubmit={handleAddData} noValidate>
+                    <TextField
+                        margin="normal"
+                        name="detail"
+                        label="Trạng thái"
+                        id="detail"
+                        value={orderStatus ? orderStatus : ""}
+                        onChange={(e) => {
+                            setOrderStatus(e.target.value);
+                        }}
+                        sx={{ mr: 2, width: 350 }}
+                    />
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        sx={{
+                            mt: 3,
+                            mb: 2,
+                            display: "block",
+                        }}
+                    >
+                        Sửa
+                    </Button>
+                </Box>
+
+            )}
             {message === "update-data" && (
-                <Alert severity="success">Đã cập nhật dữ liệu mới</Alert>
+                <Alert severity="success">Đã thêm dữ liệu mới</Alert>
             )}
             {message === "error-update-data" && (
                 <Alert severity="warning">Lỗi khi thêm dữ liệu mới</Alert>
             )}
             {message === "change-data" && (
-                <Alert severity="success">Đã sửa dữ liệu thành công</Alert>
+                <Alert severity="success">Đã cập nhật dữ liệu thành công</Alert>
             )}
             {message === "error-change-data" && (
-                <Alert severity="warning">Lỗi khi sửa dữ liệu </Alert>
+                <Alert severity="warning">Lỗi khi cập nhật dữ liệu </Alert>
             )}
             {message === "update-payment" && (
                 <Alert severity="success">
@@ -962,6 +1046,9 @@ const Table = ({
             )}
             {message === "error-deleted-data" && (
                 <Alert severity="warning">Lỗi khi xóa dữ liệu</Alert>
+            )}
+            {message === "change-order" && (
+                <Alert severity="success">Đã thay đổi trạng thái đơn hàng</Alert>
             )}
         </div>
     );

@@ -59,7 +59,6 @@ async function getUserInfoById(userId) {
 
 async function updateUserInfo(credentials) {
   let url = `${process.env.REACT_APP_SV_HOST}/models/user/update/`;
-  console.log(url);
   let data = await fetch(url, {
     method: "PUT",
     headers: {
@@ -164,11 +163,9 @@ export default function UserInfo() {
     }
     else {
       if (currentPassword !== userInfo.password) {
-        console.log("Mật khẩu hiện tại không chính xác");
         setMessage("wrong-current-password");
       }
       else {
-        console.log("Mật khẩu nhập lại không chính xác");
         setMessage("wrong-renew-password");
       }
     }
