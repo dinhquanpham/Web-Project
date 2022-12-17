@@ -146,6 +146,25 @@ let updateOrderStatus = async (orderId) => {
     }
 }
 
+let updateOrderAdmin =  async(orderCode, data) => {
+    try {
+        let order = await Order.findOne({
+            where: {
+                orderCode: orderCode
+            }
+        });
+        order.set({
+            detail: data.detail,
+            paidAt: data.paidAt
+        })
+        order.save();
+        return order;
+    } catch (e) {
+        return e.name;
+    }
+
+}
+
 let QRPaymentConfirm = async (orderId) => {
     try {
         let result = await Order.findOne({
@@ -195,5 +214,6 @@ module.exports = {
     QRPaymentConfirm: QRPaymentConfirm,
     addOrder: addOrder,
     updateOrderStatus: updateOrderStatus,
+    updateOrderAdmin: updateOrderAdmin,
     deleteOrder: deleteOrder,
 }
