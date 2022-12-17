@@ -133,10 +133,7 @@ export default function Product() {
                     </Box>
                 </Box>
                 {data.quantityInStock == 0 && (
-                    <Box
-                        className="box product box-out-of-stock"
-                        hidden={data.quantityInStock == 0 ? 0 : 1}
-                    >
+                    <Box className="box product box-out-of-stock">
                         Sản phẩm đã hết hàng
                     </Box>
                 )}
@@ -241,7 +238,7 @@ export default function Product() {
             <Box className="box">{productShow}</Box>
             <Box className="box">{productInfoDetailShow}</Box>
             <Box className="box">
-                {ProductTab("TRUYỆN CÙNG THỂ LOẠI", productInSetInfo)}
+                {ProductTab("TRUYỆN CÙNG BỘ", productInSetInfo)}
             </Box>
             <Dialog open={open} onClose={handleClose}>
                 <DialogContent>

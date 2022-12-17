@@ -2,7 +2,6 @@ import * as React from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
@@ -70,8 +69,7 @@ export default function ProductGrid(name, productInfo) {
     ));
 
     return (
-        productInfo &&
-        (
+        productInfo && (
             <Item className="box product-grid box-product-grid">
                 <Box className="box product-grid box-product-grid-name">
                     <Typography className="box product-grid text-product-grid-name">
@@ -79,21 +77,28 @@ export default function ProductGrid(name, productInfo) {
                     </Typography>
                 </Box>
                 <Box className="box">
-                    {Array.from(Array(Math.ceil(productInfo.length / 5))).map((_, index1) => (
-                        <Box className="box product-grid box-product-grid-info">
-                            {Array.from(Array(5)).map((_, index2) => (
-                                productInfo.length >= index1 * 5 + index2 + 1 &&
-                                (
-                                    <Item
-                                        className="box product-grid box-product-info"
-                                        key={index1 * 5 + index2}
-                                    >
-                                        {productShow[index1 * 5 + index2]}
-                                    </Item>
-                                )
-                            ))}
-                        </Box>
-                    ))}
+                    {Array.from(Array(Math.ceil(productInfo.length / 5))).map(
+                        (_, index1) => (
+                            <Box className="box product-grid box-product-grid-info">
+                                {Array.from(Array(5)).map(
+                                    (_, index2) =>
+                                        productInfo.length >=
+                                            index1 * 5 + index2 + 1 && (
+                                            <Item
+                                                className="box product-grid box-product-info"
+                                                key={index1 * 5 + index2}
+                                            >
+                                                {
+                                                    productShow[
+                                                        index1 * 5 + index2
+                                                    ]
+                                                }
+                                            </Item>
+                                        )
+                                )}
+                            </Box>
+                        )
+                    )}
                 </Box>
             </Item>
         )
