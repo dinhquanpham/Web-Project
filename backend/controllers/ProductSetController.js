@@ -40,6 +40,12 @@ const updateProductSet = async (req, res) => {
     res.send(result);
 }
 
+const updateProductSetAdmin = async(req, res) => {
+    let data.body;
+    const result = await productSetService.updateProductSetAdmin(data);
+    res.send(result);
+}
+
 const deleteProductSet = async (req, res) => {
     let productSetId = req.params.productSetId;
     const result = await productSetService.deleteProductSet(productSetId);
@@ -54,5 +60,6 @@ module.exports = {
     addProductSet: addProductSet,
     addProductSetByAdmin: addProductSetByAdmin,
     updateProductSet: updateProductSet,
+    updateProductSetAdmin: updateProductSetAdmin,
     deleteProductSet: deleteProductSet,
 }

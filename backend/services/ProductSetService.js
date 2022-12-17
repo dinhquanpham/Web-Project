@@ -154,6 +154,52 @@ let addProductSetByAdmin = async (data) => {
         };
     }
 }
+
+let updateProductSetAdmin = async(data) => {
+    try {
+
+        let id = await sequelize.query(
+            'select (select id from authors where name = :authorName) as authorId, (select id from providers where name = :providerName) as providerId',
+            {
+                raw: true,
+                replacements: {
+                    authorName: data.authorName,
+                    providerName: data.providerName,
+                },
+                type: QueryTypes.SELECT
+            });
+
+        let authorId = id[0].authorId;
+        let providerId = id[0].providerId;
+
+        let productSet = await ProductSet.findOne(
+            {
+                where: {
+                    id: data.id
+                }
+            }
+        );
+        productSet.set({
+            id: data.id,
+            name: data.name,
+            description: data.description,
+            newestChap: data.newestChap,
+            image: data.image,
+            providerId: (providerId ? providerId : product.providerId),
+            authorId: (authorId ? authorId : product.authorId)
+        });
+
+        productSet.save();
+        return productSet;
+    }
+    catch (e) {
+        return temp = {
+            error: e.name,
+            message: "Error"
+        };
+    }
+}
+
 let updateProductSet = async (data) => {
     try {
         let productSet = await ProductSet.findOne({
@@ -207,6 +253,7 @@ module.exports = {
     getProducSetInfo: getProducSetInfo,
     addProductSet: addProductSet,
     addProductSetByAdmin: addProductSetByAdmin,
+    updateProductSetAdmin: updateProductSetAdmin,
     updateProductSet: updateProductSet,
     deleteProductSet: deleteProductSet,
 }
