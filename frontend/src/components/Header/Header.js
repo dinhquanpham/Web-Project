@@ -30,7 +30,7 @@ export default function Header() {
     };
     const handleUser = async () => {
         let userId = sessionStorage.getItem("userId");
-        let path = "/user/?id=" + userId;
+        let path = "/user";
         navigate(path);
     };
     const handleSignOut = async () => {
