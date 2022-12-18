@@ -194,7 +194,7 @@ export default function Product() {
                                 setAmount((counter) =>
                                     Math.min(1, data.quantityInStock - quantity)
                                 );
-                                setOpen(true);
+                                setOpen1(true);
                             } else {
                                 setOpen2(true);
                             }
@@ -234,9 +234,12 @@ export default function Product() {
             </Box>
         </Item>
     ))();
-    const [open, setOpen] = React.useState(false);
-    const handleClose = () => {
-        setOpen(false);
+    const [open1, setOpen1] = React.useState(false);
+    const handleClick1 = () => {
+        navigate("/cart");
+    };
+    const handleClose1 = () => {
+        setOpen1(false);
     };
     const [open2, setOpen2] = React.useState(false);
     const handleClose2 = () => {
@@ -250,34 +253,38 @@ export default function Product() {
             <Box className="box">
                 {ProductTab("TRUYỆN CÙNG BỘ", productInSetInfo)}
             </Box>
-            <Dialog open={open} onClose={handleClose}>
+            <Dialog
+                className="product-tab popup box"
+                open={open1}
+                onClose={handleClose1}
+            >
                 <DialogContent>
-                    <DialogContentText className="product popup text">
+                    <DialogContentText className="product-tab popup text">
                         ĐÃ THÊM VÀO GIỎ HÀNG
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button
-                        className="product popup button-confirm"
-                        onClick={handleClose}
+                        className="product-tab popup button-text"
+                        onClick={handleClick1}
                     >
-                        ĐỒNG Ý
+                        THANH TOÁN
                     </Button>
+                    <Button onClick={handleClose1}>TIẾP TỤC MUA SẮM</Button>
                 </DialogActions>
             </Dialog>
-            <Dialog open={open2} onClose={handleClose2}>
+            <Dialog
+                className="product-tab popup box"
+                open={open2}
+                onClose={handleClose2}
+            >
                 <DialogContent>
-                    <DialogContentText className="product popup text">
-                        SỐ LƯỢNG KHÔNG HỢP LỆ
+                    <DialogContentText className="product-tab popup text">
+                        SỐ LƯỢNG YÊU CẦU KHÔNG KHẢ DỤNG
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button
-                        className="product popup button-confirm"
-                        onClick={handleClose2}
-                    >
-                        ĐỒNG Ý
-                    </Button>
+                    <Button onClick={handleClose2}>TIẾP TỤC MUA SẮM</Button>
                 </DialogActions>
             </Dialog>
         </Box>

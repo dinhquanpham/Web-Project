@@ -96,18 +96,18 @@ export default function Payment() {
         let response = await GetAddressByUserId(userId);
         setAddressInfo(response);
     };
-    function deleteAddress(index) {
-        if (Array.isArray(addressInfo)) {
-            let nextAddressInfo = addressInfo.map((data, idx) => {
-                if (idx == index) {
-                    return null;
-                } else return data;
-            });
-            let idx = nextAddressInfo.indexOf(null);
-            nextAddressInfo.splice(idx, 1);
-            setAddressInfo(nextAddressInfo);
-        }
-    }
+    // function deleteAddress(index) {
+    //     if (Array.isArray(addressInfo)) {
+    //         let nextAddressInfo = addressInfo.map((data, idx) => {
+    //             if (idx == index) {
+    //                 return null;
+    //             } else return data;
+    //         });
+    //         let idx = nextAddressInfo.indexOf(null);
+    //         nextAddressInfo.splice(idx, 1);
+    //         setAddressInfo(nextAddressInfo);
+    //     }
+    // }
     let [selectedAddress, setSelectedAddress] = useState(0);
     let handleChange = (event) => {
         setSelectedAddress(event.target.value);
@@ -134,7 +134,7 @@ export default function Payment() {
                         Địa chỉ: {data}
                     </Box>
                 </Box>
-                <Box className="box payment box-address-change">
+                {/* <Box className="box payment box-address-change">
                     <Box className="box payment box-address-edit">
                         <IconButton
                             className="box payment button-address-edit"
@@ -155,7 +155,7 @@ export default function Payment() {
                             <DeleteIcon />
                         </IconButton>
                     </Box>
-                </Box>
+                </Box> */}
             </Item>
         ));
     let shipCost = 15000;
