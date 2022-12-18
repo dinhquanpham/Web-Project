@@ -182,7 +182,7 @@ let updateProductSetAdmin = async (data) => {
             id: data.id,
             name: data.name,
             description: data.description,
-            newestChap: data.newestChap,
+            newestChap: parseInt(data.newestChap),
             image: data.image,
             providerId: (providerId ? providerId : productSet.providerId),
             authorId: (authorId ? authorId : productSet.authorId)

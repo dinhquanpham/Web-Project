@@ -131,8 +131,8 @@ let updateUser = async (data) => {
 
         user.set({
             id: data.id,
-            username: data.username,
-            password: data.password,
+            username: (data.username ? data.username : user.username),
+            password: (data.password ? data.password : user.password),
             firstname: data.firstname,
             lastname: data.lastname,
             address: data.address,

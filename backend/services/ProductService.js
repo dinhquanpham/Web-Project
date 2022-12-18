@@ -362,12 +362,12 @@ let updateProductAdmin = async(data) => {
         );
         product.set({
             productName: data.productName,
-            price: data.price,
-            quantityInStock: data.quantityInStock,
+            price: parseInt(data.price),
+            quantityInStock: parseInt(data.quantityInStock),
             description: data.description,
-            publishedYear: data.publishedYear,
+            publishedYear: parseInt(data.publishedYear),
             productSize: data.productSize,
-            pageNumber: data.pageNumber,
+            pageNumber: parseInt(data.pageNumber),
             image: data.image,
             soldStatus: (data.soldStatus !== "" ? data.soldStatus : product.soldStatus),
             authorId: (authorId ? authorId : product.authorId),

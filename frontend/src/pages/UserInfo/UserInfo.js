@@ -106,7 +106,10 @@ export default function UserInfo() {
   let [userLastname, setUserLastname] = useState("");
   let [userEmail, setUserEmail] = useState("");
   let [userPhone, setUserPhone] = useState("");
-  let [userAddress, setUserAddress] = useState("");
+  let [editFirstName, setEditFirstName] = useState(false);
+  let [editLastName, setEditLastname] = useState(false);
+  let [editEmail, setEditEmail] = useState(false);
+  let [editPhone, setEditPhone] = useState(false);
   useEffect(() => {
     handleData();
   }, [changed]);
@@ -121,6 +124,10 @@ export default function UserInfo() {
     setEditPassword(false);
     setMessage("");
     setValue(newValue);
+    setEditFirstName(false);
+    setEditLastname(false);
+    setEditEmail(false);
+    setEditPhone(false);
   };
 
   const handleUpdateInfo = async (e) => {
@@ -135,7 +142,7 @@ export default function UserInfo() {
     })
     if (!response.error) {
       setMessage("update-info");
-
+      setUserInfo(response);
     }
     else {
       setMessage("error-update-info");
@@ -155,7 +162,8 @@ export default function UserInfo() {
       })
       if (response.message === "Updated") {
         setMessage("update-password");
-
+        let data = await getUserInfoById(sessionStorage.getItem('userId'));
+        setUserInfo(data.user);
       }
       else {
         setMessage("wrong-current-password");
@@ -190,6 +198,10 @@ export default function UserInfo() {
 
   const openEditUserInfo = (e) => {
     setEditUserInfo(true);
+    setEditFirstName(true);
+    setEditLastname(true);
+    setEditEmail(true);
+    setEditPhone(true);
   }
   const openEditPassword = (e) => {
     setEditPassword(true);
@@ -291,32 +303,32 @@ export default function UserInfo() {
               name="lastname"
               label="Họ"
               defaultValue="Empty"
-              value={userLastname ? userLastname : userInfo.lastname}
-              onChange={(e) => { setUserLastname(e.target.value) }}
+              value={userLastname ? userLastname : (editLastName ? userInfo.lastname : "")}
+              onChange={(e) => { setUserLastname(e.target.value); setEditLastname(false); }}
             />
             <TextField
               id="firstname"
               name="firstname"
               label="Tên"
               defaultValue="Empty"
-              value={userFirstname ? userFirstname : userInfo.firstname}
-              onChange={(e) => { setUserFirstname(e.target.value) }}
+              value={userFirstname ? userFirstname : (editFirstName ? userInfo.firstname : "")}
+              onChange={(e) => { setUserFirstname(e.target.value); setEditFirstName(false); }}
             />
             <TextField
               id="phone"
               name="phone"
               label="Số điện thoại"
               defaultValue="Empty"
-              value={userPhone ? userPhone : userInfo.phone}
-              onChange={(e) => { setUserPhone(e.target.value) }}
+              value={userPhone ? userPhone : (editPhone ? userInfo.phone : "")}
+              onChange={(e) => { setUserPhone(e.target.value); setEditPhone(false); }}
             />
             <TextField
               id="email"
               name="email"
               label="Email"
               defaultValue="Empty"
-              value={userEmail ? userEmail : userInfo.email}
-              onChange={(e) => { setUserEmail(e.target.value) }}
+              value={userEmail ? userEmail : (editEmail ? userInfo.email : "")}
+              onChange={(e) => { setUserEmail(e.target.value); setEditEmail(false); }}
             />
             <Button
               type="submit"
