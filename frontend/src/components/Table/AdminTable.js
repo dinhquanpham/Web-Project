@@ -355,7 +355,6 @@ const Table = ({
             if (!edit) setMessage("update-data");
             else setMessage("change-data");
             if (orderMessage) setMessage("change-order");
-            setTimeout(() => window.location.reload(), 1500);
         } else {
             if (!edit) setMessage("error-update-data");
             else setMessage("error-change-data");
@@ -421,7 +420,7 @@ const Table = ({
         if (!response.error) {
             if (!response.message) {
                 setMessage("update-payment");
-                setTimeout(() => window.location.reload(), 1500);
+                
             } else {
                 setMessage("paymented");
             }

@@ -135,7 +135,7 @@ export default function UserInfo() {
     })
     if (!response.error) {
       setMessage("update-info");
-      setTimeout(() => window.location.reload(), 1500);
+
     }
     else {
       setMessage("error-update-info");
@@ -155,7 +155,7 @@ export default function UserInfo() {
       })
       if (response.message === "Updated") {
         setMessage("update-password");
-        setTimeout(() => window.location.reload(), 1500);
+
       }
       else {
         setMessage("wrong-current-password");
@@ -182,7 +182,6 @@ export default function UserInfo() {
     })
     if (!response.error) {
       setMessage("update-address");
-      setTimeout(() => window.location.reload(), 1500);
     }
     else {
       setMessage("error-update-address");
@@ -225,52 +224,52 @@ export default function UserInfo() {
         {userInfo && !editUserInfo && !editPassword && (
           <div className='user-info-text'>
             <div className='text'>
-            <Box>
-              Tên tài khoản: 
-            </Box>
+              <Box>
+                Tên tài khoản:
+              </Box>
             </div>
             <div className='text'>{userInfo.username}</div>
             <div className='text'>
-            <Box>
-              Mật khẩu: 
-            </Box>
+              <Box>
+                Mật khẩu:
+              </Box>
             </div>
             <div className='text'>*******</div>
             <div className='text'>
-            <Box>
-              Họ tên:
-            </Box>
+              <Box>
+                Họ tên:
+              </Box>
             </div>
             <div className='text'>
-            <Box>
-              {userInfo.lastname} {userInfo.firstname}
-            </Box>
+              <Box>
+                {userInfo.lastname} {userInfo.firstname}
+              </Box>
             </div>
             <div className='text'>
-            <Box>
-              Số điện thoại:
-            </Box>
+              <Box>
+                Số điện thoại:
+              </Box>
             </div>
             <div className='text'>
-            <Box>
-              {userInfo.phone}
-            </Box>
+              <Box>
+                {userInfo.phone}
+              </Box>
             </div>
             <div className='text'>
-            <Box>
-              Email:
-            </Box>
+              <Box>
+                Email:
+              </Box>
             </div>
             <div className='text'>
-            <Box>
-              {userInfo.email}
-            </Box>
+              <Box>
+                {userInfo.email}
+              </Box>
             </div>
             <div className='user-button'>
-            <Button variant="contained" onClick={openEditUserInfo}>Chỉnh sửa</Button>
+              <Button variant="contained" onClick={openEditUserInfo}>Chỉnh sửa</Button>
             </div>
             <div className='user-button'>
-            <Button variant="contained" onClick={openEditPassword}>Đổi mật khẩu</Button>
+              <Button variant="contained" onClick={openEditPassword}>Đổi mật khẩu</Button>
             </div>
           </div>
         )}
