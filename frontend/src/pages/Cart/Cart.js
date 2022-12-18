@@ -134,6 +134,7 @@ export default function Cart() {
             setCartInfo(nextCartInfo);
         }
     }
+
     let cartShow =
         Array.isArray(cartInfo) &&
         cartInfo.map((data, index) => (
