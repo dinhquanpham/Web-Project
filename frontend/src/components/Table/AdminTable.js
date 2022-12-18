@@ -563,17 +563,17 @@ const Table = ({
                 setPage={setPage}
                 page={page}
             />
-            {type !== "user" && type !== "order" && !productName && !productSetName && (
+            {type !== "user" && type !== "order" && !edit && !orderMessage && (
                 <Typography sx={{ fontWeight: "bold", mt: 5 }}>
                     Thêm dữ liệu mới
                 </Typography>
             )}
-            {type !== "user" && type !== "order" && productName && (
+            {type === "product" && edit && (
                 <Typography sx={{ fontWeight: "bold", mt: 5 }}>
                     Chỉnh sửa thông tin sản phẩm
                 </Typography>
             )}
-            {type !== "user" && type !== "order" && productSetName && (
+            {type ==='product-set' && edit && (
                 <Typography sx={{ fontWeight: "bold", mt: 5 }}>
                     Chỉnh sửa thông tin bộ sản phẩm
                 </Typography>
@@ -791,7 +791,7 @@ const Table = ({
                                 })}
                         </Select>
                     </FormControl>
-                    {!productName && (
+                    {!edit && (
                         <Button
                             type="submit"
                             variant="contained"
@@ -799,13 +799,12 @@ const Table = ({
                                 mt: 3,
                                 mb: 2,
                                 display: "block",
-                                color: "var(--main-color)",
                             }}
                         >
                             Thêm
                         </Button>
                     )}
-                    {productName && (
+                    {edit && (
                         <Button
                             type="submit"
                             variant="contained"
@@ -903,7 +902,7 @@ const Table = ({
                                 })}
                         </Select>
                     </FormControl>
-                    {!productSetName && (
+                    {!edit && (
                         <Button
                             type="submit"
                             variant="contained"
@@ -912,7 +911,7 @@ const Table = ({
                             Thêm
                         </Button>
                     )}
-                    {productSetName && (
+                    {edit && (
                         <Button
                             type="submit"
                             variant="contained"
