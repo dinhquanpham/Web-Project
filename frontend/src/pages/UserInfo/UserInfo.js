@@ -143,6 +143,7 @@ export default function UserInfo() {
     if (!response.error) {
       setMessage("update-info");
       setUserInfo(response);
+      setTimeout(() => window.location.reload(), 1500);
     }
     else {
       setMessage("error-update-info");
@@ -164,6 +165,7 @@ export default function UserInfo() {
         setMessage("update-password");
         let data = await getUserInfoById(sessionStorage.getItem('userId'));
         setUserInfo(data.user);
+        setTimeout(() => window.location.reload(), 1500);
       }
       else {
         setMessage("wrong-current-password");
@@ -190,6 +192,7 @@ export default function UserInfo() {
     })
     if (!response.error) {
       setMessage("update-address");
+      setTimeout(() => window.location.reload(), 1500);
     }
     else {
       setMessage("error-update-address");

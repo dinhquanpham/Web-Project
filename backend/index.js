@@ -3,8 +3,9 @@ const sequelize = require('./database/connect');
 const model = require('./database/index');
 const router = require('./routers/MainRouters');
 const app = express();
-const cors = require('cors')
+const cors = require('cors');
 const port = 3030;
+const path = require('path');
 
 const init = async () => {
   //database
@@ -21,7 +22,12 @@ const init = async () => {
   //router
   router(app);
 
-  app.use(express.static('../frontend/build'));
+  app.use(express.static(path.join(__dirname, '../frontend/build')));
+
+  console.log(path.join(__dirname, '../frontend/build'));
+  app.get('*', async(req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'))
+  })
 
   //message
   app.listen(port, () => {
